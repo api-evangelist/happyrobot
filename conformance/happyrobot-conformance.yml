@@ -1,0 +1,140 @@
+generated: '2026-08-01'
+method: searched
+source: >-
+  openapi/happyrobot-public-api-openapi.json,
+  https://www.happyrobot.ai/product/security-and-reliability,
+  https://trust.happyrobot.ai/,
+  live /.well-known probes
+notes: >-
+  Standards conformance derived from the machine-readable contract and from discovery documents probed
+  live on 2026-08-01, plus the compliance frameworks Happyrobot names on its own public security page.
+  Where a claim is the vendor's own rather than something observed, `evidence` says so.
+standards:
+- id: openapi-3.0
+  conforms: true
+  evidence: >-
+    Two documents served publicly — OpenAPI 3.0.3 at /api/v2/docs/json (162 paths, 205 operations) and
+    OpenAPI 3.0.2 at /api/v1/openapi.json (10 operations). Both parse.
+- id: oauth2
+  conforms: true
+  evidence: >-
+    Three OAuth 2.0 authorization servers publish metadata: platform.happyrobot.ai (MCP, scope mcp:full),
+    platform.eu.happyrobot.ai (EU mirror), and docs.happyrobot.ai/mcp/oauth (scope mcp:search).
+- id: rfc8414-oauth-authorization-server-metadata
+  conforms: true
+  evidence: >-
+    /.well-known/oauth-authorization-server returns valid metadata on platform.happyrobot.ai,
+    platform.eu.happyrobot.ai, mcp.platform.happyrobot.ai and docs.happyrobot.ai.
+- id: rfc9728-oauth-protected-resource-metadata
+  conforms: true
+  evidence: >-
+    /.well-known/oauth-protected-resource/{workflows,twin}/mcp return resource metadata naming the
+    authorization server and scopes; the MCP endpoints emit a matching WWW-Authenticate Bearer challenge
+    carrying resource_metadata on a 401.
+- id: rfc7591-dynamic-client-registration
+  conforms: true
+  evidence: >-
+    registration_endpoint advertised at https://platform.happyrobot.ai/api/mcp/register and
+    https://docs.happyrobot.ai/mcp/oauth/register.
+- id: rfc7636-pkce
+  conforms: true
+  evidence: >-
+    code_challenge_methods_supported [S256] on both MCP authorization servers; the console login flow was
+    observed issuing code_challenge_method=S256.
+- id: oidc-discovery
+  conforms: true
+  evidence: >-
+    https://auth.happyrobot.ai/.well-known/openid-configuration returns a complete OIDC 1.0 discovery
+    document (Auth0 tenant) with jwks_uri, userinfo, revocation, end_session and device authorization
+    endpoints, and backchannel_logout_supported true.
+- id: openid-connect
+  conforms: true
+  evidence: console sign-in uses authorization code + PKCE with scope "openid profile email offline_access".
+- id: rfc9116-security-txt
+  conforms: true
+  evidence: >-
+    https://happyrobot.ai/.well-known/security.txt returns Contact, Expires, Hiring and
+    Preferred-Languages fields.
+  gap: 'no Policy: field, and no Encryption: or Canonical: field.'
+- id: model-context-protocol
+  conforms: true
+  evidence: >-
+    Two first-party remote MCP servers (Streamable HTTP) plus a docs MCP server; 35 published tools and 5
+    MCP prompts. The platform is also an MCP client — POST /mcp/ registers external MCP servers and
+    discovers their tools.
+- id: server-sent-events
+  conforms: true
+  evidence: GET /sessions/{session_id}/stream emits SSE `message` events with an optional backfill window.
+- id: rfc9457-problem-details
+  conforms: false
+  evidence: >-
+    All 849 declared response bodies are application/json with a bespoke {error, message, statusCode,
+    details} envelope. No application/problem+json and no type URIs.
+- id: rfc8594-sunset-header
+  conforms: false
+  evidence: no Sunset or Deprecation header appears in either OpenAPI document.
+- id: idempotency-key
+  conforms: false
+  evidence: >-
+    The string "idempot" does not occur in either OpenAPI document; no idempotency-key header exists on
+    any of the 205 operations, including phone-number purchase and run creation.
+- id: ratelimit-headers
+  conforms: false
+  evidence: >-
+    No RateLimit-Limit/Remaining/Reset and no Retry-After is declared anywhere, although 429 is declared
+    on three provisioning operations.
+- id: json-api
+  conforms: false
+  evidence: responses are plain JSON objects; some wrap in a `data` envelope, most do not.
+- id: graphql
+  conforms: false
+  evidence: no GraphQL endpoint found on any Happyrobot host.
+- id: a2a-agent-card
+  conforms: false
+  evidence: >-
+    /.well-known/agent-card.json and /.well-known/agent.json probed on happyrobot.ai, www, platform, app,
+    docs and mcp.platform hosts — all 404, 302, 429 or an HTML SPA shell. No agent card is published.
+- id: well-known-api-catalog
+  conforms: false
+  evidence: /.well-known/api-catalog returns 404 on every host probed.
+compliance_program:
+  published: true
+  source: https://www.happyrobot.ai/product/security-and-reliability
+  trust_center: https://trust.happyrobot.ai/
+  trust_center_platform: Vanta
+  frameworks_claimed:
+  - SOC 2 Type II
+  - GDPR
+  - HIPAA
+  - EU AI Act
+  - NIST CSF
+  - DORA
+  attestation_access: >-
+    The security page states that documentation is "available to qualified customers under NDA" — the
+    reports themselves are not public.
+  security_controls_claimed:
+  - end-to-end encryption with per-workflow retention policies
+  - zero-trust network architecture
+  - role-based access control (Owner, Editor, Viewer)
+  - per-customer encryption keys on dedicated deployments
+  - multi-availability-zone infrastructure with automatic failover
+  - in-country data residency
+  - data never used to train models, never shared across tenants
+  corroboration_in_api:
+    rbac: >-
+      The Owner/Editor/Viewer model is reflected in the API — POST and DELETE /org/members/ manage
+      membership, and 403 is declared on 20 operations.
+    data_residency: >-
+      Independently verified — a fully separate EU cluster (platform.eu.happyrobot.ai) serves its own
+      OpenAPI, its own OAuth authorization server and its own MCP host.
+    retention: workflow settings include a data-retention configuration block (PATCH /workflows/{workflow_id}).
+x-evidence:
+  fetched: '2026-08-01'
+  probes:
+  - url: https://trust.happyrobot.ai/
+    http_status: 200
+    note: Vanta-hosted trust report (assets.vanta.com index-trust-report); content is client-rendered
+  - url: https://www.happyrobot.ai/product/security-and-reliability
+    http_status: 200
+  - url: https://happyrobot.ai/.well-known/security.txt
+    http_status: 200

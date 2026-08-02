@@ -1,0 +1,186 @@
+generated: '2026-08-01'
+method: derived
+source: openapi/happyrobot-public-api-openapi.json, https://github.com/happyrobot-ai/chatbot-sdk-example
+spec_type: Webhooks
+asyncapi_published: false
+notes: >-
+  Happyrobot publishes NO AsyncAPI document — none was found on any host, in the GitHub org, or at
+  /asyncapi.yaml — so nothing is fabricated here. It does, however, run a real four-part event surface:
+  inbound webhook triggers that start workflow runs, outbound webhooks configured per workflow, a
+  Server-Sent Events stream over sessions, and a signals API for publishing immediate or scheduled events
+  into a running session. Each is captured below from the machine-readable contract or first-party code.
+surfaces:
+- kind: inbound-webhook
+  direction: inbound (customer -> Happyrobot)
+  description: >-
+    A workflow can be triggered by a webhook node. Happyrobot mints one URL per environment for each
+    webhook trigger node; POSTing to it starts a run and the body becomes the trigger node's output,
+    available to every downstream node.
+  node_types:
+  - INCOMING_HOOK
+  - PREDEFINED_REQUEST
+  discovery_operation: GET /versions/{version_id}/nodes/{node_id}
+  discovery_response_field: webhook_urls
+  urls_per_environment:
+  - production
+  - staging
+  - development
+  - test
+  payload_contract:
+    field: webhook_payload
+    description: >-
+      Set on the trigger node. "Expected payload for webhook nodes. When provided, this is saved as the
+      node output so downstream nodes can reference it." This is the closest thing the platform has to a
+      declared inbound event schema — it is per-workflow and customer-authored, not a fixed catalogue.
+    settable_on:
+    - POST /versions/{version_id}/nodes
+    - PUT /versions/{version_id}/nodes/{node_id}
+  alternate_trigger: POST /workflows/{workflow_id}/runs
+- kind: outbound-webhook
+  direction: outbound (Happyrobot -> customer)
+  description: >-
+    Each workflow carries a list of webhook subscriptions in its settings. Happyrobot delivers workflow
+    events to those URLs with caller-supplied headers.
+  configured_via: PATCH /workflows/{workflow_id}
+  settings_path: settings.webhooks[]
+  subscription_schema:
+    url:
+      type: string
+      format: uri
+      required: true
+    headers:
+      type: object
+      additionalProperties: string
+      required: false
+      note: arbitrary static headers, the mechanism available for shared-secret authentication
+  event_catalog:
+    published: false
+    note: >-
+      The OpenAPI does not enumerate which events are delivered or their payload shapes — settings.webhooks
+      is only a list of destinations. A published event-type catalogue could not be read because
+      docs.happyrobot.ai is behind an access gate.
+  security:
+    signature_header: none declared
+    note: >-
+      No HMAC signature header, no timestamp/replay-window field, and no signing-secret field appear in
+      the subscription schema. Verification appears to rely on whatever static headers the customer
+      configures.
+- kind: server-sent-events
+  direction: outbound (Happyrobot -> customer, streaming)
+  description: >-
+    "Opens a Server-Sent Events stream for a single session. Optionally backfills the most recent
+    messages. The stream emits `message` events in real-time and closes when the session ends."
+  operation: GET /sessions/{session_id}/stream
+  parameters:
+  - name: backfillLimit
+    in: query
+    type: integer
+    default: 0
+    min: 0
+    max: 1000
+  event_names:
+  - message
+  auth: bearerAuth
+- kind: run-update-events
+  direction: outbound (Happyrobot -> customer, streaming)
+  description: >-
+    The one genuinely typed event schema in the API — a discriminated union of run-detail updates,
+    declared as components.schemas.RunDetailsUpdate.
+  schema_ref: '#/components/schemas/RunDetailsUpdate'
+  discriminator: type
+  events:
+  - type: new_message
+    payload:
+      message: object
+    required:
+    - type
+    - message
+  - type: new_node_output
+    required:
+    - type
+  - type: new_session
+    required:
+    - type
+- kind: websocket
+  direction: bidirectional
+  description: >-
+    Real-time chat transport, documented in Happyrobot's own SDK example rather than in the OpenAPI.
+  endpoint: WS /chat/sessions/{id}/ws?token=JWT
+  auth: short-lived JWT from POST /chat/tokens/
+  frames_documented:
+  - direction: server->client
+    type: connected
+  - direction: client->server
+    type: message
+    fields:
+    - content
+  - direction: server->client
+    type: message-ack
+  - direction: server->client
+    type: streamed events
+  source: https://github.com/happyrobot-ai/chatbot-sdk-example
+- kind: webrtc
+  direction: bidirectional (media)
+  description: >-
+    Browser voice calls join a LiveKit room. POST /voice/tokens/ returns { url, token, room_name, run_id }
+    and the client connects over WebRTC.
+  operation: POST /voice/tokens/
+  transport: LiveKit
+  source: https://github.com/happyrobot-ai/voice-sdk-example
+- kind: signals
+  direction: inbound (customer -> Happyrobot, event publishing)
+  description: >-
+    A first-class event-publishing API that injects immediate or scheduled signals into the platform's
+    internal signal service, targeting active sessions. Built-in key namespaces (org., usecase., session.)
+    are reserved; organizations may register their own custom signal keys per node.
+  operations:
+  - operation: POST /signals/
+    summary: Publish an immediate signal
+    note: payload.org_id is always derived from the API key's organization — a tenant-forcing guard.
+  - operation: POST /signals/scheduled-signals
+    summary: Schedule a delayed signal
+  - operation: PATCH /signals/scheduled-signals/{scheduled_signal_id}
+    summary: Patch a scheduled signal
+  - operation: DELETE /signals/scheduled-signals/{scheduled_signal_id}
+    summary: Cancel a scheduled signal
+  - operation: GET /signals/keys
+    summary: List signal keys for the org
+  - operation: POST /signals/keys
+    summary: Add a custom signal key to a node (applied across all environments)
+  - operation: DELETE /signals/keys
+    summary: Delete a custom signal key from a node
+  reserved_key_namespaces:
+  - org.
+  - usecase.
+  - session.
+event_config_introspection:
+  operation: GET /events/{event_id}/config-schema
+  description: >-
+    "Returns the configuration schema for an event, including field types, required fields, defaults, and
+    available options. Use this to inspect what an event expects before creating a node." A runtime schema
+    endpoint for the platform's event/trigger catalogue — the machine-readable substitute for a static
+    event registry.
+gaps:
+- No AsyncAPI document is published for any of these surfaces.
+- Outbound webhook event types and payload shapes are not enumerated in any public machine-readable
+  artifact.
+- No webhook signature/HMAC verification scheme is declared; authentication of deliveries falls back to
+  customer-configured static headers.
+- No published retry, backoff or delivery-guarantee policy for outbound webhooks.
+x-evidence:
+  fetched: '2026-08-01'
+  asyncapi_probes:
+  - url: https://platform.happyrobot.ai/asyncapi.yaml
+    http_status: 302
+    result: redirect to the console SPA, not a spec
+  - url: https://platform.happyrobot.ai/asyncapi.json
+    http_status: 302
+    result: redirect to the console SPA, not a spec
+  - url: https://platform.happyrobot.ai/api/v2/asyncapi.json
+    http_status: 404
+    result: 'Route GET:/asyncapi.json not found'
+  - url: https://docs.happyrobot.ai/asyncapi.yaml
+    http_status: 200
+    result: docs SPA application shell (HTML), not a spec — rejected
+  - source: github.com/happyrobot-ai (12 public repos enumerated via the GitHub API)
+    result: no AsyncAPI document

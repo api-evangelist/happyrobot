@@ -1,0 +1,148 @@
+generated: '2026-08-01'
+method: derived
+source: openapi/happyrobot-public-api-openapi.json
+format: custom-json
+rfc9457: false
+notes: >-
+  Derived from every 4xx/5xx response declared across the 205 operations of the Happyrobot Public API.
+  The API does NOT use RFC 9457 problem+json — every error is application/json carrying a bespoke
+  envelope. There is no `type` URI, no problem-type registry, and no documented error-code vocabulary:
+  the `error` string is the only required field and its values are not enumerated in the spec. The docs
+  host is behind an access gate, so a published error reference could not be read to enrich these titles.
+envelope:
+  media_type: application/json
+  schema:
+    error:
+      type: string
+      required: true
+      description: Short machine-ish error label. Values are NOT enumerated anywhere in the spec.
+    message:
+      type: string
+      required: false
+      description: Human-readable explanation.
+    statusCode:
+      type: integer
+      required: false
+      description: Repeats the HTTP status in the body.
+    details:
+      type: any
+      required: false
+      description: Untyped free-form detail payload.
+  additional_properties: false
+  variants:
+  - status: 409
+    shape: '{ message }'
+    note: >-
+      The knowledge-base conflict responses use a different, smaller envelope with only `message` and no
+      `error` — an inconsistency clients must handle.
+    operations:
+    - GET /knowledge-bases/{kbId}/files
+    - POST /knowledge-bases/{kbId}/upload-urls
+    - POST /knowledge-bases/{kbId}/trigger-chunking
+  - status: 413
+    shape: '{ error, statusCode }'
+    note: statusCode typed as number here rather than integer; no `message` or `details`.
+    operations:
+    - POST /chat/upload/complete
+problems:
+- status: 400
+  title: Bad request
+  description: Request validation failed — malformed body, bad query parameter, or an invalid value.
+  declared_on_operations: 77
+  example_operations:
+  - GET /runs/
+  - GET /billing/usage/totals
+  - POST /runs/{run_id}/cancel
+- status: 401
+  title: Unauthorized
+  description: >-
+    Missing, malformed, revoked or wrong-organization bearer API key. Declared on 194 of 205 operations —
+    the single most consistently documented failure in the API.
+  declared_on_operations: 194
+  remediation: >-
+    Verify the Authorization bearer token with GET /api-key/describe, which returns the key's
+    organization, prefix, lastFour and revokedAt.
+- status: 403
+  title: Forbidden
+  description: >-
+    Authenticated but not permitted — typically the key's organization does not own the target resource,
+    or the caller's role (Owner/Editor/Viewer) lacks the right.
+  declared_on_operations: 20
+  example_operations:
+  - POST /runs/{run_id}/cancel
+  - GET /knowledge-bases/{kbId}/files
+- status: 404
+  title: Not found
+  description: The addressed resource does not exist, or is not visible to the key's organization.
+  declared_on_operations: 149
+- status: 405
+  title: Method not allowed
+  declared_on_operations: 1
+  example_operations:
+  - POST /integrations/{integrationId}/create-credential
+- status: 409
+  title: Conflict
+  description: >-
+    Resource is in a state that blocks the operation — chiefly knowledge-base files still being chunked
+    or indexed.
+  declared_on_operations: 8
+  envelope_variant: '{ message }'
+- status: 413
+  title: Payload too large
+  description: Chat upload exceeds the accepted size.
+  declared_on_operations: 1
+  example_operations:
+  - POST /chat/upload/complete
+- status: 422
+  title: Unprocessable entity
+  description: Well-formed request the server cannot act on for semantic reasons.
+  declared_on_operations: 2
+  example_operations:
+  - GET /runs/{run_id}/nodes
+  - GET /runs/{run_id}/outputs/{output_id}
+- status: 429
+  title: Too many requests
+  description: >-
+    Rate limited. Declared on only three operations, all provisioning writes — phone-number purchase and
+    SIP-trunk creation. No Retry-After header and no RateLimit headers are declared anywhere in the spec,
+    so a client cannot compute a backoff from the contract.
+  declared_on_operations: 3
+  example_operations:
+  - POST /phone-numbers/
+  - POST /sip-trunks/
+  - POST /sip-trunks/bulk
+- status: 500
+  title: Internal server error
+  declared_on_operations: 164
+- status: 502
+  title: Bad gateway
+  description: >-
+    An upstream dependency failed — concentrated on operations that call out to telephony carriers,
+    integration providers or the workflow runtime.
+  declared_on_operations: 22
+  example_operations:
+  - POST /workflows/{workflow_id}/publish
+  - POST /runs/{run_id}/cancel
+- status: 503
+  title: Service unavailable
+  declared_on_operations: 3
+  example_operations:
+  - GET /billing/usage/credits
+  - GET /chat/upload/presigned
+- status: 504
+  title: Gateway timeout
+  description: >-
+    Declared on the synchronous test-all/node-test path, which blocks until every node has been tested
+    and can therefore exceed the gateway budget.
+  declared_on_operations: 1
+  example_operations:
+  - POST /versions/{version_id}/nodes/{node_id}/test
+gaps:
+- No RFC 9457 application/problem+json; no stable `type` URIs to switch on.
+- The `error` field is the only required member and its value space is undocumented, so clients must
+  branch on HTTP status alone.
+- Three envelope shapes across the same API (full, message-only on 409, error+statusCode on 413).
+- No Retry-After or RateLimit-* headers declared on any 429.
+- >-
+    No published error-code reference could be read: docs.happyrobot.ai returns "Access Restricted"
+    to anonymous clients.

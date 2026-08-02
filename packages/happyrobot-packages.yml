@@ -1,0 +1,91 @@
+generated: '2026-08-01'
+method: searched
+source: npm registry, PyPI, github.com/happyrobot-ai
+notes: >-
+  Two first-party client libraries confirmed against the public registries on 2026-08-01. Maven Central,
+  NuGet, pkg.go.dev, RubyGems, Packagist and crates.io were checked and carry no Happyrobot client. The
+  Happyrobot GitHub org additionally publishes example applications (not distributable packages) and a set
+  of forks of the LiveKit realtime stack, which is the WebRTC layer under the voice product.
+packages:
+- language: typescript
+  registry: npm
+  name: '@happyrobot-ai/sdk'
+  version: 0.1.37
+  url: https://www.npmjs.com/package/@happyrobot-ai/sdk
+  install: npm install @happyrobot-ai/sdk
+  license: MIT
+  official: true
+  description: TypeScript SDK for the HappyRobot Public API
+  repository: https://github.com/happyrobot-ai/app-v2
+  first_published: '2026-03-09'
+  last_published: '2026-07-19'
+  release_count: 36
+  entry_points:
+  - '@happyrobot-ai/sdk'
+  - '@happyrobot-ai/sdk/chat'
+  - '@happyrobot-ai/sdk/voice'
+  - '@happyrobot-ai/sdk/helpers'
+  covers:
+  - HappyRobotClient (API-key server client)
+  - client.chat.createToken / chat sessions
+  - client.voice.createToken / LiveKit voice sessions
+  - HappyRobotChatClient (browser, token-scoped)
+  - HappyRobotVoiceClient (browser, WebRTC)
+- language: python
+  registry: pypi
+  name: happyrobot
+  version: 0.2.9
+  url: https://pypi.org/project/happyrobot/
+  install: pip install happyrobot
+  official: true
+  description: This package lets you interact with Happyrobot directly from Python.
+  author: Happyrobot
+  author_email: founders@happyrobot.ai
+  repository: https://github.com/happyrobot-ai/happyrobot-python
+  release_count: 10
+registries_checked_no_result:
+- maven-central
+- nuget
+- pkg.go.dev
+- rubygems
+- packagist
+- crates.io
+examples_and_reference_repos:
+- name: chatbot-sdk-example
+  url: https://github.com/happyrobot-ai/chatbot-sdk-example
+  language: typescript
+  description: Express token server + React chat UI on @happyrobot-ai/sdk; documents the two-tier
+    API-key/client-token auth model.
+- name: voice-sdk-example
+  url: https://github.com/happyrobot-ai/voice-sdk-example
+  language: typescript
+  description: Express token server + React WebRTC client on @happyrobot-ai/sdk/voice.
+- name: web-sdk
+  url: https://github.com/happyrobot-ai/web-sdk
+  language: typescript
+  description: Minimal HappyRobot Web Call API example.
+- name: custom-llm-server
+  url: https://github.com/happyrobot-ai/custom-llm-server
+  language: python
+  description: >-
+    Reference OpenAI Chat-Completions-compatible server for Happyrobot's headless agent mode. Documents
+    the platform's built-in call-control tools (_hangup, _stay_silent, _voice_mail, _press_digit) that
+    Happyrobot passes to a customer-hosted LLM endpoint.
+infrastructure_forks:
+  note: not client SDKs — forks of the LiveKit realtime stack that underpins the voice product
+  repos:
+  - https://github.com/happyrobot-ai/livekit-agents
+  - https://github.com/happyrobot-ai/livekit-protocol
+  - https://github.com/happyrobot-ai/livekit-media-sdk
+  - https://github.com/happyrobot-ai/livekit-server-sdk-go
+  - https://github.com/happyrobot-ai/livekit-sipgo
+  - https://github.com/happyrobot-ai/egress
+x-evidence:
+  fetched: '2026-08-01'
+  probes:
+  - url: https://registry.npmjs.org/@happyrobot-ai/sdk
+    http_status: 200
+  - url: https://pypi.org/pypi/happyrobot/json
+    http_status: 200
+  - url: https://api.github.com/orgs/happyrobot-ai/repos
+    http_status: 200

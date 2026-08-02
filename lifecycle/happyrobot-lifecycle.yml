@@ -1,0 +1,151 @@
+generated: '2026-08-01'
+method: searched
+source: >-
+  openapi/happyrobot-public-api-openapi.json, openapi/happyrobot-platform-v1-openapi.json,
+  https://status.happyrobot.ai/, https://www.npmjs.com/package/@happyrobot-ai/mcp
+versioning:
+  scheme: uri-path
+  current: v2
+  base_path: /api/v2
+  previous: /api/v1
+  document_versions:
+    v2: 0.1.1 (info.version in the OpenAPI, title "Happyrobot Public API")
+    v1: 1.0.0 (info.version, title "Happyrobot Platform API")
+  note: >-
+    The two versions are served by different stacks — v1 answers with an OpenAPI 3.0.2 document at
+    /api/v1/openapi.json, v2 with an OpenAPI 3.0.3 document at /api/v2/docs/json (a Fastify swagger route;
+    /api/v2/openapi.json returns a 404 "Route GET:/openapi.json not found").
+  policy_url: null
+  policy_published: false
+deprecation:
+  policy_url: null
+  policy_published: false
+  sunset_header: false
+  deprecation_header: false
+  note: >-
+    No RFC 8594 Sunset support, no Deprecation header, and no published deprecation policy could be found.
+    Deprecation is instead signalled in prose inside the specs and package READMEs.
+  observed_deprecations:
+  - subject: GET /use-cases/{use_case_id}/runs
+    api: v1
+    signal: 'operation description begins "DEPRECATED: Use the new /runs endpoint instead."'
+    openapi_deprecated_flag: false
+    replacement: GET /runs/ (v2)
+  - subject: '@happyrobot-ai/mcp (stdio MCP server, npm)'
+    signal: >-
+      README deprecation banner — "This stdio MCP server is deprecated. Use the remote Streamable HTTP
+      server instead — no Node.js or API keys required, authentication is handled via OAuth."
+    replacement: https://mcp.platform.happyrobot.ai/workflows/mcp
+    npm_deprecate_flag: false
+  - subject: '@happyrobot-ai/mcp-twin (stdio MCP server, npm)'
+    signal: identical README deprecation banner
+    replacement: https://mcp.platform.happyrobot.ai/twin/mcp
+    npm_deprecate_flag: false
+  - subject: the whole v1 API
+    signal: >-
+      Implicit — v1 is a ten-operation read-only subset of v2 with a different auth model. No formal
+      sunset date is published.
+  deprecated_operations_in_openapi: []
+  note_on_flags: >-
+    Zero operations across either document carry `deprecated: true`, so a client generating from the spec
+    gets no machine-readable deprecation signal at all — including for the one operation whose description
+    says DEPRECATED in capitals.
+status_page:
+  url: https://status.happyrobot.ai/
+  provider: Atlassian Statuspage
+  page_id: 01JQQKFMG858QNS6YNHP09RV39
+  api: https://status.happyrobot.ai/api/v2/summary.json
+  history_feed: https://status.happyrobot.ai/history.rss
+  components:
+  - Platform
+  - Voice
+  - Text
+  - Broker
+  - Authentication & Authorization
+  - Integrations & Dependencies
+  observed_state: all six components operational at fetch time
+  note: >-
+    A genuinely well-decomposed status page — the components map to the product's actual failure domains
+    (voice vs text vs the broker vs auth vs third-party integrations) rather than one undifferentiated
+    "API" light.
+sla:
+  url: null
+  uptime_target: null
+  published: false
+  related_claims:
+    source: https://www.happyrobot.ai/product/security-and-reliability
+    claims:
+    - multi-availability-zone infrastructure with automatic failover
+    - automatic model failover across LLM, TTS and STT providers
+    - in-country data residency support
+  note: No numeric uptime commitment is published on the public site.
+changelog:
+  url: null
+  published_publicly: false
+  note: >-
+    docs.happyrobot.ai/changelog and /general/changelog both return the docs application shell, and the
+    entire docs host answers "Access Restricted" to anonymous clients, so no dated changelog could be read.
+    www.happyrobot.ai/changelog is a 404 and the site publishes no RSS feed.
+  proxy_signals:
+    note: The npm registry is the only public dated release history for Happyrobot code.
+    '@happyrobot-ai/sdk':
+      first_published: '2026-03-09'
+      last_published: '2026-07-19'
+      releases: 36
+    '@happyrobot-ai/mcp':
+      first_published: '2026-03-07'
+      last_published: '2026-07-03'
+      releases: 23
+    '@happyrobot-ai/workflow-sdk':
+      first_published: '2026-03-23'
+      releases: 12
+    pypi happyrobot:
+      version: 0.2.9
+      releases: 10
+regions:
+  note: Two independently addressable clusters with separate API, auth and MCP hosts.
+  clusters:
+  - name: us
+    api: https://platform.happyrobot.ai/api/v2
+    mcp: https://mcp.platform.happyrobot.ai/workflows/mcp
+    default: true
+  - name: eu
+    api: https://platform.eu.happyrobot.ai/api/v2
+    mcp: https://mcp.platform.eu.happyrobot.ai/workflows/mcp
+  verified: both clusters returned a 200 OpenAPI and a 401 MCP challenge on 2026-08-01
+documentation_access:
+  host: https://docs.happyrobot.ai
+  state: gated
+  observed: >-
+    Every path on the docs host returns an identical 34,022-byte application shell whose rendered content
+    is "Access Restricted — provide your access code below". Pages that search engines have indexed
+    (/getting_started, /api-reference/*, /general/pricing) are no longer anonymously readable.
+  impact: >-
+    A developer evaluating Happyrobot cannot read the API reference, the error reference, the changelog or
+    the rate-limit policy without being granted an access code — even though the OpenAPI itself is served
+    publicly and anonymously from the API host.
+resource_lifecycle:
+  note: >-
+    Distinct from API lifecycle — Happyrobot models the lifecycle of the customer's own workflows as
+    first-class API operations, which is unusual and worth recording.
+  states: draft version -> locked -> published -> unpublished
+  operations:
+  - POST /versions/{version_id}/fork
+  - POST /versions/{version_id}/lock
+  - POST /versions/{version_id}/unlock
+  - POST /versions/{version_id}/publish
+  - POST /versions/{version_id}/unpublish
+  - GET /workflows/{workflow_id}/versions
+  - GET /workflows/{workflow_id}/audits/versions
+x-evidence:
+  fetched: '2026-08-01'
+  probes:
+  - url: https://status.happyrobot.ai/api/v2/summary.json
+    http_status: 200
+  - url: https://docs.happyrobot.ai/changelog
+    http_status: 200
+    note: application shell, gated
+  - url: https://www.happyrobot.ai/changelog
+    http_status: 404
+  - url: https://platform.eu.happyrobot.ai/api/v2/docs/json
+    http_status: 200

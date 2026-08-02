@@ -1,0 +1,89 @@
+generated: '2026-08-01'
+method: generated
+source: openapi/happyrobot-public-api-openapi.json, conventions/happyrobot-conventions.yml, errors/happyrobot-problem-types.yml
+notes: >-
+  Packaged agent skills for the Happyrobot Public API (v2). Every operation referenced in every skill was
+  grepped against openapi/happyrobot-public-api-openapi.json and exists verbatim. The OpenAPI declares no
+  operationIds, so operations are addressed as `METHOD /path` — the same convention used in
+  mcp/happyrobot-tool-crosswalk.yml. Happyrobot publishes no AGENTS.md or skill files of its own; these
+  are ours.
+api_base: https://platform.happyrobot.ai/api/v2
+auth: 'Authorization: Bearer <api_key>'
+skills:
+- file: happyrobot-trigger-and-monitor-a-run.md
+  name: Trigger a workflow run and monitor it to completion
+  api: openapi/happyrobot-public-api-openapi.json
+  operations:
+  - POST /workflows/{workflow_id}/runs
+  - GET /runs/{run_id}
+  - GET /runs/{run_id}/sessions
+  - GET /sessions/{session_id}/messages
+  - GET /sessions/{session_id}/stream
+  - GET /runs/{run_id}/recordings
+  - POST /runs/{run_id}/cancel
+  - POST /runs/{run_id}/mark
+- file: happyrobot-author-and-publish-a-workflow.md
+  name: Author, test and publish a workflow version
+  api: openapi/happyrobot-public-api-openapi.json
+  operations:
+  - GET /workflows/templates
+  - POST /workflows/
+  - GET /workflows/{workflow_id}/versions
+  - POST /versions/{version_id}/fork
+  - GET /events/{event_id}/config-schema
+  - POST /versions/{version_id}/nodes
+  - GET /versions/{version_id}/nodes/{node_id}/available-vars
+  - POST /versions/{version_id}/test-all
+  - POST /versions/{version_id}/lock
+  - POST /versions/{version_id}/publish
+- file: happyrobot-provision-inbound-telephony.md
+  name: Provision a phone number and attach it to a workflow
+  api: openapi/happyrobot-public-api-openapi.json
+  operations:
+  - GET /phone-numbers/
+  - POST /phone-numbers/
+  - PUT /phone-numbers/{id}
+  - POST /phone-numbers/sip-trunk
+  - GET /sip-trunks/options
+  - POST /sip-trunks/
+  - POST /phone-numbers/validate-toll-free-numbers
+  - POST /phone-numbers/tollfree-verification
+  - POST /phone-numbers/remove-from-workflow
+  - GET /phone-numbers/usage
+- file: happyrobot-embed-browser-chat.md
+  name: Embed a browser chat session without exposing the API key
+  api: openapi/happyrobot-public-api-openapi.json
+  operations:
+  - POST /chat/tokens/
+  - POST /chat/sessions/
+  - POST /chat/sessions/{id}/messages
+  - GET /chat/sessions/{id}/history
+  - GET /chat/upload/presigned
+  - POST /chat/upload/complete
+  - POST /chat/sessions/{id}/close
+- file: happyrobot-evaluate-and-red-team-an-agent.md
+  name: Evaluate and red-team an agent node before shipping it
+  api: openapi/happyrobot-public-api-openapi.json
+  operations:
+  - GET /nodes/{node_id}/northstars
+  - POST /nodes/{node_id}/northstars/generate
+  - POST /nodes/{node_id}/northstars/assess-coverage
+  - POST /nodes/{node_id}/custom-evals/extract-from-run
+  - POST /custom-evals/{eval_id}/run
+  - POST /nodes/{node_id}/adversarial-tests
+  - POST /adversarial-suites/{suite_id}/generate
+  - POST /adversarial-suites/{suite_id}/run
+  - GET /adversarial-suites/runs/{suite_run_id}/test-runs
+  - GET /workflows/{workflow_id}/audits/stats
+- file: happyrobot-query-the-twin-database.md
+  name: Explore and query the Twin database safely
+  api: openapi/happyrobot-public-api-openapi.json
+  operations:
+  - GET /twin/schema
+  - GET /twin/tables/{tableName}
+  - POST /twin/sql
+  - POST /twin/tables
+  - POST /twin/tables/{tableName}/rows
+  - PATCH /twin/tables/{tableName}/rows
+  - DELETE /twin/tables/{tableName}/rows
+  - POST /twin/dump

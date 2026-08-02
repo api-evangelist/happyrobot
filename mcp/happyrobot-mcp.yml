@@ -1,0 +1,303 @@
+generated: '2026-08-01'
+method: searched
+source: >-
+  https://www.npmjs.com/package/@happyrobot-ai/mcp,
+  https://www.npmjs.com/package/@happyrobot-ai/mcp-twin,
+  https://mcp.platform.happyrobot.ai/.well-known/oauth-protected-resource/workflows/mcp,
+  https://mcp.platform.happyrobot.ai/.well-known/oauth-protected-resource/twin/mcp
+status: published
+notes: >-
+  Happyrobot publishes TWO first-party remote MCP servers — Workflows and Twin — as OAuth-protected
+  Streamable HTTP endpoints on mcp.platform.happyrobot.ai, mirrored on an EU cluster. Each began life as a
+  stdio npm package (@happyrobot-ai/mcp, @happyrobot-ai/mcp-twin); both packages are now explicitly marked
+  DEPRECATED in favour of the remote servers, and their READMEs are the authoritative published tool
+  inventories captured below. Live tools/list is OAuth-gated (HTTP 401 with a correct RFC 9728
+  WWW-Authenticate challenge), so the tool NAMES and DESCRIPTIONS here are the vendor's own published ones
+  while per-tool inputSchema still requires an authenticated introspection.
+  Separately, docs.happyrobot.ai runs a Mintlify documentation-search MCP server (scope mcp:search).
+servers:
+- name: happyrobot-workflows
+  transport: streamable-http
+  url: https://mcp.platform.happyrobot.ai/workflows/mcp
+  status: published
+  observed: true
+  cluster: us
+  resource_name: HappyRobot MCP (happyrobot-mcp)
+  protected_resource_metadata: https://mcp.platform.happyrobot.ai/.well-known/oauth-protected-resource/workflows/mcp
+  auth:
+    type: oauth2
+    authorization_servers:
+    - https://platform.happyrobot.ai
+    scopes:
+    - mcp:full
+    discovery: https://platform.happyrobot.ai/.well-known/oauth-authorization-server
+    dynamic_client_registration: https://platform.happyrobot.ai/api/mcp/register
+    pkce: S256
+  install:
+    claude_code: claude mcp add --transport http happyrobot-workflows https://mcp.platform.happyrobot.ai/workflows/mcp
+    claude_desktop: https://docs.happyrobot.ai/claude-desktop
+  docs: https://docs.happyrobot.ai/developer-tools/mcp
+  tools_list_probe:
+    attempted: true
+    http_status: 401
+    body: '{"error":"invalid_token","error_description":"Missing Authorization header"}'
+    www_authenticate: >-
+      Bearer error="invalid_token", error_description="Missing Authorization header",
+      resource_metadata="https://mcp.platform.happyrobot.ai/.well-known/oauth-protected-resource/workflows/mcp"
+  backing_api: https://platform.happyrobot.ai/api/v2
+- name: happyrobot-twin
+  transport: streamable-http
+  url: https://mcp.platform.happyrobot.ai/twin/mcp
+  status: published
+  observed: true
+  cluster: us
+  resource_name: HappyRobot MCP (happyrobot-mcp-twin)
+  protected_resource_metadata: https://mcp.platform.happyrobot.ai/.well-known/oauth-protected-resource/twin/mcp
+  auth:
+    type: oauth2
+    authorization_servers:
+    - https://platform.happyrobot.ai
+    scopes:
+    - mcp:full
+  install:
+    claude_code: claude mcp add --transport http happyrobot-twin https://mcp.platform.happyrobot.ai/twin/mcp
+  docs: https://docs.happyrobot.ai/developer-tools/mcp-twin
+  tools_list_probe:
+    attempted: true
+    http_status: 401
+  backing_api: the /twin/* family of https://platform.happyrobot.ai/api/v2
+- name: happyrobot-workflows-eu
+  transport: streamable-http
+  url: https://mcp.platform.eu.happyrobot.ai/workflows/mcp
+  status: published
+  observed: true
+  cluster: eu
+  note: EU data-residency mirror; same tool surface, separate authorization server
+  auth:
+    type: oauth2
+    authorization_servers:
+    - https://platform.eu.happyrobot.ai
+    scopes:
+    - mcp:full
+  tools_list_probe:
+    attempted: true
+    http_status: 401
+  backing_api: https://platform.eu.happyrobot.ai/api/v2
+- name: happyrobot-docs
+  transport: streamable-http
+  url: https://docs.happyrobot.ai/mcp
+  status: published
+  observed: true
+  purpose: documentation search (Mintlify-hosted)
+  protected_resource_metadata: https://docs.happyrobot.ai/.well-known/oauth-protected-resource
+  auth:
+    type: oauth2
+    authorization_servers:
+    - https://docs.happyrobot.ai/mcp/oauth
+    scopes:
+    - mcp:search
+    dynamic_client_registration: https://docs.happyrobot.ai/mcp/oauth/register
+    pkce: S256
+  alternate_install: claude mcp add happyrobot-docs -- npx @mintlify/mcp --docs https://docs.happyrobot.ai
+  tools_list_probe:
+    attempted: true
+    http_status: 401
+deprecated_stdio_packages:
+- name: '@happyrobot-ai/mcp'
+  registry: npm
+  version: 0.1.25
+  bin: happyrobot-mcp
+  license: MIT
+  url: https://www.npmjs.com/package/@happyrobot-ai/mcp
+  status: deprecated
+  deprecation_note: >-
+    "This stdio MCP server is deprecated. Use the remote Streamable HTTP server instead — no Node.js or
+    API keys required, authentication is handled via OAuth."
+  auth: HAPPYROBOT_API_KEY environment variable (sk_live_* or sk_test_*)
+  config:
+    HAPPYROBOT_CLUSTER: us | eu (default us)
+    HAPPYROBOT_API_BASE_URL: overrides the cluster
+- name: '@happyrobot-ai/mcp-twin'
+  registry: npm
+  version: 0.1.1
+  bin: happyrobot-mcp-twin
+  license: MIT
+  url: https://www.npmjs.com/package/@happyrobot-ai/mcp-twin
+  status: deprecated
+tools:
+# --- happyrobot-workflows (26 published tools) ---
+- name: setup
+  server: happyrobot-workflows
+  description: Configure your API key at runtime.
+- name: create_workflow
+  server: happyrobot-workflows
+  description: Create a workflow from scratch, template, or inline nodes.
+- name: fix_broken_vars
+  server: happyrobot-workflows
+  description: Diagnose and fix broken variable references.
+- name: list_workflows
+  server: happyrobot-workflows
+  description: Search and list workflows with pagination.
+- name: get_workflow_details
+  server: happyrobot-workflows
+  description: Inspect workflow config, versions, and nodes.
+- name: update_workflow_nodes
+  server: happyrobot-workflows
+  description: Add, update, or delete nodes in a version.
+- name: manage_versions
+  server: happyrobot-workflows
+  description: Fork, publish, unpublish, lock, unlock versions.
+- name: trigger_run
+  server: happyrobot-workflows
+  description: Trigger a workflow run with payload.
+- name: monitor_runs
+  server: happyrobot-workflows
+  description: List runs, view sessions, recordings, manage annotations.
+- name: manage_variables
+  server: happyrobot-workflows
+  description: CRUD workflow-scoped environment variables.
+- name: manage_phone_numbers
+  server: happyrobot-workflows
+  description: List, purchase, update, and delete phone numbers.
+- name: list_integrations
+  server: happyrobot-workflows
+  description: >-
+    Search integrations, events, and fetch integration resources (Slack channels, Google Sheets, etc.).
+- name: get_available_variables
+  server: happyrobot-workflows
+  description: Get upstream variables available to a node.
+- name: get_node_config_schema
+  server: happyrobot-workflows
+  description: Get the configuration schema for a node's event.
+- name: manage_workflow
+  server: happyrobot-workflows
+  description: Cancel runs, update metadata/settings, delete, duplicate.
+- name: manage_sip_trunks
+  server: happyrobot-workflows
+  description: List, create, update, and delete SIP trunks.
+- name: browse_workflows
+  server: happyrobot-workflows
+  description: Browse workflow folders and explore folder hierarchy.
+- name: test_workflow
+  server: happyrobot-workflows
+  description: Test workflow versions — run all node tests or test a single node.
+- name: manage_mcp_servers
+  server: happyrobot-workflows
+  description: List, create, and refresh MCP server connections.
+- name: manage_credentials
+  server: happyrobot-workflows
+  description: List and create credentials for integrations.
+- name: fix_prompt_issues
+  server: happyrobot-workflows
+  description: Fetch prompt quality issues and get LLM guidance on fixing them.
+- name: manage_northstars
+  server: happyrobot-workflows
+  description: Manage northstar success criteria for evaluating prompt nodes.
+- name: manage_custom_evals
+  server: happyrobot-workflows
+  description: Manage custom eval tests (expected responses, tool calls) for prompt nodes.
+- name: manage_adversarial_tests
+  server: happyrobot-workflows
+  description: Manage adversarial (red-team) tests for agent nodes.
+- name: manage_adversarial_suites
+  server: happyrobot-workflows
+  description: Manage batched adversarial test suites for agent nodes.
+- name: get_node_details
+  server: happyrobot-workflows
+  description: Fetch full configuration details of a single workflow node.
+# --- happyrobot-twin (9 published tools) ---
+- name: setup
+  server: happyrobot-twin
+  description: Configure your API key at runtime.
+- name: get_schema
+  server: happyrobot-twin
+  description: List all tables and views with columns, types, and primary keys.
+- name: get_table_data
+  server: happyrobot-twin
+  description: Fetch rows from a table with pagination.
+- name: create_table
+  server: happyrobot-twin
+  description: Create a new table with typed columns.
+- name: execute_sql
+  server: happyrobot-twin
+  description: Run arbitrary SQL (SELECT, INSERT, UPDATE, DELETE, DDL).
+- name: insert_row
+  server: happyrobot-twin
+  description: Insert a single row into a table.
+- name: update_row
+  server: happyrobot-twin
+  description: Update rows matching a WHERE clause.
+- name: delete_rows
+  server: happyrobot-twin
+  description: Delete rows from a table by primary key.
+- name: drop_table
+  server: happyrobot-twin
+  description: Drop a table permanently.
+prompts:
+  note: >-
+    The Workflows MCP server also ships five wiki-style MCP prompts that inject domain knowledge into the
+    model's context — an unusually mature use of the prompts primitive, which most published MCP servers
+    omit entirely.
+  items:
+  - name: variable-guide
+    invocation: /mcp__happyrobot__variable-guide
+    covers: >-
+      Variable syntax rules ({{index.field}} vs {{persistent_id.field}}), output path patterns per node
+      type, common mistakes, condition value format, diagnosing broken references.
+  - name: node-types
+    invocation: /mcp__happyrobot__node-types
+    covers: What each node type does, key config fields, outputs, and common pitfalls.
+  - name: workflow-patterns
+    invocation: /mcp__happyrobot__workflow-patterns
+    covers: Tool sequencing, version management patterns, when to use which inspection tool.
+  - name: eval-guide
+    invocation: /mcp__happyrobot__eval-guide
+    covers: >-
+      How northstars, custom evals, adversarial tests and suites layer; extracting evals from production
+      runs.
+  - name: platform-setup
+    invocation: /mcp__happyrobot__platform-setup
+    covers: >-
+      Integration/credential discovery, phone numbers, SIP trunks, MCP server connections, workflow
+      variables.
+customer_facing_mcp_surface:
+  note: >-
+    Distinct from the servers above — Happyrobot is also an MCP *client*. The Public API lets an
+    organization register external MCP servers as agent tools; Happyrobot connects, discovers their tools
+    and caches the list.
+  operations:
+  - GET /mcp/ — list registered MCP servers for the organization
+  - POST /mcp/ — create an MCP server connection; tests connectivity and discovers tools before saving
+  - POST /mcp/{mcpId}/refresh — re-connect and refresh the discovered tool list
+  - GET /mcp/authorized-orgs — organizations this MCP token may act on
+coverage:
+  servers_published: 4
+  tools_published: 35
+  tools_workflows: 26
+  tools_twin: 9
+  prompts_published: 5
+  tools_observed_via_live_tools_list: 0
+  reason: all four endpoints require OAuth before tools/list
+x-evidence:
+  fetched: '2026-08-01'
+  probes:
+  - url: https://mcp.platform.happyrobot.ai/workflows/mcp
+    method: POST tools/list
+    http_status: 401
+  - url: https://mcp.platform.happyrobot.ai/twin/mcp
+    method: POST tools/list
+    http_status: 401
+  - url: https://mcp.platform.happyrobot.ai/.well-known/oauth-protected-resource/workflows/mcp
+    http_status: 200
+  - url: https://mcp.platform.happyrobot.ai/.well-known/oauth-protected-resource/twin/mcp
+    http_status: 200
+  - url: https://mcp.platform.eu.happyrobot.ai/workflows/mcp
+    method: POST tools/list
+    http_status: 401
+  - url: https://docs.happyrobot.ai/mcp
+    method: POST tools/list
+    http_status: 401
+  - url: https://registry.npmjs.org/@happyrobot-ai/mcp
+    http_status: 200
+  - url: https://registry.npmjs.org/@happyrobot-ai/mcp-twin
+    http_status: 200

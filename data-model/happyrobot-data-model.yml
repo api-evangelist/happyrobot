@@ -1,0 +1,370 @@
+generated: '2026-08-01'
+method: derived
+source: openapi/happyrobot-public-api-openapi.json
+notes: >-
+  Entity-relationship graph derived from the Happyrobot Public API OpenAPI. Because the document declares
+  only one named component schema (RunDetailsUpdate) and inlines everything else, the graph was derived
+  from path structure plus the id-reference fields that appear in request and response schemas — counted
+  across the whole document — rather than from $ref links. Reference counts are recorded so the weight of
+  each relationship is visible.
+derivation:
+  named_component_schemas: 1
+  inline_schemas: true
+  method: path hierarchy + id-reference field frequency
+  id_reference_fields_observed:
+    org_id: 81
+    version_id: 61
+    workflow_id: 58
+    node_id: 50
+    persistent_id: 32
+    parent_id: 31
+    folder_id: 30
+    event_id: 18
+    run_id: 15
+    northstar_id: 13
+    prompt_node_id: 10
+    use_case_id: 9
+    session_id: 9
+    variable_id: 9
+    parent_node_id: 9
+    integration_id: 8
+    agent_node_id: 8
+    suite_id: 6
+    inbound_trunk_id: 6
+    outbound_trunk_id: 6
+    source_run_id: 6
+core_shape: >-
+  Organization -> Workflow -> Version -> Node is the spine of the whole model. Everything else hangs off
+  one of those four. Runs are executions of a Version; Sessions and Messages are the conversation record
+  inside a Run; the entire quality layer (northstars, custom evals, adversarial tests and suites) attaches
+  to a NODE, not to a workflow — which is why so many paths begin /nodes/{node_id}/.
+entities:
+- name: Organization
+  id_field: org_id
+  aliases: [orgId]
+  operations: [GET /org/, POST /org/members/, DELETE /org/members/]
+  fields_observed: [id, name, slug, tier]
+  note: the tenancy root; org_id is derived from the API key on every request and cannot be spoofed
+    (POST /signals/ explicitly states payload.org_id is always derived from the API key org)
+- name: ApiKey
+  operations: [GET /api-key/describe]
+  fields_observed: [id, orgId, org_slug, org_name, name, prefix, lastFour, createdAt, lastUsedAt, revokedAt]
+- name: Workflow
+  id_field: workflow_id
+  accepts: UUID or slug
+  operations:
+  - 'GET /workflows/'
+  - 'POST /workflows/'
+  - 'GET /workflows/{workflow_id}'
+  - 'PATCH /workflows/{workflow_id}'
+  - 'DELETE /workflows/{workflow_id}'
+  - 'POST /workflows/{workflow_id}/duplicate'
+  - 'GET /workflows/templates'
+  settings_blocks: [webhooks, out-of-office hours, approval process, data retention, audits]
+- name: WorkflowFolder
+  id_field: folder_id
+  self_referencing: parent_folder_id
+  operations:
+  - 'GET /workflow-folders/'
+  - 'POST /workflow-folders/'
+  - 'GET /workflow-folders/{folder_id}'
+- name: Version
+  id_field: version_id
+  operations:
+  - 'GET /versions/{version_id}/'
+  - 'PATCH /versions/{version_id}/'
+  - 'POST /versions/{version_id}/fork'
+  - 'POST /versions/{version_id}/lock'
+  - 'POST /versions/{version_id}/publish'
+  states: [draft, locked, published, unpublished]
+- name: Node
+  id_field: node_id
+  secondary_id: persistent_id
+  self_referencing: parent_node_id
+  types_observed: [trigger, action, agent, tool, prompt]
+  trigger_subtypes: [INCOMING_HOOK, PREDEFINED_REQUEST]
+  operations:
+  - 'GET /versions/{version_id}/nodes'
+  - 'POST /versions/{version_id}/nodes'
+  - 'GET /versions/{version_id}/nodes/{node_id}'
+  - 'PUT /versions/{version_id}/nodes/{node_id}'
+  note: >-
+    persistent_id is a stable identity that survives forking a version, while node_id is per-version.
+    Variable references use both forms ({{index.field}} vs {{persistent_id.field}}).
+- name: WorkflowVariable
+  id_field: variable_id
+  scoped_to: workflow + environment
+  operations:
+  - 'GET /workflows/{workflow_id}/variables'
+  - 'PATCH /workflows/{workflow_id}/variables/{variable_id}'
+- name: Run
+  id_field: run_id
+  operations:
+  - 'GET /runs/'
+  - 'GET /runs/{run_id}'
+  - 'POST /runs/{run_id}/cancel'
+  - 'POST /runs/{run_id}/mark'
+  - 'GET /runs/{run_id}/recordings'
+  - 'GET /runs/{run_id}/nodes'
+  - 'GET /runs/{run_id}/outputs/{output_id}'
+- name: Session
+  id_field: session_id
+  operations:
+  - 'GET /sessions/'
+  - 'GET /sessions/{session_id}'
+  - 'GET /sessions/{session_id}/messages'
+  - 'GET /sessions/{session_id}/stream'
+- name: Message
+  id_field: message_id
+  operations:
+  - 'GET /sessions/{session_id}/messages'
+  - 'GET /messages/{message_id}/flags'
+  - 'POST /messages/{message_id}/flags'
+- name: Contact
+  id_field: contact_id
+  operations:
+  - 'GET /contacts/'
+  - 'GET /contacts/resolve'
+  - 'GET /contacts/{contact_id}'
+  - 'GET /contacts/{contact_id}/interactions'
+  - 'GET /contacts/{contact_id}/memories'
+  note: the CRM-side entity — a person the agents talk to, with durable memories across interactions
+- name: ContactMemory
+  operations:
+  - 'GET /contacts/{contact_id}/memories'
+- name: KnowledgeBase
+  id_field: kbId
+  operations:
+  - 'GET /knowledge-bases/'
+  - 'POST /knowledge-bases/'
+  - 'DELETE /knowledge-bases/{kbId}'
+  - 'GET /knowledge-bases/{kbId}/files'
+  - 'POST /knowledge-bases/{kbId}/upload-urls'
+  - 'POST /knowledge-bases/{kbId}/trigger-chunking'
+- name: KnowledgeBaseFile
+  id_field: fileId
+  operations:
+  - 'GET /knowledge-bases/{kbId}/files'
+  - 'DELETE /knowledge-bases/{kbId}/files/{fileId}'
+- name: PhoneNumber
+  id_field: id (phone_number_id)
+  operations:
+  - 'GET /phone-numbers/'
+  - 'POST /phone-numbers/'
+  - 'PUT /phone-numbers/{id}'
+  - 'GET /phone-numbers/usage'
+- name: SipTrunk
+  id_field: id
+  role_fields: [inbound_trunk_id, outbound_trunk_id]
+  operations:
+  - 'GET /sip-trunks/'
+  - 'POST /sip-trunks/'
+  - 'GET /sip-trunks/{id}'
+  - 'POST /sip-trunks/bulk'
+- name: TollFreeVerification
+  id_field: verification_sid
+  operations: [GET /phone-numbers/tollfree-verification, POST /phone-numbers/tollfree-verification]
+- name: Integration
+  id_field: integrationId
+  operations:
+  - 'GET /integrations/'
+  - 'GET /integrations/{integrationId}'
+  - 'POST /integrations/{integrationId}/create-credential'
+  providers_observed: [slack, teams, whatsapp, google-sheets, twilio-sms, telnyx-sms]
+- name: Credential
+  id_field: credential_id
+  note: appears as a query parameter on 15 integration-resource operations
+- name: McpServer
+  id_field: mcpId
+  operations:
+  - 'GET /mcp/'
+  - 'POST /mcp/'
+  - 'POST /mcp/{mcpId}/refresh'
+  note: customer-registered external MCP servers, not Happyrobot's own
+- name: Event
+  id_field: event_id
+  operations:
+  - 'GET /events/{event_id}/config-schema'
+  note: the trigger/action catalogue a node is configured from
+- name: Northstar
+  id_field: northstar_id
+  attaches_to: Node (prompt nodes)
+  self_referencing: regenerated_from_northstar_id
+  operations:
+  - 'GET /nodes/{node_id}/northstars'
+  - 'GET /northstars/{northstar_id}'
+  - 'GET /northstars/{northstar_id}/history'
+- name: CustomEval
+  id_field: eval_id
+  attaches_to: Node (prompt nodes)
+  operations:
+  - 'GET /nodes/{node_id}/custom-evals'
+  - 'POST /custom-evals/{eval_id}/run'
+- name: AdversarialTest
+  id_field: test_id
+  attaches_to: Node (agent nodes)
+  operations:
+  - 'GET /nodes/{node_id}/adversarial-tests'
+  - 'POST /adversarial-tests/{test_id}/run'
+- name: AdversarialSuite
+  id_field: suite_id
+  operations:
+  - 'GET /nodes/{node_id}/adversarial-suites'
+  - 'POST /adversarial-suites/{suite_id}/run'
+- name: AdversarialSuiteRun
+  id_field: suite_run_id
+  operations:
+  - 'GET /adversarial-suites/runs/{suite_run_id}'
+  - 'GET /adversarial-suites/runs/{suite_run_id}/test-runs'
+- name: AuditRemark
+  id_field: audit_remark_id
+  operations:
+  - 'GET /audit-remarks/{audit_remark_id}'
+  - 'POST /audit-remarks/{audit_remark_id}/feedback'
+- name: Issue
+  id_field: issue_id
+  operations:
+  - 'GET /workflows/{workflow_id}/issues'
+  - 'PATCH /issues/{issue_id}'
+  - 'GET /versions/{version_id}/prompt-issues'
+- name: TwinTable
+  id_field: tableName
+  operations:
+  - 'GET /twin/schema'
+  - 'POST /twin/tables'
+  - 'GET /twin/tables/{tableName}'
+  - 'DELETE /twin/tables/{tableName}'
+  - 'POST /twin/sql'
+  - 'POST /twin/dump'
+  note: >-
+    A customer-owned relational store inside the platform, addressed by table name rather than UUID, with
+    an arbitrary-SQL endpoint. Modelled as data, not as a platform resource.
+- name: Signal
+  id_field: scheduled_signal_id (scheduled variant)
+  operations: [POST /signals/, POST /signals/scheduled-signals, GET /signals/keys]
+- name: UseCase
+  id_field: use_case_id
+  operations:
+  - 'GET /use-cases/'
+  - 'GET /use-cases/{use_case_id} (v1)'
+  note: the legacy v1 grouping concept, largely superseded by Workflow in v2
+relationships:
+- from: Organization
+  to: Workflow
+  type: has_many
+  via: org_id
+- from: Organization
+  to: ApiKey
+  type: has_many
+  via: orgId
+- from: WorkflowFolder
+  to: Workflow
+  type: has_many
+  via: folder_id
+- from: WorkflowFolder
+  to: WorkflowFolder
+  type: has_many
+  via: parent_folder_id
+- from: Workflow
+  to: Version
+  type: has_many
+  via: workflow_id
+- from: Workflow
+  to: WorkflowVariable
+  type: has_many
+  via: workflow_id
+- from: Workflow
+  to: Run
+  type: has_many
+  via: workflow_id
+- from: Version
+  to: Node
+  type: has_many
+  via: version_id
+- from: Node
+  to: Node
+  type: has_many
+  via: parent_node_id
+- from: Version
+  to: Run
+  type: has_many
+  via: version_id
+- from: Run
+  to: Session
+  type: has_many
+  via: run_id
+- from: Session
+  to: Message
+  type: has_many
+  via: session_id
+- from: Run
+  to: AuditRemark
+  type: has_many
+  via: run_id
+- from: Contact
+  to: Session
+  type: has_many
+  via: contact interactions
+- from: Contact
+  to: ContactMemory
+  type: has_many
+  via: contact_id
+- from: KnowledgeBase
+  to: KnowledgeBaseFile
+  type: has_many
+  via: kbId
+- from: Node
+  to: Northstar
+  type: has_many
+  via: node_id
+- from: Node
+  to: CustomEval
+  type: has_many
+  via: node_id
+- from: Node
+  to: AdversarialTest
+  type: has_many
+  via: node_id
+- from: Node
+  to: AdversarialSuite
+  type: has_many
+  via: node_id
+- from: AdversarialSuite
+  to: AdversarialSuiteRun
+  type: has_many
+  via: suite_id
+- from: Northstar
+  to: Northstar
+  type: has_one
+  via: regenerated_from_northstar_id
+- from: Node
+  to: Event
+  type: belongs_to
+  via: event_id
+- from: Integration
+  to: Credential
+  type: has_many
+  via: credential_id
+- from: PhoneNumber
+  to: SipTrunk
+  type: has_one
+  via: inbound_trunk_id / outbound_trunk_id
+- from: PhoneNumber
+  to: Workflow
+  type: belongs_to
+  via: POST /phone-numbers/remove-from-workflow
+- from: Workflow
+  to: McpServer
+  type: has_many
+  via: org-scoped registration, attached as node tools
+- from: Organization
+  to: TwinTable
+  type: has_many
+  via: org-scoped Twin database
+id_conventions:
+  uuid_v4_with_pattern: [session_id, node_id, northstar_id, run_id]
+  slug_or_uuid: [workflow_id]
+  name_keyed: [tableName]
+  camelCase_outliers: [kbId, mcpId, fileId, integrationId]
+  carrier_supplied: [verification_sid]
+render: null

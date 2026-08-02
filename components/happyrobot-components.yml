@@ -1,0 +1,91 @@
+generated: '2026-08-01'
+method: searched
+source: npm registry, github.com/happyrobot-ai
+notes: >-
+  Happyrobot ships genuine client-side, embeddable surfaces — browser chat and browser voice — distinct
+  from the server-side SDKs catalogued in packages/. Both follow the same two-tier pattern: the
+  customer's server exchanges the secret API key for a short-lived scoped token, and the browser component
+  runs on that token alone.
+families:
+- family: Embedded chat
+  loader: '@happyrobot-ai/sdk/chat'
+  primary_class: HappyRobotChatClient
+  transport: WebSocket (WS /chat/sessions/{id}/ws?token=JWT)
+  token_operation: POST /chat/tokens/
+  token_shape: '{ token, expires_at }'
+  scope: bound to a workflow_id with a chat-enabled agent
+  lifecycle:
+  - POST /chat/tokens (server, API key)
+  - POST /chat/sessions (browser, JWT)
+  - WS /chat/sessions/:id/ws (browser, JWT)
+  - POST /chat/sessions/:id/close
+  events:
+  - connected
+  - message
+  - message-ack
+  attachments: presigned upload via GET /chat/upload/presigned + POST /chat/upload/complete
+  reference_app: https://github.com/happyrobot-ai/chatbot-sdk-example
+  note: >-
+    A headless client library for building a custom chat UI, not a drop-in prebuilt widget — the example
+    ships its own React UI.
+- family: Embedded voice
+  loader: '@happyrobot-ai/sdk/voice'
+  primary_class: HappyRobotVoiceClient
+  transport: WebRTC via LiveKit
+  token_operation: POST /voice/tokens/
+  token_shape: '{ url, token, room_name, run_id }'
+  scope: bound to a workflow with a Web Call trigger node
+  api:
+  - voice.connect({ onConnected, onAgentConnected, onDisconnected })
+  - connection.mute()
+  - connection.unmute()
+  - connection.disconnect()
+  reference_app: https://github.com/happyrobot-ai/voice-sdk-example
+- family: WebRTC room client
+  loader: '@happyrobotai/web-client'
+  version: 2.16.0
+  license: Apache-2.0
+  primary_class: Room
+  registry: https://www.npmjs.com/package/@happyrobotai/web-client
+  cdn: https://cdn.jsdelivr.net/npm/@happyrobotai/web-client/dist/@happyrobotai/web-client.umd.js
+  umd_global: HappyrobotaiWebClient
+  reference_app: https://github.com/happyrobot-ai/web-sdk
+  note: >-
+    A lower-level real-time audio/video/data client (a LiveKit-derived stack). This is the only Happyrobot
+    component distributed over a public CDN as a UMD bundle, so it can be dropped into a page with a
+    script tag.
+- family: Legacy web call SDK
+  loader: '@happyrobot-ai/happyrobot-js'
+  version: 1.0.4
+  license: BSD 2-Clause
+  registry: https://www.npmjs.com/package/@happyrobot-ai/happyrobot-js
+  transport: Daily.co (@daily-co/daily-js)
+  usage: create a new web call given an api-key and an assistant-id
+  status: superseded
+  note: >-
+    The original browser web-call SDK, first published 2024-01-31 and built on Daily rather than LiveKit.
+    Superseded by @happyrobot-ai/sdk/voice; retained here because it is still published.
+- family: Workflow authoring SDK
+  loader: '@happyrobot-ai/workflow-sdk'
+  version: 0.1.11
+  registry: https://www.npmjs.com/package/@happyrobot-ai/workflow-sdk
+  description: Typed TypeScript SDK for building HappyRobot workflows programmatically.
+  note: >-
+    Build-time rather than client-side — included here for completeness of the front-end story. It targets
+    the same authoring surface the Workflows MCP server exposes.
+  classification: authoring, not embeddable UI
+prebuilt_hosted_surfaces:
+  builder: https://builder.happyrobot.ai/
+  console: https://app.happyrobot.ai/
+  note: >-
+    The visual workflow builder and console are hosted first-party applications, not embeddable
+    components. No embedded/whitelabel dashboard product was found in the public material.
+x-evidence:
+  fetched: '2026-08-01'
+  probes:
+  - url: https://registry.npmjs.org/-/v1/search?text=happyrobot
+    http_status: 200
+  - url: https://registry.npmjs.org/@happyrobotai/web-client
+    http_status: 200
+  - url: https://registry.npmjs.org/@happyrobot-ai/happyrobot-js
+    http_status: 200

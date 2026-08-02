@@ -1,0 +1,664 @@
+generated: '2026-08-01'
+method: derived
+source: mcp/happyrobot-mcp.yml, openapi/happyrobot-public-api-openapi.json
+notes: >-
+  Binds each of Happyrobot's PUBLISHED MCP tools to the REST operation(s) in the Happyrobot Public API
+  that back it, so a tool inherits a REAL input contract — that operation's parameters plus requestBody —
+  instead of a guessed one. The tool names and descriptions are the vendor's own, taken verbatim from the
+  @happyrobot-ai/mcp and @happyrobot-ai/mcp-twin READMEs; the REST bindings were mapped by semantics and
+  then MECHANICALLY VERIFIED — every one of the 150 operations referenced below was confirmed to exist
+  verbatim in openapi/happyrobot-public-api-openapi.json. Because the OpenAPI declares no operationIds,
+  operations are addressed by `METHOD /path`.
+  Confidence is `high` where the tool description names the operations unambiguously and `medium` where a
+  coarse `manage_*` tool fans out over a whole resource family and the exact subset it exposes cannot be
+  confirmed without an authenticated tools/list.
+surfaces:
+  openapi:
+    file: openapi/happyrobot-public-api-openapi.json
+    spec: OpenAPI 3.0.3
+    server: https://platform.happyrobot.ai/api/v2
+    eu_mirror: https://platform.eu.happyrobot.ai/api/v2
+    operations: 205
+    paths: 162
+    gated: false
+    note: served publicly and anonymously from the API host at /api/v2/docs/json
+  openapi_legacy:
+    file: openapi/happyrobot-platform-v1-openapi.json
+    spec: OpenAPI 3.0.2
+    server: https://platform.happyrobot.ai/api/v1
+    operations: 10
+    gated: false
+    note: not crosswalked — no MCP tool targets v1
+  graphql:
+    present: false
+    note: no GraphQL surface found on any Happyrobot host
+  mcp:
+  - url: https://mcp.platform.happyrobot.ai/workflows/mcp
+    scopes: [mcp:full]
+    gated: true
+    tools_list_observed: false
+    tools_published: 26
+  - url: https://mcp.platform.happyrobot.ai/twin/mcp
+    scopes: [mcp:full]
+    gated: true
+    tools_list_observed: false
+    tools_published: 9
+  - url: https://docs.happyrobot.ai/mcp
+    scopes: [mcp:search]
+    gated: true
+    tools_list_observed: false
+    note: documentation search — not backed by the Public API, so it appears in mcp_only[]
+crosswalk:
+- tool: create_workflow
+  server: happyrobot-workflows
+  category: "Workflow authoring"
+  description: "Create a workflow from scratch, template, or inline nodes."
+  rest:
+  - "POST /workflows/"
+  - "GET /workflows/templates"
+  - "POST /workflows/{workflow_id}/duplicate"
+  - "POST /versions/{version_id}/nodes"
+  binding: rest
+  confidence: medium
+  note: >-
+    Coarse-grained tool covering a whole resource family; the exact subset of these operations the
+    tool exposes as sub-actions cannot be confirmed without an authenticated tools/list.
+  verified: every listed operation exists verbatim in the OpenAPI
+- tool: fix_broken_vars
+  server: happyrobot-workflows
+  category: "Workflow authoring"
+  description: "Diagnose and fix broken variable references."
+  rest:
+  - "GET /versions/{version_id}/nodes/{node_id}/available-vars"
+  - "PUT /versions/{version_id}/nodes/{node_id}"
+  binding: rest
+  confidence: medium
+  note: >-
+    Coarse-grained tool covering a whole resource family; the exact subset of these operations the
+    tool exposes as sub-actions cannot be confirmed without an authenticated tools/list.
+  verified: every listed operation exists verbatim in the OpenAPI
+- tool: list_workflows
+  server: happyrobot-workflows
+  category: "Workflow authoring"
+  description: "Search and list workflows with pagination."
+  rest:
+  - "GET /workflows/"
+  binding: rest
+  confidence: high
+  verified: every listed operation exists verbatim in the OpenAPI
+- tool: get_workflow_details
+  server: happyrobot-workflows
+  category: "Workflow authoring"
+  description: "Inspect workflow config, versions, and nodes."
+  rest:
+  - "GET /workflows/{workflow_id}"
+  - "GET /workflows/{workflow_id}/versions"
+  - "GET /versions/{version_id}/nodes"
+  - "GET /versions/{version_id}/"
+  binding: rest
+  confidence: medium
+  note: >-
+    Coarse-grained tool covering a whole resource family; the exact subset of these operations the
+    tool exposes as sub-actions cannot be confirmed without an authenticated tools/list.
+  verified: every listed operation exists verbatim in the OpenAPI
+- tool: update_workflow_nodes
+  server: happyrobot-workflows
+  category: "Workflow authoring"
+  description: "Add, update, or delete nodes in a version."
+  rest:
+  - "POST /versions/{version_id}/nodes"
+  - "PUT /versions/{version_id}/nodes/{node_id}"
+  - "DELETE /versions/{version_id}/nodes/{node_id}"
+  - "PUT /versions/{version_id}/nodes/{node_id}/custom-output"
+  binding: rest
+  confidence: medium
+  note: >-
+    Coarse-grained tool covering a whole resource family; the exact subset of these operations the
+    tool exposes as sub-actions cannot be confirmed without an authenticated tools/list.
+  verified: every listed operation exists verbatim in the OpenAPI
+- tool: manage_versions
+  server: happyrobot-workflows
+  category: "Version control"
+  description: "Fork, publish, unpublish, lock, unlock versions."
+  rest:
+  - "POST /versions/{version_id}/fork"
+  - "POST /versions/{version_id}/publish"
+  - "POST /versions/{version_id}/unpublish"
+  - "POST /versions/{version_id}/lock"
+  - "POST /versions/{version_id}/unlock"
+  - "PATCH /versions/{version_id}/"
+  - "POST /workflows/{workflow_id}/publish"
+  - "POST /workflows/{workflow_id}/unpublish"
+  binding: rest
+  confidence: medium
+  note: >-
+    Coarse-grained tool covering a whole resource family; the exact subset of these operations the
+    tool exposes as sub-actions cannot be confirmed without an authenticated tools/list.
+  verified: every listed operation exists verbatim in the OpenAPI
+- tool: trigger_run
+  server: happyrobot-workflows
+  category: "Execution"
+  description: "Trigger a workflow run with payload."
+  rest:
+  - "POST /workflows/{workflow_id}/runs"
+  binding: rest
+  confidence: high
+  verified: every listed operation exists verbatim in the OpenAPI
+- tool: monitor_runs
+  server: happyrobot-workflows
+  category: "Execution"
+  description: "List runs, view sessions, recordings, manage annotations."
+  rest:
+  - "GET /runs/"
+  - "GET /runs/{run_id}"
+  - "GET /runs/{run_id}/sessions"
+  - "GET /runs/{run_id}/recordings"
+  - "GET /runs/{run_id}/nodes"
+  - "GET /runs/{run_id}/outputs/{output_id}"
+  - "POST /runs/{run_id}/mark"
+  - "GET /runs/{run_id}/flags"
+  - "POST /runs/{run_id}/cancel"
+  - "GET /workflows/{workflow_id}/runs"
+  - "GET /workflows/{workflow_id}/sessions"
+  binding: rest
+  confidence: medium
+  note: >-
+    Coarse-grained tool covering a whole resource family; the exact subset of these operations the
+    tool exposes as sub-actions cannot be confirmed without an authenticated tools/list.
+  verified: every listed operation exists verbatim in the OpenAPI
+- tool: manage_variables
+  server: happyrobot-workflows
+  category: "Configuration"
+  description: "CRUD workflow-scoped environment variables."
+  rest:
+  - "GET /workflows/{workflow_id}/variables"
+  - "POST /workflows/{workflow_id}/variables"
+  - "PATCH /workflows/{workflow_id}/variables/{variable_id}"
+  - "DELETE /workflows/{workflow_id}/variables/{variable_id}"
+  binding: rest
+  confidence: medium
+  note: >-
+    Coarse-grained tool covering a whole resource family; the exact subset of these operations the
+    tool exposes as sub-actions cannot be confirmed without an authenticated tools/list.
+  verified: every listed operation exists verbatim in the OpenAPI
+- tool: manage_phone_numbers
+  server: happyrobot-workflows
+  category: "Telephony"
+  description: "List, purchase, update, and delete phone numbers."
+  rest:
+  - "GET /phone-numbers/"
+  - "POST /phone-numbers/"
+  - "PUT /phone-numbers/{id}"
+  - "POST /phone-numbers/delete-number"
+  - "POST /phone-numbers/free-up-number"
+  - "POST /phone-numbers/remove-from-workflow"
+  - "GET /phone-numbers/usage"
+  - "POST /phone-numbers/sip-trunk"
+  - "GET /phone-numbers/tollfree-verification"
+  - "POST /phone-numbers/tollfree-verification"
+  - "DELETE /phone-numbers/tollfree-verification/{verification_sid}"
+  - "POST /phone-numbers/validate-toll-free-numbers"
+  binding: rest
+  confidence: medium
+  note: >-
+    Coarse-grained tool covering a whole resource family; the exact subset of these operations the
+    tool exposes as sub-actions cannot be confirmed without an authenticated tools/list.
+  verified: every listed operation exists verbatim in the OpenAPI
+- tool: list_integrations
+  server: happyrobot-workflows
+  category: "Integrations"
+  description: "Search integrations, events, and fetch integration resources (Slack channels, Google Sheets, etc.)."
+  rest:
+  - "GET /integrations/"
+  - "GET /integrations/categories"
+  - "GET /integrations/{integrationId}"
+  - "GET /integrations/slack/channels"
+  - "GET /integrations/slack/users"
+  - "GET /integrations/teams/channels"
+  - "GET /integrations/teams/teams"
+  - "GET /integrations/teams/users"
+  - "GET /integrations/google-sheets/spreadsheets"
+  - "GET /integrations/google-sheets/worksheets"
+  - "GET /integrations/google-sheets/columns"
+  - "GET /integrations/google-sheets/rows"
+  - "GET /integrations/whatsapp/businesses"
+  - "GET /integrations/whatsapp/business-accounts"
+  - "GET /integrations/whatsapp/phone-numbers"
+  - "GET /integrations/whatsapp/message-templates"
+  - "GET /integrations/twilio-sms/phone-numbers"
+  - "GET /integrations/telnyx-sms/phone-numbers"
+  - "GET /events/{event_id}/config-schema"
+  binding: rest
+  confidence: medium
+  note: >-
+    Coarse-grained tool covering a whole resource family; the exact subset of these operations the
+    tool exposes as sub-actions cannot be confirmed without an authenticated tools/list.
+  verified: every listed operation exists verbatim in the OpenAPI
+- tool: get_available_variables
+  server: happyrobot-workflows
+  category: "Workflow authoring"
+  description: "Get upstream variables available to a node."
+  rest:
+  - "GET /versions/{version_id}/nodes/{node_id}/available-vars"
+  binding: rest
+  confidence: high
+  verified: every listed operation exists verbatim in the OpenAPI
+- tool: get_node_config_schema
+  server: happyrobot-workflows
+  category: "Workflow authoring"
+  description: "Get the configuration schema for a node's event."
+  rest:
+  - "GET /versions/{version_id}/nodes/{node_id}/config-schema"
+  - "GET /events/{event_id}/config-schema"
+  binding: rest
+  confidence: high
+  verified: every listed operation exists verbatim in the OpenAPI
+- tool: manage_workflow
+  server: happyrobot-workflows
+  category: "Workflow authoring"
+  description: "Cancel runs, update metadata/settings, delete, duplicate."
+  rest:
+  - "PATCH /workflows/{workflow_id}"
+  - "DELETE /workflows/{workflow_id}"
+  - "POST /workflows/{workflow_id}/cancel-runs"
+  - "POST /workflows/{workflow_id}/duplicate"
+  - "POST /apps/{app_slug}/duplicate"
+  binding: rest
+  confidence: medium
+  note: >-
+    Coarse-grained tool covering a whole resource family; the exact subset of these operations the
+    tool exposes as sub-actions cannot be confirmed without an authenticated tools/list.
+  verified: every listed operation exists verbatim in the OpenAPI
+- tool: manage_sip_trunks
+  server: happyrobot-workflows
+  category: "Telephony"
+  description: "List, create, update, and delete SIP trunks."
+  rest:
+  - "GET /sip-trunks/"
+  - "POST /sip-trunks/"
+  - "GET /sip-trunks/{id}"
+  - "PUT /sip-trunks/{id}"
+  - "DELETE /sip-trunks/{id}"
+  - "POST /sip-trunks/bulk"
+  - "GET /sip-trunks/options"
+  binding: rest
+  confidence: medium
+  note: >-
+    Coarse-grained tool covering a whole resource family; the exact subset of these operations the
+    tool exposes as sub-actions cannot be confirmed without an authenticated tools/list.
+  verified: every listed operation exists verbatim in the OpenAPI
+- tool: browse_workflows
+  server: happyrobot-workflows
+  category: "Workflow authoring"
+  description: "Browse workflow folders and explore folder hierarchy."
+  rest:
+  - "GET /workflow-folders/"
+  - "POST /workflow-folders/"
+  - "GET /workflow-folders/{folder_id}"
+  - "PUT /workflow-folders/{folder_id}"
+  - "DELETE /workflow-folders/{folder_id}"
+  binding: rest
+  confidence: medium
+  note: >-
+    Coarse-grained tool covering a whole resource family; the exact subset of these operations the
+    tool exposes as sub-actions cannot be confirmed without an authenticated tools/list.
+  verified: every listed operation exists verbatim in the OpenAPI
+- tool: test_workflow
+  server: happyrobot-workflows
+  category: "Quality"
+  description: "Test workflow versions \u2014 run all node tests or test a single node."
+  rest:
+  - "POST /versions/{version_id}/test-all"
+  - "POST /versions/{version_id}/nodes/{node_id}/test"
+  binding: rest
+  confidence: high
+  verified: every listed operation exists verbatim in the OpenAPI
+- tool: manage_mcp_servers
+  server: happyrobot-workflows
+  category: "Integrations"
+  description: "List, create, and refresh MCP server connections."
+  rest:
+  - "GET /mcp/"
+  - "POST /mcp/"
+  - "POST /mcp/{mcpId}/refresh"
+  - "GET /mcp/authorized-orgs"
+  binding: rest
+  confidence: medium
+  note: >-
+    Coarse-grained tool covering a whole resource family; the exact subset of these operations the
+    tool exposes as sub-actions cannot be confirmed without an authenticated tools/list.
+  verified: every listed operation exists verbatim in the OpenAPI
+- tool: manage_credentials
+  server: happyrobot-workflows
+  category: "Integrations"
+  description: "List and create credentials for integrations."
+  rest:
+  - "POST /integrations/{integrationId}/create-credential"
+  - "GET /integrations/{integrationId}"
+  binding: rest
+  confidence: medium
+  note: >-
+    Coarse-grained tool covering a whole resource family; the exact subset of these operations the
+    tool exposes as sub-actions cannot be confirmed without an authenticated tools/list.
+  verified: every listed operation exists verbatim in the OpenAPI
+- tool: fix_prompt_issues
+  server: happyrobot-workflows
+  category: "Quality"
+  description: "Fetch prompt quality issues and get LLM guidance on fixing them."
+  rest:
+  - "GET /versions/{version_id}/prompt-issues"
+  - "GET /workflows/{workflow_id}/issues"
+  - "PATCH /issues/{issue_id}"
+  binding: rest
+  confidence: medium
+  note: >-
+    Coarse-grained tool covering a whole resource family; the exact subset of these operations the
+    tool exposes as sub-actions cannot be confirmed without an authenticated tools/list.
+  verified: every listed operation exists verbatim in the OpenAPI
+- tool: manage_northstars
+  server: happyrobot-workflows
+  category: "Quality"
+  description: "Manage northstar success criteria for evaluating prompt nodes."
+  rest:
+  - "GET /nodes/{node_id}/northstars"
+  - "POST /nodes/{node_id}/northstars"
+  - "POST /nodes/{node_id}/northstars/folders"
+  - "POST /nodes/{node_id}/northstars/generate"
+  - "POST /nodes/{node_id}/northstars/iterate"
+  - "POST /nodes/{node_id}/northstars/assess-coverage"
+  - "PATCH /nodes/{node_id}/northstars/batch-toggle"
+  - "GET /northstars/{northstar_id}"
+  - "PATCH /northstars/{northstar_id}"
+  - "DELETE /northstars/{northstar_id}"
+  - "POST /northstars/{northstar_id}/feedback"
+  - "DELETE /northstars/{northstar_id}/feedback"
+  - "GET /northstars/{northstar_id}/history"
+  binding: rest
+  confidence: medium
+  note: >-
+    Coarse-grained tool covering a whole resource family; the exact subset of these operations the
+    tool exposes as sub-actions cannot be confirmed without an authenticated tools/list.
+  verified: every listed operation exists verbatim in the OpenAPI
+- tool: manage_custom_evals
+  server: happyrobot-workflows
+  category: "Quality"
+  description: "Manage custom eval tests (expected responses, tool calls) for prompt nodes."
+  rest:
+  - "GET /nodes/{node_id}/custom-evals"
+  - "POST /nodes/{node_id}/custom-evals"
+  - "POST /nodes/{node_id}/custom-evals/folders"
+  - "GET /nodes/{node_id}/custom-evals/default-variables"
+  - "GET /nodes/{node_id}/custom-evals/tools"
+  - "POST /nodes/{node_id}/custom-evals/extract-from-run"
+  - "GET /custom-evals/{eval_id}"
+  - "PATCH /custom-evals/{eval_id}"
+  - "DELETE /custom-evals/{eval_id}"
+  - "POST /custom-evals/{eval_id}/run"
+  - "GET /custom-evals/{eval_id}/runs"
+  binding: rest
+  confidence: medium
+  note: >-
+    Coarse-grained tool covering a whole resource family; the exact subset of these operations the
+    tool exposes as sub-actions cannot be confirmed without an authenticated tools/list.
+  verified: every listed operation exists verbatim in the OpenAPI
+- tool: manage_adversarial_tests
+  server: happyrobot-workflows
+  category: "Quality"
+  description: "Manage adversarial (red-team) tests for agent nodes."
+  rest:
+  - "GET /nodes/{node_id}/adversarial-tests"
+  - "POST /nodes/{node_id}/adversarial-tests"
+  - "POST /nodes/{node_id}/adversarial-tests/folders"
+  - "GET /adversarial-tests/{test_id}"
+  - "PATCH /adversarial-tests/{test_id}"
+  - "DELETE /adversarial-tests/{test_id}"
+  - "POST /adversarial-tests/{test_id}/run"
+  - "GET /adversarial-tests/{test_id}/runs"
+  - "GET /adversarial-tests/{test_id}/effective-scope"
+  - "GET /adversarial-tests/runs/{run_id}"
+  - "GET /adversarial-tests/runs/{run_id}/messages"
+  binding: rest
+  confidence: medium
+  note: >-
+    Coarse-grained tool covering a whole resource family; the exact subset of these operations the
+    tool exposes as sub-actions cannot be confirmed without an authenticated tools/list.
+  verified: every listed operation exists verbatim in the OpenAPI
+- tool: manage_adversarial_suites
+  server: happyrobot-workflows
+  category: "Quality"
+  description: "Manage batched adversarial test suites for agent nodes."
+  rest:
+  - "GET /nodes/{node_id}/adversarial-suites"
+  - "POST /nodes/{node_id}/adversarial-suites"
+  - "GET /adversarial-suites/{suite_id}"
+  - "PATCH /adversarial-suites/{suite_id}"
+  - "DELETE /adversarial-suites/{suite_id}"
+  - "POST /adversarial-suites/{suite_id}/generate"
+  - "POST /adversarial-suites/{suite_id}/generate-graph"
+  - "POST /adversarial-suites/{suite_id}/run"
+  - "GET /adversarial-suites/{suite_id}/runs"
+  - "GET /adversarial-suites/runs/{suite_run_id}"
+  - "GET /adversarial-suites/runs/{suite_run_id}/test-runs"
+  binding: rest
+  confidence: medium
+  note: >-
+    Coarse-grained tool covering a whole resource family; the exact subset of these operations the
+    tool exposes as sub-actions cannot be confirmed without an authenticated tools/list.
+  verified: every listed operation exists verbatim in the OpenAPI
+- tool: get_node_details
+  server: happyrobot-workflows
+  category: "Workflow authoring"
+  description: "Fetch full configuration details of a single workflow node."
+  rest:
+  - "GET /versions/{version_id}/nodes/{node_id}"
+  binding: rest
+  confidence: high
+  verified: every listed operation exists verbatim in the OpenAPI
+- tool: get_schema
+  server: happyrobot-twin
+  category: "Twin database"
+  description: "List all tables and views with columns, types, and primary keys."
+  rest:
+  - "GET /twin/schema"
+  binding: rest
+  confidence: high
+  verified: every listed operation exists verbatim in the OpenAPI
+- tool: get_table_data
+  server: happyrobot-twin
+  category: "Twin database"
+  description: "Fetch rows from a table with pagination."
+  rest:
+  - "GET /twin/tables/{tableName}"
+  binding: rest
+  confidence: high
+  verified: every listed operation exists verbatim in the OpenAPI
+- tool: create_table
+  server: happyrobot-twin
+  category: "Twin database"
+  description: "Create a new table with typed columns."
+  rest:
+  - "POST /twin/tables"
+  binding: rest
+  confidence: high
+  verified: every listed operation exists verbatim in the OpenAPI
+- tool: execute_sql
+  server: happyrobot-twin
+  category: "Twin database"
+  description: "Run arbitrary SQL (SELECT, INSERT, UPDATE, DELETE, DDL)."
+  rest:
+  - "POST /twin/sql"
+  binding: rest
+  confidence: high
+  verified: every listed operation exists verbatim in the OpenAPI
+- tool: insert_row
+  server: happyrobot-twin
+  category: "Twin database"
+  description: "Insert a single row into a table."
+  rest:
+  - "POST /twin/tables/{tableName}/rows"
+  binding: rest
+  confidence: high
+  verified: every listed operation exists verbatim in the OpenAPI
+- tool: update_row
+  server: happyrobot-twin
+  category: "Twin database"
+  description: "Update rows matching a WHERE clause."
+  rest:
+  - "PATCH /twin/tables/{tableName}/rows"
+  binding: rest
+  confidence: high
+  verified: every listed operation exists verbatim in the OpenAPI
+- tool: delete_rows
+  server: happyrobot-twin
+  category: "Twin database"
+  description: "Delete rows from a table by primary key."
+  rest:
+  - "DELETE /twin/tables/{tableName}/rows"
+  binding: rest
+  confidence: high
+  verified: every listed operation exists verbatim in the OpenAPI
+- tool: drop_table
+  server: happyrobot-twin
+  category: "Twin database"
+  description: "Drop a table permanently."
+  rest:
+  - "DELETE /twin/tables/{tableName}"
+  binding: rest
+  confidence: high
+  verified: every listed operation exists verbatim in the OpenAPI
+mcp_only:
+- tool: setup
+  server: happyrobot-workflows
+  reason: >-
+    Client-side configuration only — prompts for the API key and cluster at runtime. It configures the MCP
+    server process itself and has no backing REST operation.
+- tool: setup
+  server: happyrobot-twin
+  reason: Same client-side configuration tool, shipped in the Twin server.
+- tool: documentation search (name unknown)
+  server: happyrobot-docs
+  reason: >-
+    The docs MCP server searches Happyrobot's documentation corpus, which is not exposed as REST anywhere
+    in the Public API. Its tool name and inputSchema require an authenticated tools/list against
+    mcp:search.
+rest_only:
+- capability: "Contacts & memory"
+  operations:
+  - "GET /contacts/"
+  - "GET /contacts/resolve"
+  - "GET /contacts/{contact_id}"
+  - "GET /contacts/{contact_id}/interactions"
+  - "GET /contacts/{contact_id}/memories"
+- capability: "Knowledge bases"
+  operations:
+  - "DELETE /knowledge-bases/{kbId}"
+  - "DELETE /knowledge-bases/{kbId}/files/{fileId}"
+  - "GET /knowledge-bases/"
+  - "GET /knowledge-bases/{kbId}/files"
+  - "POST /knowledge-bases/"
+  - "POST /knowledge-bases/{kbId}/trigger-chunking"
+  - "POST /knowledge-bases/{kbId}/upload-urls"
+- capability: "Chat sessions & uploads"
+  operations:
+  - "GET /chat/sessions/{id}/history"
+  - "GET /chat/upload/presigned"
+  - "POST /chat/sessions/"
+  - "POST /chat/sessions/{id}/close"
+  - "POST /chat/sessions/{id}/messages"
+  - "POST /chat/tokens/"
+  - "POST /chat/upload/complete"
+- capability: "Voice & realtime tokens"
+  operations:
+  - "POST /realtime/tokens"
+  - "POST /voice/tokens/"
+- capability: "Sessions & messages"
+  operations:
+  - "GET /messages/{message_id}/flags"
+  - "GET /sessions/"
+  - "GET /sessions/{session_id}"
+  - "GET /sessions/{session_id}/messages"
+  - "GET /sessions/{session_id}/stream"
+  - "POST /messages/{message_id}/flags"
+- capability: "Signals (event publishing)"
+  operations:
+  - "DELETE /signals/keys"
+  - "DELETE /signals/scheduled-signals/{scheduled_signal_id}"
+  - "GET /signals/keys"
+  - "PATCH /signals/scheduled-signals/{scheduled_signal_id}"
+  - "POST /signals/"
+  - "POST /signals/keys"
+  - "POST /signals/scheduled-signals"
+- capability: "Audits & audit remarks"
+  operations:
+  - "DELETE /audit-remarks/{audit_remark_id}/feedback"
+  - "GET /audit-remarks/{audit_remark_id}"
+  - "GET /audit-remarks/{audit_remark_id}/feedback"
+  - "GET /runs/{run_id}/audits"
+  - "GET /workflows/{workflow_id}/audits/node-errors"
+  - "GET /workflows/{workflow_id}/audits/northstars"
+  - "GET /workflows/{workflow_id}/audits/northstars/{northstar_id}/remarks"
+  - "GET /workflows/{workflow_id}/audits/remarks"
+  - "GET /workflows/{workflow_id}/audits/stats"
+  - "GET /workflows/{workflow_id}/audits/versions"
+  - "POST /audit-remarks/{audit_remark_id}/feedback"
+- capability: "Billing & usage"
+  operations:
+  - "GET /billing/usage/credits"
+  - "GET /billing/usage/details"
+  - "GET /billing/usage/totals"
+- capability: "Organization & members"
+  operations:
+  - "DELETE /org/members/"
+  - "GET /org/"
+  - "POST /org/members/"
+- capability: "API key introspection"
+  operations:
+  - "GET /api-key/describe"
+- capability: "Artifacts"
+  operations:
+  - "POST /artifacts/resolve"
+- capability: "Twin bulk export"
+  operations:
+  - "POST /twin/dump"
+- capability: "Legacy use cases"
+  operations:
+  - "GET /use-cases/"
+coverage:
+  tools_published: 35
+  tools_bound_to_rest: 33
+  tools_mcp_only: 3
+  rest_operations_total: 205
+  rest_operations_with_a_tool: 150
+  rest_operations_without_a_tool: 55
+  rest_operations_legacy_v1_not_mapped: 10
+findings:
+- >-
+  The MCP surface is deliberately BUILDER-shaped, not RUNTIME-shaped. All 26 Workflows tools sit on
+  authoring, versioning, testing and evaluating workflows; the runtime data plane — contacts and their
+  memories, knowledge bases, chat and voice sessions, message flags, signals and billing — is REST-only.
+  An agent given mcp:full can rebuild and republish a customer's workflows but cannot, through MCP, read
+  the conversation data those workflows produce.
+- >-
+  Roughly a quarter of the API (55 of 205 operations) has no MCP tool at all, so REST remains mandatory
+  for any integration that touches conversation history, contact memory, knowledge-base ingestion or
+  usage/billing.
+- >-
+  The Twin server is a full SQL surface, including execute_sql (arbitrary SELECT/INSERT/UPDATE/DELETE/DDL)
+  and drop_table. Both are reachable under the same single coarse mcp:full scope as read-only tools, with
+  no narrower scope available to bind a read-only agent.
+gaps:
+- The OpenAPI declares no operationIds, so every binding here is positional on METHOD + path and will
+  break silently if a path is renamed.
+- The platform authorization server advertises exactly one scope (mcp:full), so tool-level or
+  read-only authorization is not expressible.
+x-evidence:
+  fetched: '2026-08-01'
+  probes:
+  - url: https://platform.happyrobot.ai/api/v2/docs/json
+    http_status: 200
+  - url: https://mcp.platform.happyrobot.ai/workflows/mcp
+    http_status: 401
+  - url: https://mcp.platform.happyrobot.ai/twin/mcp
+    http_status: 401
+  - url: https://registry.npmjs.org/@happyrobot-ai/mcp
+    http_status: 200

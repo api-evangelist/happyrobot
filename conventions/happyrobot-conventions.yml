@@ -1,0 +1,181 @@
+generated: '2026-08-01'
+method: derived
+source: openapi/happyrobot-public-api-openapi.json, openapi/happyrobot-platform-v1-openapi.json
+notes: >-
+  Cross-cutting request/response semantics for the Happyrobot Public API, derived from the live OpenAPI
+  documents plus the public SDK example repositories. The documentation host (docs.happyrobot.ai) is
+  behind an access-code gate, so nothing here is taken from prose docs — every statement is grounded in
+  the machine-readable contract or in first-party code on github.com/happyrobot-ai.
+authentication:
+  style: bearer API key
+  header: 'Authorization: Bearer <api_key>'
+  applied_to: all 205 v2 operations (per-operation security plus a top-level requirement)
+  tenancy: >-
+    A key is bound to one organization AND one environment. The v2 API therefore takes no tenant
+    parameter; the legacy v1 API requires an explicit x-organization-id header alongside `authorization`.
+  introspection: GET /api-key/describe
+  see: authentication/happyrobot-authentication.yml
+idempotency:
+  supported: false
+  evidence: >-
+    The string "idempot" does not occur anywhere in either OpenAPI document. No Idempotency-Key header
+    parameter, no idempotency-scoped request field, and no replay/retention semantics are declared on any
+    of the 205 operations — including the ones that spend money or provision hardware
+    (POST /phone-numbers/, POST /sip-trunks/, POST /workflows/{workflow_id}/runs).
+  impact: >-
+    A retried POST after a network timeout may create a second run, purchase a second phone number, or
+    publish a second signal. Clients must build their own dedupe keys.
+  no_pointer: >-
+    Deliberately NOT wired as a `type: Idempotency` pointer in apis.yml — the capability does not exist
+    and emitting the pointer would be fabrication.
+pagination:
+  styles: 2
+  note: The API mixes two pagination models across resource families, with no shared convention.
+  page_based:
+    params:
+    - page
+    - page_size
+    used_on_operations: 18
+    families:
+    - Runs
+    - Workflows
+    - Versions
+    - Phone Numbers
+    - SIP Trunks
+    - Knowledge Bases
+    - MCP Servers
+    - Northstars
+    - Custom Evals
+    - Adversarial Tests
+    - Adversarial Suites
+  cursor_based:
+    params:
+    - cursor
+    - limit
+    used_on_operations: 5
+    operations:
+    - GET /contacts/
+    - GET /contacts/{contact_id}/interactions
+    - GET /contacts/{contact_id}/memories
+    - GET /workflows/{workflow_id}/audits/remarks
+    - GET /workflows/{workflow_id}/audits/northstars/{northstar_id}/remarks
+  filtering:
+    common_params:
+    - search
+    - sort
+    - status
+    - start_date
+    - end_date
+    - completed_start_date
+    - completed_end_date
+    - from_date
+    - to_date
+    - version_id
+    - grade
+    - annotation
+  gap: >-
+    A client cannot write one pagination helper for the whole API — it must know per-endpoint which of
+    page/page_size or cursor/limit applies.
+environments:
+  model: >-
+    Every workflow exists simultaneously in production, staging and development; a fourth "test" target
+    addresses one specific version. Variables, node configuration and webhook URLs are all resolved
+    per environment, and the environment is selected by the API key, not by a request parameter.
+  values:
+  - production
+  - staging
+  - development
+  - test
+  request_parameter: >-
+    Only the explicit test operations take an `environment` body field (default `development`) —
+    e.g. POST /versions/{version_id}/test-all.
+  see: sandbox/happyrobot-sandbox.yml
+versioning:
+  scheme: uri-path
+  current: v2
+  path: /api/v2
+  previous: /api/v1
+  see: lifecycle/happyrobot-lifecycle.yml
+  api_version_field: info.version 0.1.1 on the v2 document, 1.0.0 on the v1 document
+resource_versioning:
+  note: >-
+    Distinct from API versioning — Happyrobot versions the *workflows* themselves as first-class
+    resources, and this is one of the more unusual parts of the contract.
+  operations:
+  - GET /workflows/{workflow_id}/versions
+  - POST /versions/{version_id}/fork
+  - POST /versions/{version_id}/lock
+  - POST /versions/{version_id}/unlock
+  - POST /versions/{version_id}/publish
+  - POST /versions/{version_id}/unpublish
+  semantics: fork -> edit nodes -> lock -> publish, with unpublish/unlock as inverses
+error_envelope:
+  media_type: application/json
+  shape: '{ error (required), message, statusCode, details }'
+  rfc9457: false
+  variants: 3
+  see: errors/happyrobot-problem-types.yml
+rate_limiting:
+  documented_in_spec: false
+  status_declared: 429 on 3 of 205 operations (POST /phone-numbers/, POST /sip-trunks/, POST /sip-trunks/bulk)
+  headers: >-
+    None. No Retry-After, no RateLimit-Limit/Remaining/Reset, no X-RateLimit-* is declared anywhere in
+    either document, so a client has no contractual signal to back off on.
+request_tracing:
+  request_id_header: none declared
+  note: >-
+    No X-Request-Id / X-Correlation-Id parameter or response header appears in the spec. Runs, sessions
+    and messages carry their own ids (run_id, session_id, message_id) which are the practical
+    correlation handles for support.
+identifiers:
+  style: >-
+    Mixed. Most path parameters are UUIDs with an explicit uuid format + pattern (session_id, node_id).
+    Workflows accept either a UUID or a human slug on the same path parameter. Organizations expose both
+    an id and a slug.
+  slug_accepting_paths:
+  - PATCH /workflows/{workflow_id}
+  - GET /workflows/{workflow_id}
+naming:
+  case: snake_case dominates (page_size, workflow_id, start_date, org_slug)
+  inconsistencies:
+  - kbId and mcpId are camelCase path parameters while every neighbouring family uses snake_case
+  - the api-key describe response mixes both in one object (orgId, lastFour, createdAt alongside
+    org_slug, org_name)
+  - several collection paths carry a trailing slash (/contacts/, /runs/, /org/, /chat/tokens/) while
+    others do not (/runs/{run_id}, /twin/schema)
+streaming:
+  server_sent_events:
+  - operation: GET /sessions/{session_id}/stream
+    description: >-
+      Opens an SSE stream for a single session, optionally backfilling the most recent messages
+      (backfillLimit, 0-1000). Emits `message` events in real time and closes when the session ends.
+  websocket:
+    note: >-
+      Not described in the OpenAPI. Happyrobot's own chatbot SDK example documents
+      `WS /chat/sessions/:id/ws?token=JWT` with `connected`, `message` and `message-ack` frames.
+    source: https://github.com/happyrobot-ai/chatbot-sdk-example
+  see: asyncapi/happyrobot-events.yml
+delegated_browser_tokens:
+  pattern: >-
+    Server exchanges the secret API key for a short-lived, workflow-scoped client token; the browser only
+    ever holds the short-lived token.
+  operations:
+  - POST /chat/tokens/
+  - POST /voice/tokens/
+  - POST /realtime/tokens
+  source: https://github.com/happyrobot-ai/chatbot-sdk-example
+content_types:
+  request: application/json
+  response: application/json
+  note: >-
+    849 of 849 declared response bodies are application/json. File ingestion is done out-of-band via
+    presigned URLs (GET /chat/upload/presigned, POST /knowledge-bases/{kbId}/upload-urls) rather than
+    multipart upload to the API.
+cross_links:
+  errors: errors/happyrobot-problem-types.yml
+  lifecycle: lifecycle/happyrobot-lifecycle.yml
+  authentication: authentication/happyrobot-authentication.yml
+  scopes: scopes/happyrobot-scopes.yml
+  data_model: data-model/happyrobot-data-model.yml
+  events: asyncapi/happyrobot-events.yml
+  sandbox: sandbox/happyrobot-sandbox.yml

@@ -1,0 +1,120 @@
+generated: '2026-08-01'
+method: searched
+source: live probes of every apis.yml host and every OpenAPI servers[] host
+notes: >-
+  Probed /.well-known/security.txt, /openid-configuration, /oauth-authorization-server,
+  /oauth-protected-resource, /api-catalog and /ai-plugin.json across happyrobot.ai, www.happyrobot.ai,
+  platform.happyrobot.ai, app.happyrobot.ai, builder.happyrobot.ai, auth.happyrobot.ai and
+  docs.happyrobot.ai. Four documents returned real content. Note that docs.happyrobot.ai answers HTTP 200
+  with an HTML application shell for most unknown paths (it is a Mintlify SPA behind an access gate), so
+  only its JSON responses are recorded as hits here.
+hosts:
+- host: https://happyrobot.ai
+  documents:
+  - path: /.well-known/security.txt
+    status: 200
+    content_type: text/plain
+    file: happyrobot-security.txt
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/oauth-protected-resource
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+- host: https://www.happyrobot.ai
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+- host: https://platform.happyrobot.ai
+  note: also the OpenAPI servers[] host for both the v1 and v2 documents
+  documents:
+  - path: /.well-known/security.txt
+    status: 200
+    content_type: text/plain
+    file: happyrobot-security.txt
+    note: same document as the apex host
+  - path: /.well-known/oauth-authorization-server
+    status: 200
+    content_type: application/json
+    file: happyrobot-oauth-authorization-server.json
+    spec: RFC 8414
+    note: fronts the platform MCP surface; single scope mcp:full
+  - path: /.well-known/agent-card.json
+    status: 302
+    note: redirect to the console SPA, not an agent card
+  - path: /.well-known/agent.json
+    status: 429
+- host: https://app.happyrobot.ai
+  documents:
+  - path: /.well-known/security.txt
+    status: 200
+    content_type: text/plain
+    note: same document as the apex host
+  - path: /.well-known/agent-card.json
+    status: 429
+  - path: /.well-known/agent.json
+    status: 429
+- host: https://auth.happyrobot.ai
+  documents:
+  - path: /.well-known/openid-configuration
+    status: 200
+    content_type: application/json
+    file: happyrobot-openid-configuration.json
+    spec: OpenID Connect Discovery 1.0
+    note: Auth0 tenant backing console sign-in
+  - path: /.well-known/jwks.json
+    status: 200
+    note: not saved verbatim (rotating keys)
+  - path: /.well-known/oauth-authorization-server
+    status: 200
+    note: Auth0 mirror of the OIDC document
+  - path: /.well-known/security.txt
+    status: 404
+- host: https://docs.happyrobot.ai
+  documents:
+  - path: /.well-known/oauth-protected-resource
+    status: 200
+    content_type: application/json
+    file: happyrobot-docs-oauth-protected-resource.json
+    spec: RFC 9728
+    note: declares docs.happyrobot.ai a protected resource of the docs MCP authorization server
+  - path: /.well-known/oauth-authorization-server
+    status: 200
+    content_type: application/json
+    file: happyrobot-docs-oauth-authorization-server.json
+    spec: RFC 8414
+    note: single scope mcp:search
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 200
+    content_type: text/html
+    hit: false
+    note: SPA catch-all returning the docs application shell, NOT an agent card — rejected
+  - path: /.well-known/agent.json
+    status: 200
+    content_type: text/html
+    hit: false
+    note: SPA catch-all returning the docs application shell, NOT an agent card — rejected
+summary:
+  security_txt: true
+  openid_configuration: true
+  oauth_authorization_server: true
+  oauth_protected_resource: true
+  api_catalog: false
+  ai_plugin: false
+  agent_card: false

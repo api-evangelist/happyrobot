@@ -1,0 +1,62 @@
+generated: '2026-08-01'
+method: searched
+probe: true
+url: https://trust.happyrobot.ai/
+platform: Vanta
+notes: >-
+  trust.happyrobot.ai returns HTTP 200 and is served from Vanta's hosted trust-report application
+  (content-location: assets.vanta.com/static/index-trust-report.<hash>.html). The report body is rendered
+  client-side, so the certification list could not be read from the HTML directly. The frameworks below
+  are therefore taken from Happyrobot's own public security page, which is server-rendered and readable,
+  and the trust center is recorded as present and Vanta-operated.
+certifications:
+- SOC 2 Type II
+- GDPR
+- HIPAA
+- EU AI Act
+- NIST CSF
+- DORA
+certifications_source: https://www.happyrobot.ai/product/security-and-reliability
+attestation_access: >-
+  Compliance documentation is stated to be "available to qualified customers under NDA" — reports are not
+  downloadable from the public trust center without a request.
+security_posture_claims:
+- end-to-end encryption with per-workflow retention policies
+- zero-trust network architecture
+- role-based access control (Owner, Editor, Viewer)
+- per-customer encryption keys on dedicated deployments
+- automatic model failover across LLM, TTS and STT providers
+- multi-availability-zone infrastructure with automatic failover
+- in-country data residency
+- customer data never used to train models and never shared across tenants
+independently_verified:
+- claim: in-country data residency
+  verification: >-
+    A complete EU cluster exists and answers independently — platform.eu.happyrobot.ai serves its own
+    OpenAPI (200) and its own RFC 8414 authorization server, and mcp.platform.eu.happyrobot.ai serves its
+    own MCP endpoints.
+- claim: role-based access control
+  verification: >-
+    Reflected in the Public API — org membership operations plus 403 responses declared on 20 operations.
+- claim: TLS everywhere
+  verification: >-
+    TLSv1.3 with HSTS max-age 63072000 on www.happyrobot.ai and docs.happyrobot.ai; see
+    security/happyrobot-domain-security.yml.
+evidence:
+- source: https://trust.happyrobot.ai/
+  http_status: 200
+  keywords:
+  - vanta
+  - trust center
+  note: 13 references to Vanta in the delivered document; body is client-rendered
+- source: https://www.happyrobot.ai/product/security-and-reliability
+  http_status: 200
+  keywords:
+  - SOC 2 Type II
+  - GDPR
+  - HIPAA
+  - EU AI Act
+  - NIST CSF
+  - DORA
+x-evidence:
+  fetched: '2026-08-01'

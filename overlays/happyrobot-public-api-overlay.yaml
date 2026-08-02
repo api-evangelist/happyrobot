@@ -1,0 +1,93 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for the Happyrobot Public API
+  version: 1.0.0
+extends: openapi/happyrobot-public-api-openapi.json
+x-generated: '2026-08-01'
+x-method: generated
+x-source: >-
+  API Evangelist enrichment pass 2026-08-01. Captures our annotations over the harvested spec without
+  mutating it. Every value asserted here is observed — from the spec itself or from a live probe recorded
+  in the sibling artifacts.
+actions:
+- target: $.info
+  update:
+    x-apievangelist-harvested: '2026-08-01'
+    x-apievangelist-source: https://platform.happyrobot.ai/api/v2/docs/json
+    x-apievangelist-artifacts:
+      authentication: authentication/happyrobot-authentication.yml
+      conventions: conventions/happyrobot-conventions.yml
+      errors: errors/happyrobot-problem-types.yml
+      events: asyncapi/happyrobot-events.yml
+      data_model: data-model/happyrobot-data-model.yml
+      mcp: mcp/happyrobot-mcp.yml
+      tool_crosswalk: mcp/happyrobot-tool-crosswalk.yml
+      lifecycle: lifecycle/happyrobot-lifecycle.yml
+      sandbox: sandbox/happyrobot-sandbox.yml
+    x-apievangelist-contact: >-
+      Contract observations, not provider statements. See x-apievangelist-gaps for what the spec omits.
+    x-apievangelist-gaps:
+    - no operationIds on any of the 205 operations
+    - no components.schemas reuse — 1 named schema, everything else inlined
+    - no idempotency contract anywhere in the document
+    - no RateLimit-* or Retry-After headers despite 429 being declared
+    - no request/response examples in the document
+    - errors are a bespoke envelope, not RFC 9457 problem+json
+    - no operation carries deprecated:true, including the one whose description says DEPRECATED
+- target: $.servers
+  update:
+  - url: https://platform.happyrobot.ai/api/v2
+    description: US cluster (default)
+    x-apievangelist-verified: '2026-08-01'
+  - url: https://platform.eu.happyrobot.ai/api/v2
+    description: >-
+      EU cluster — data-residency mirror. Verified serving the same OpenAPI document on 2026-08-01. The
+      published spec declares only the US server.
+    x-apievangelist-verified: '2026-08-01'
+    x-apievangelist-added-by-overlay: true
+- target: $.components.securitySchemes.bearerAuth
+  update:
+    x-apievangelist-notes: >-
+      Bearer API key, scoped to one organization AND one environment. Key prefixes sk_live_ / sk_test_ are
+      published in the @happyrobot-ai/mcp package documentation. Introspect with GET /api-key/describe.
+    x-apievangelist-key-prefixes:
+    - sk_live_
+    - sk_test_
+    x-apievangelist-introspection: GET /api-key/describe
+- target: $.info
+  update:
+    x-apievangelist-agent-surface:
+      mcp_servers:
+      - url: https://mcp.platform.happyrobot.ai/workflows/mcp
+        tools: 26
+        scopes:
+        - mcp:full
+      - url: https://mcp.platform.happyrobot.ai/twin/mcp
+        tools: 9
+        scopes:
+        - mcp:full
+      - url: https://mcp.platform.eu.happyrobot.ai/workflows/mcp
+        cluster: eu
+      - url: https://docs.happyrobot.ai/mcp
+        scopes:
+        - mcp:search
+      mcp_prompts: 5
+      rest_operations_reachable_via_mcp: 150
+      rest_operations_without_a_tool: 55
+      agent_card: none published
+- target: $.paths['/signals/'].post
+  update:
+    x-apievangelist-notes: >-
+      Tenant-forcing guard worth highlighting: payload.org_id is always derived from the API key's
+      organization and cannot be set by the caller.
+- target: $.paths['/twin/sql'].post
+  update:
+    x-apievangelist-risk: >-
+      Arbitrary SQL execution (SELECT, INSERT, UPDATE, DELETE, DDL) against the organization's Twin
+      database. Exposed as the execute_sql tool on the Twin MCP server under the same single mcp:full
+      scope as read-only tools — there is no narrower scope with which to bind a read-only agent.
+- target: $.paths['/versions/{version_id}/test-all'].post
+  update:
+    x-apievangelist-notes: >-
+      The only operation in the API declaring a 504. It blocks until every testable node in the version
+      has run, executing independent nodes in parallel dependency waves.

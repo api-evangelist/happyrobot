@@ -1,0 +1,28 @@
+generated: '2026-08-01'
+method: probed
+source: live DNS/TLS/HTTP probes of apis.yml + OpenAPI hosts
+hosts:
+- host: www.happyrobot.ai
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Sep  7 21:04:26 2026 GMT
+  hsts: true
+  hsts_max_age: 63072000
+- host: docs.happyrobot.ai
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Sep 20 23:05:11 2026 GMT
+  hsts: true
+  hsts_max_age: 63072000
+- host: platform.happyrobot.ai
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Sep 18 22:09:38 2026 GMT
+  hsts: null
+domains:
+- domain: happyrobot.ai
+  dnssec: false
+  caa: []
+  spf: true
+  dmarc: true
+  dmarc_policy: quarantine

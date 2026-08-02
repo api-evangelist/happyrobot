@@ -1,0 +1,145 @@
+generated: '2026-08-01'
+method: searched
+source: >-
+  https://www.npmjs.com/package/@happyrobot-ai/mcp,
+  openapi/happyrobot-public-api-openapi.json,
+  https://github.com/happyrobot-ai/custom-llm-server
+notes: >-
+  Happyrobot's test story is not a payments-style sandbox with magic values; it is an ENVIRONMENT model.
+  Every workflow exists simultaneously in production, staging and development, with a fourth "test" target
+  addressing one specific version, and API keys are minted per mode. On top of that sits an unusually
+  deep agent-quality test surface — node tests, custom evals, northstars and adversarial (red-team) suites
+  — which is the real testing product here. No fabricated values appear below; everything is either an
+  observed operation in the OpenAPI or a value the vendor published in its own package documentation.
+test_vs_live:
+  key_prefixes:
+  - prefix: sk_live_
+    mode: live
+  - prefix: sk_test_
+    mode: test
+  source: >-
+    Published in the @happyrobot-ai/mcp README configuration table — "Your API key (`sk_live_*` or
+    `sk_test_*`)" — and used in its development instructions (HAPPYROBOT_API_KEY=sk_test_xxx npm run dev).
+  key_introspection: GET /api-key/describe returns the key's `prefix` and `lastFour`.
+environments:
+  values:
+  - production
+  - staging
+  - development
+  - test
+  selection: >-
+    The environment is bound to the API key rather than passed per request. Only explicit test operations
+    accept an `environment` body field, which defaults to `development`.
+  operations_taking_environment:
+  - POST /versions/{version_id}/test-all
+  variable_resolution: >-
+    Workflow variables, node configuration and webhook URLs all resolve per environment, so the same
+    workflow can point at a staging TMS in staging and the real one in production.
+  webhook_urls_per_environment:
+    note: >-
+      GET /versions/{version_id}/nodes/{node_id} returns, for webhook trigger nodes (INCOMING_HOOK or
+      PREDEFINED_REQUEST), a `webhook_urls` object with one URL per environment.
+    fields:
+    - production
+    - staging
+    - development
+    - test
+    test_semantics: 'Test webhook URL (targets this specific version)'
+clusters:
+  note: Separate data-residency regions with independent API and MCP hosts.
+  values:
+  - cluster: us
+    api: https://platform.happyrobot.ai/api/v2
+    default: true
+  - cluster: eu
+    api: https://platform.eu.happyrobot.ai/api/v2
+  source: '@happyrobot-ai/mcp README cluster table; both hosts verified live 2026-08-01'
+test_tooling:
+  node_and_workflow_tests:
+  - operation: POST /versions/{version_id}/nodes/{node_id}/test
+    description: Test a single node in a version.
+  - operation: POST /versions/{version_id}/test-all
+    description: >-
+      Synchronous test-all for every testable node in a version. Nodes run in dependency waves,
+      independent nodes in parallel; if a node fails its dependents are skipped. Blocks until complete
+      and returns per-node results. This is the one operation in the API that declares a 504.
+  - operation: PUT /versions/{version_id}/nodes/{node_id}/custom-output
+    description: >-
+      Pin a node's output manually for testing, without running it — used to define output schemas on
+      trigger and webhook nodes.
+  custom_evals:
+    description: Expected-response and expected-tool-call assertions attached to prompt nodes.
+    operations:
+    - GET /nodes/{node_id}/custom-evals
+    - POST /nodes/{node_id}/custom-evals
+    - POST /nodes/{node_id}/custom-evals/extract-from-run
+    - GET /nodes/{node_id}/custom-evals/default-variables
+    - GET /nodes/{node_id}/custom-evals/tools
+    - POST /custom-evals/{eval_id}/run
+    - GET /custom-evals/{eval_id}/runs
+    note: >-
+      extract-from-run turns a real production run into a regression test — the platform's answer to
+      recorded fixtures.
+  northstars:
+    description: >-
+      Declarative success criteria for prompt nodes, gradeable and coverage-assessable, with generation
+      and iteration helpers.
+    operations:
+    - GET /nodes/{node_id}/northstars
+    - POST /nodes/{node_id}/northstars/generate
+    - POST /nodes/{node_id}/northstars/iterate
+    - POST /nodes/{node_id}/northstars/assess-coverage
+    - GET /northstars/{northstar_id}/history
+  adversarial_testing:
+    description: >-
+      Red-team tests and batched suites run against agent nodes — the strongest safety-testing surface in
+      this API and rare among agent platforms.
+    operations:
+    - POST /nodes/{node_id}/adversarial-tests
+    - POST /adversarial-tests/{test_id}/run
+    - GET /adversarial-tests/runs/{run_id}/messages
+    - GET /adversarial-tests/{test_id}/effective-scope
+    - POST /adversarial-suites/{suite_id}/generate
+    - POST /adversarial-suites/{suite_id}/generate-graph
+    - POST /adversarial-suites/{suite_id}/run
+    - GET /adversarial-suites/runs/{suite_run_id}/test-runs
+  prompt_quality:
+    operations:
+    - GET /versions/{version_id}/prompt-issues
+    - GET /workflows/{workflow_id}/issues
+    - PATCH /issues/{issue_id}
+  audits:
+    description: Post-hoc grading of production runs against northstars.
+    operations:
+    - GET /workflows/{workflow_id}/audits/stats
+    - GET /workflows/{workflow_id}/audits/northstars
+    - GET /workflows/{workflow_id}/audits/remarks
+    - GET /workflows/{workflow_id}/audits/node-errors
+    - GET /runs/{run_id}/audits
+local_development:
+  custom_llm_server:
+    description: >-
+      A first-party reference server that lets a developer run the agent's LLM locally against the real
+      platform. Happyrobot posts the conversation history plus its built-in tool schemas to an
+      OpenAI-Chat-Completions-compatible endpoint the developer controls.
+    repo: https://github.com/happyrobot-ai/custom-llm-server
+    local_endpoint: http://localhost:8095/v1
+    platform_builtin_tools:
+    - _hangup
+    - _stay_silent
+    - _voice_mail
+    - _press_digit
+    note: The example server accepts any API key value — it ignores auth by design.
+free_tier:
+  claim: New accounts receive 10 minutes of free usage to test the platform.
+  source: https://docs.happyrobot.ai/general/pricing
+  verified: false
+  note: >-
+    Recorded from the public search-engine summary of the pricing page. The docs host now returns
+    "Access Restricted" to anonymous clients, so this could not be re-read at source on 2026-08-01.
+not_applicable:
+  test_cards: Happyrobot is not a payments provider; there are no test card numbers.
+  magic_test_identifiers: >-
+    No published magic phone numbers or reserved test identifiers were found. Toll-free verification and
+    phone-number purchase operate against real carrier inventory
+    (POST /phone-numbers/validate-toll-free-numbers, POST /phone-numbers/).

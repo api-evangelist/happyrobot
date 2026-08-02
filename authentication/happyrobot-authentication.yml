@@ -1,0 +1,173 @@
+generated: '2026-08-01'
+method: searched
+source: openapi/happyrobot-public-api-openapi.json
+docs: https://docs.happyrobot.ai/api-reference
+notes: >-
+  Derived from both OpenAPI documents, then upgraded with the three discovery documents probed live on
+  2026-08-01: the Auth0 OIDC configuration on auth.happyrobot.ai, the RFC 8414 OAuth authorization server
+  metadata on platform.happyrobot.ai (MCP), and the RFC 8414 metadata on docs.happyrobot.ai (docs MCP).
+  Happyrobot runs three distinct authentication planes: a bearer API key for machine access to the Public
+  API, an Auth0 OIDC tenant for human sign-in to the console, and OAuth 2.0 authorization servers fronting
+  its two MCP surfaces.
+summary:
+  types:
+  - http
+  - apiKey
+  - oauth2
+  - openIdConnect
+  api_key_in:
+  - header
+  oauth2_flows:
+  - authorizationCode
+  - clientCredentials
+  - refreshToken
+planes:
+- plane: public-api
+  audience: machine / server-to-server
+  mechanism: Bearer API key
+  header: 'Authorization: Bearer <api_key>'
+  applied: >-
+    every operation in the v2 OpenAPI carries security [{bearerAuth: []}] and there is a matching
+    top-level security requirement, so the scheme is both defined and applied
+  scoping: >-
+    An API key is bound to one organization and one environment. GET /api-key/describe returns the key's
+    id, orgId, org_slug, org_name, name, prefix, lastFour, createdAt, lastUsedAt and revokedAt — so keys
+    carry a visible prefix + last-four for identification and support explicit revocation.
+  introspection_operation: GET /api-key/describe
+  example_prefix_observed: sk_live_
+  example_prefix_source: https://github.com/happyrobot-ai/chatbot-sdk-example
+- plane: legacy-v1
+  audience: machine / server-to-server
+  mechanism: opaque token in an `authorization` header plus an explicit `x-organization-id` header
+  headers:
+  - authorization
+  - x-organization-id
+  applied: >-
+    every one of the ten v1 operations declares both headers as required parameters; the v1 document
+    defines no components.securitySchemes, so auth is expressed as bare header parameters
+  source: openapi/happyrobot-platform-v1-openapi.json
+- plane: console-sign-in
+  audience: human
+  mechanism: OpenID Connect (Auth0 tenant)
+  issuer: https://auth.happyrobot.ai/
+  discovery: https://auth.happyrobot.ai/.well-known/openid-configuration
+  observed:
+    authorization_endpoint: https://auth.happyrobot.ai/authorize
+    token_endpoint: https://auth.happyrobot.ai/oauth/token
+    userinfo_endpoint: https://auth.happyrobot.ai/userinfo
+    jwks_uri: https://auth.happyrobot.ai/.well-known/jwks.json
+    registration_endpoint: https://auth.happyrobot.ai/oidc/register
+    end_session_endpoint: https://auth.happyrobot.ai/oidc/logout
+    revocation_endpoint: https://auth.happyrobot.ai/oauth/revoke
+    device_authorization_endpoint: https://auth.happyrobot.ai/oauth/device/code
+    mfa_challenge_endpoint: https://auth.happyrobot.ai/mfa/challenge
+    backchannel_logout_supported: true
+    id_token_signing_alg_values_supported:
+    - HS256
+    - RS256
+    - PS256
+    code_challenge_methods_supported:
+    - S256
+    - plain
+  client_flow_observed: >-
+    app.happyrobot.ai/login and /signup both 302 to auth.happyrobot.ai/authorize with
+    response_type=code, code_challenge_method=S256 and scope "openid profile email offline_access",
+    redirecting back to https://platform.happyrobot.ai/auth/callback — authorization code + PKCE.
+- plane: platform-mcp
+  audience: agent / MCP client
+  mechanism: OAuth 2.0 with dynamic client registration
+  issuer: https://platform.happyrobot.ai
+  discovery: https://platform.happyrobot.ai/.well-known/oauth-authorization-server
+  observed:
+    authorization_endpoint: https://platform.happyrobot.ai/mcp/authorize
+    token_endpoint: https://platform.happyrobot.ai/api/mcp/token
+    registration_endpoint: https://platform.happyrobot.ai/api/mcp/register
+    grant_types_supported:
+    - authorization_code
+    - refresh_token
+    - client_credentials
+    code_challenge_methods_supported:
+    - S256
+    token_endpoint_auth_methods_supported:
+    - none
+    scopes_supported:
+    - mcp:full
+- plane: docs-mcp
+  audience: agent / MCP client
+  mechanism: OAuth 2.0 with dynamic client registration
+  issuer: https://docs.happyrobot.ai/mcp/oauth
+  discovery: https://docs.happyrobot.ai/.well-known/oauth-authorization-server
+  protected_resource_metadata: https://docs.happyrobot.ai/.well-known/oauth-protected-resource
+  observed:
+    authorization_endpoint: https://docs.happyrobot.ai/mcp/oauth/authorize
+    token_endpoint: https://docs.happyrobot.ai/mcp/oauth/token
+    registration_endpoint: https://docs.happyrobot.ai/mcp/oauth/register
+    grant_types_supported:
+    - authorization_code
+    - client_credentials
+    - refresh_token
+    code_challenge_methods_supported:
+    - S256
+    token_endpoint_auth_methods_supported:
+    - none
+    - client_secret_post
+    - client_secret_basic
+    scopes_supported:
+    - mcp:search
+  challenge_observed: >-
+    POST tools/list without a token returns HTTP 401 with
+    'WWW-Authenticate: Bearer error="invalid_token", error_description="No authorization provided",
+    resource_metadata="https://docs.happyrobot.ai/.well-known/oauth-protected-resource"' — a correct
+    RFC 9728 challenge.
+schemes:
+- name: bearerAuth
+  type: http
+  scheme: bearer
+  bearerFormat: Opaque
+  applied_to_operations: 205
+  sources:
+  - openapi/happyrobot-public-api-openapi.json
+- name: authorization
+  type: apiKey
+  in: header
+  parameter: authorization
+  sources:
+  - openapi/happyrobot-platform-v1-openapi.json
+- name: x-organization-id
+  type: apiKey
+  in: header
+  parameter: x-organization-id
+  note: tenant selector, required alongside `authorization` on every v1 operation
+  sources:
+  - openapi/happyrobot-platform-v1-openapi.json
+delegated_tokens:
+  note: >-
+    The Public API issues short-lived, scoped client tokens so browser code never sees the API key.
+    This two-tier model is documented in Happyrobot's own public SDK examples.
+  operations:
+  - operation: POST /chat/tokens/
+    returns: '{ token, expires_at }'
+    used_by: browser chat clients connecting to POST /chat/sessions/ and the session WebSocket
+  - operation: POST /voice/tokens/
+    returns: '{ url, token, room_name, run_id }'
+    used_by: browser WebRTC voice clients connecting to LiveKit
+  - operation: POST /realtime/tokens
+    returns: realtime session token
+  sources:
+  - https://github.com/happyrobot-ai/chatbot-sdk-example
+  - https://github.com/happyrobot-ai/voice-sdk-example
+x-evidence:
+  fetched: '2026-08-01'
+  probes:
+  - url: https://platform.happyrobot.ai/api/v2/docs/json
+    http_status: 200
+  - url: https://platform.happyrobot.ai/api/v1/openapi.json
+    http_status: 200
+  - url: https://auth.happyrobot.ai/.well-known/openid-configuration
+    http_status: 200
+  - url: https://platform.happyrobot.ai/.well-known/oauth-authorization-server
+    http_status: 200
+  - url: https://docs.happyrobot.ai/.well-known/oauth-authorization-server
+    http_status: 200
+  - url: https://docs.happyrobot.ai/.well-known/oauth-protected-resource
+    http_status: 200

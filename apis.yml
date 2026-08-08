@@ -132,7 +132,7 @@ apis:
     url: mcp/happyrobot-mcp.yml
   - type: ToolCrosswalk
     url: mcp/happyrobot-tool-crosswalk.yml
-  - type: MCP
+  - type: MCPServer
     url: https://mcp.platform.happyrobot.ai/workflows/mcp
   - type: OAuthScopes
     url: scopes/happyrobot-scopes.yml
@@ -156,7 +156,7 @@ apis:
     url: mcp/happyrobot-mcp.yml
   - type: ToolCrosswalk
     url: mcp/happyrobot-tool-crosswalk.yml
-  - type: MCP
+  - type: MCPServer
     url: https://mcp.platform.happyrobot.ai/twin/mcp
   - type: OAuthScopes
     url: scopes/happyrobot-scopes.yml
@@ -266,7 +266,7 @@ common:
   url: components/happyrobot-components.yml
 - type: Overlay
   url: overlays/happyrobot-public-api-overlay.yaml
-- type: MCP
+- type: MCPServer
   url: https://mcp.platform.happyrobot.ai/workflows/mcp
 x-enrichment-notes:
   documentation_access: >-

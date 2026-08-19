@@ -1,0 +1,5639 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Happyrobot Public API",
+    "version": "0.1.1"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "API Keys",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Describe the current API key",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform.happyrobot.ai/api/v2/api-key/describe",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns metadata for the API key used in the Authorization header."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Runs",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "[Legacy] List runs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform.happyrobot.ai/api/v2/runs/",
+            "params": [
+              {
+                "name": "use_case_id",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "sort",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "start_date",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "end_date",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "completed_start_date",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "completed_end_date",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "annotation",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Lists runs for a use case. **Deprecated**: prefer GET /workflows/:workflow_id/runs instead."
+        },
+        {
+          "info": {
+            "name": "Cancel a run",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://platform.happyrobot.ai/api/v2/runs/:run_id/cancel",
+            "params": [
+              {
+                "name": "run_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Cancels a running or scheduled run for the caller's org by proxying to the workflows service."
+        },
+        {
+          "info": {
+            "name": "Get recordings for a run",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform.happyrobot.ai/api/v2/runs/:run_id/recordings",
+            "params": [
+              {
+                "name": "session_id",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "url_expires_in_days",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "run_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns signed URLs for call recordings associated with a run. Optionally filter by session_id."
+        },
+        {
+          "info": {
+            "name": "List run sessions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform.happyrobot.ai/api/v2/runs/:run_id/sessions",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "sort",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "run_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns paginated sessions for a run, ordered by timestamp."
+        },
+        {
+          "info": {
+            "name": "Get run",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform.happyrobot.ai/api/v2/runs/:run_id",
+            "params": [
+              {
+                "name": "run_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns metadata for a single run. Use /runs/:run_id/nodes for node summaries, /runs/:run_id/outputs/:output_id for a full node output payload, /runs/:run_id/sessions for session data, and /runs/:run_id/flags for issues."
+        },
+        {
+          "info": {
+            "name": "List run nodes",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform.happyrobot.ai/api/v2/runs/:run_id/nodes",
+            "params": [
+              {
+                "name": "node_persistent_id",
+                "value": "",
+                "type": "query",
+                "description": "Optional node persistent ID filter"
+              },
+              {
+                "name": "sort",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "run_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns lightweight run node execution records in timestamp order."
+        },
+        {
+          "info": {
+            "name": "Get run output",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform.happyrobot.ai/api/v2/runs/:run_id/outputs/:output_id",
+            "params": [
+              {
+                "name": "run_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "output_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns the full payload for a single output execution in a run."
+        },
+        {
+          "info": {
+            "name": "Mark run annotation",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://platform.happyrobot.ai/api/v2/runs/:run_id/mark",
+            "params": [
+              {
+                "name": "run_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Marks a run as correct, incorrect, or critical. When marked as incorrect or critical with a correction message, an issue is automatically created."
+        },
+        {
+          "info": {
+            "name": "List run flags",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform.happyrobot.ai/api/v2/runs/:run_id/flags",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "sort",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "run_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns paginated flags (issues) for a run, ordered by creation date."
+        },
+        {
+          "info": {
+            "name": "List audit remarks for a run",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform.happyrobot.ai/api/v2/runs/:run_id/audits",
+            "params": [
+              {
+                "name": "run_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns all northstar audit remarks for a specific run, showing per-criterion pass/fail grades."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Billing",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get total org usage between date range",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform.happyrobot.ai/api/v2/billing/usage/totals",
+            "params": [
+              {
+                "name": "start",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "end",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns aggregated total usage data for the authenticated organization between the provided start and end datetimes (inclusive)."
+        },
+        {
+          "info": {
+            "name": "Get org usage by use case between date range (keyed)",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform.happyrobot.ai/api/v2/billing/usage/details",
+            "params": [
+              {
+                "name": "start",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "end",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "use_case_id",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns usage data grouped by requested use_case_id values for the authenticated organization between the provided start and end datetimes (inclusive). If no use_case_id is provided, returns results for all use cases in the org. The response is keyed by use_case_id. Accepts multiple use_case_id parameters or a comma-separated list."
+        },
+        {
+          "info": {
+            "name": "Get credit consumption by component per workflow",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform.happyrobot.ai/api/v2/billing/usage/credits",
+            "params": [
+              {
+                "name": "start_date",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "end_date",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "granularity",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "filter_by_folder_1",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "filter_by_folder_2",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "filter_by_folder_3",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "filter_by_workflow",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "filter_by_workflow_id",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns credit consumption per workflow, bucketed by the requested granularity (daily/weekly/monthly). Components is a nested classification breakdown: each category (L1, e.g. 'Voice') contains subcomponents (L2, e.g. 'LLM'), and L2 subcomponents can contain their own subcomponents (L3, e.g. 'Reasoning Agent'). Each component carries credits/volume/volume_unit. Categories and subcomponents use the same labels shown in the platform Usage page (Settings -> Usage), so the breakdown matches what cus"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Use Cases",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "[Legacy] List use cases",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform.happyrobot.ai/api/v2/use-cases/",
+            "params": [
+              {
+                "name": "is_deleted",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "is_live",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "is_published",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns use cases for the authenticated org along with the live production version if available (or the most recent version as fallback). **Deprecated**: prefer GET /workflows instead."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Contacts",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Lookup contact by identifier",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform.happyrobot.ai/api/v2/contacts/resolve",
+            "params": [
+              {
+                "name": "type",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "value",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns contact if found by type and value. Returns 404 if not found. Does not create new contacts."
+        },
+        {
+          "info": {
+            "name": "List contacts",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform.happyrobot.ai/api/v2/contacts/",
+            "params": [
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "search",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns paginated contacts for the organization. Uses cursor-based pagination."
+        },
+        {
+          "info": {
+            "name": "Get contact",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform.happyrobot.ai/api/v2/contacts/:contact_id",
+            "params": [
+              {
+                "name": "contact_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns a single contact with interaction and memory counts"
+        },
+        {
+          "info": {
+            "name": "List contact interactions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform.happyrobot.ai/api/v2/contacts/:contact_id/interactions",
+            "params": [
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "sort",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "contact_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns paginated communication events for a contact"
+        },
+        {
+          "info": {
+            "name": "List contact memories",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform.happyrobot.ai/api/v2/contacts/:contact_id/memories",
+            "params": [
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "contact_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns paginated memories for a contact"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Knowledge Bases",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "GET /knowledge-bases/",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform.happyrobot.ai/api/v2/knowledge-bases/"
+          },
+          "docs": "List all knowledge bases for the organization."
+        },
+        {
+          "info": {
+            "name": "POST /knowledge-bases/",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://platform.happyrobot.ai/api/v2/knowledge-bases/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a new knowledge base for the organization."
+        },
+        {
+          "info": {
+            "name": "GET /knowledge-bases/{kbId}/files",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform.happyrobot.ai/api/v2/knowledge-bases/:kbId/files",
+            "params": [
+              {
+                "name": "kbId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "List all files in a knowledge base. Use this endpoint to check file processing status after triggering chunking via POST /:kbId/trigger-chunking."
+        },
+        {
+          "info": {
+            "name": "POST /knowledge-bases/{kbId}/upload-urls",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://platform.happyrobot.ai/api/v2/knowledge-bases/:kbId/upload-urls",
+            "params": [
+              {
+                "name": "kbId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Step 1 of the file upload flow. Creates file records in the database and returns presigned S3 URLs (valid for 3 minutes). Upload files directly to S3 using the returned uploadUrl for each file, then call POST /:kbId/trigger-chunking with the returned fileIds to start processing."
+        },
+        {
+          "info": {
+            "name": "POST /knowledge-bases/{kbId}/trigger-chunking",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://platform.happyrobot.ai/api/v2/knowledge-bases/:kbId/trigger-chunking",
+            "params": [
+              {
+                "name": "kbId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Step 2 of the file upload flow. Call this endpoint after uploading files to S3 using the presigned URLs from POST /:kbId/upload-urls. Triggers embedding generation for the specified files. Files will be available in the knowledge base within 10-15 minutes. Use GET /:kbId/files to check processing status."
+        },
+        {
+          "info": {
+            "name": "DELETE /knowledge-bases/{kbId}",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://platform.happyrobot.ai/api/v2/knowledge-bases/:kbId",
+            "params": [
+              {
+                "name": "kbId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Delete a knowledge base and all associated files and chunks. This action is irreversible."
+        },
+        {
+          "info": {
+            "name": "DELETE /knowledge-bases/{kbId}/files/{fileId}",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://platform.happyrobot.ai/api/v2/knowledge-bases/:kbId/files/:fileId",
+            "params": [
+              {
+                "name": "kbId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "fileId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Delete a file from a knowledge base. This removes the file from storage and deletes all associated chunks. This action is irreversible."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Workflows",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List workflows",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform.happyrobot.ai/api/v2/workflows/",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "sort",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "search",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "folder_id",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns paginated workflows for the authenticated organization. Each workflow includes its latest version info (live production version preferred, otherwise most recent). Supports searching by name and filtering by folder."
+        },
+        {
+          "info": {
+            "name": "Create a workflow",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://platform.happyrobot.ai/api/v2/workflows/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Creates a new workflow in the authenticated organization. Supports three creation modes:\n\n1. **Plain** — Creates an empty workflow with an initial version.\n2. **From template** — Use `from_template` to create a pre-configured workflow with trigger and agent nodes. Available templates: `voice-agent`, `inbound-voice-agent`, `whatsapp-agent`, `sms-agent`, `email-agent`, `chatbot-agent`. Credentials are auto-discovered from the organization.\n3. **With version and nodes** — Use `version` to provide c"
+        },
+        {
+          "info": {
+            "name": "Get a workflow",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform.happyrobot.ai/api/v2/workflows/:workflow_id",
+            "params": [
+              {
+                "name": "workflow_id",
+                "value": "",
+                "type": "path",
+                "description": "Workflow UUID or slug"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns a single workflow by UUID or slug, including its latest version info (live production version preferred, otherwise most recent)."
+        },
+        {
+          "info": {
+            "name": "Update a workflow",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://platform.happyrobot.ai/api/v2/workflows/:workflow_id",
+            "params": [
+              {
+                "name": "workflow_id",
+                "value": "",
+                "type": "path",
+                "description": "Workflow UUID or slug"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Updates workflow metadata and settings. Accepts a workflow UUID or slug as the path parameter. Set `folder_id` to `null` to move the workflow to the root level. Use `settings` to update configuration such as webhooks, out-of-office hours, approval process, data retention, and audits. This endpoint does not modify versions or nodes."
+        },
+        {
+          "info": {
+            "name": "Delete a workflow",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://platform.happyrobot.ai/api/v2/workflows/:workflow_id",
+            "params": [
+              {
+                "name": "workflow_id",
+                "value": "",
+                "type": "path",
+                "description": "Workflow UUID or slug"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Soft-deletes a workflow by UUID or slug. The workflow must not have any live versions — unpublish all versions before deleting."
+        },
+        {
+          "info": {
+            "name": "List workflow versions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform.happyrobot.ai/api/v2/workflows/:workflow_id/versions",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "sort",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "search",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "workflow_id",
+                "value": "",
+                "type": "path",
+                "description": "Workflow UUID or slug"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns paginated versions for a workflow. Supports searching by version number or version name."
+        },
+        {
+          "info": {
+            "name": "List workflow templates",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform.happyrobot.ai/api/v2/workflows/templates",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "search",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns a paginated list of available workflow templates. Each template includes a description and the inputs it accepts (marked as required or optional). Use a template's name in the `from_template.template` field when creating a workflow."
+        },
+        {
+          "info": {
+            "name": "Duplicate a workflow",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://platform.happyrobot.ai/api/v2/workflows/:workflow_id/duplicate",
+            "params": [
+              {
+                "name": "workflow_id",
+                "value": "",
+                "type": "path",
+                "description": "Workflow UUID or slug"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Creates a copy of a workflow including all its nodes and configurations. The duplicated workflow is created as a new unpublished workflow with version number 1. If the source uses workflow engine v2, the duplicate remains an editable v2 draft and cannot be published through the public API until upgraded to v3. The existing published v2 source remains live and continues running until explicitly unpublished.\n\n- **name** — Optional. Display name for the new workflow. Defaults to `'{original name} C"
+        },
+        {
+          "info": {
+            "name": "Publish a workflow",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://platform.happyrobot.ai/api/v2/workflows/:workflow_id/publish",
+            "params": [
+              {
+                "name": "workflow_id",
+                "value": "",
+                "type": "path",
+                "description": "Workflow UUID or slug"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Publishes the latest version of the specified workflow to make it live. Before publishing, all action nodes are checked for test errors and untested status. If untested nodes exist (with no errors), a synchronous test-all is triggered first. If any node has test errors, the publish is blocked and errors are returned. Workflow engine v2 versions cannot be published through the public API. Existing published v2 versions remain live and continue running until explicitly unpublished; this endpoint d"
+        },
+        {
+          "info": {
+            "name": "Unpublish a workflow",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://platform.happyrobot.ai/api/v2/workflows/:workflow_id/unpublish",
+            "params": [
+              {
+                "name": "workflow_id",
+                "value": "",
+                "type": "path",
+                "description": "Workflow UUID or slug"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Finds the currently live version for the workflow and unpublishes it. The version is taken offline and unlocked for editing. Returns 400 if no version is currently live. Accepts a workflow UUID or slug as the path parameter."
+        },
+        {
+          "info": {
+            "name": "List workflow runs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform.happyrobot.ai/api/v2/workflows/:workflow_id/runs",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "sort",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "start_date",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "end_date",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "completed_start_date",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "completed_end_date",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "annotation",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "workflow_id",
+                "value": "",
+                "type": "path",
+                "description": "Workflow UUID or slug"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns paginated runs for a workflow. Supports filtering by status, date ranges, and annotation."
+        },
+        {
+          "info": {
+            "name": "Trigger a workflow run",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://platform.happyrobot.ai/api/v2/workflows/:workflow_id/runs",
+            "params": [
+              {
+                "name": "workflow_id",
+                "value": "",
+                "type": "path",
+                "description": "Workflow UUID or slug"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Starts a new run for a workflow by proxying to the hooks service. Accepts either a JSON body with payload/environment fields, or a multipart/form-data request with a file and optional form fields (pass environment as a query param for multipart). Supports targeting different environments (production, staging, development)."
+        },
+        {
+          "info": {
+            "name": "List workflow sessions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform.happyrobot.ai/api/v2/workflows/:workflow_id/sessions",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "sort",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "workflow_id",
+                "value": "",
+                "type": "path",
+                "description": "Workflow UUID or slug"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns paginated sessions for a workflow across all runs, ordered by timestamp."
+        },
+        {
+          "info": {
+            "name": "Cancel active workflow runs",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://platform.happyrobot.ai/api/v2/workflows/:workflow_id/cancel-runs",
+            "params": [
+              {
+                "name": "workflow_id",
+                "value": "",
+                "type": "path",
+                "description": "Workflow UUID or slug"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Cancels all current and queued runs for the workflow. By default, the currently live workflow version is also unpublished. Set unpublish_workflow to false to keep the workflow published after cancellation. Accepts a workflow UUID or slug as the path parameter."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Workflow Variables",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List workflow variables",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform.happyrobot.ai/api/v2/workflows/:workflow_id/variables",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "sort",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "workflow_id",
+                "value": "",
+                "type": "path",
+                "description": "Workflow UUID or slug"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns paginated variables scoped to a specific workflow. Accepts a workflow UUID or slug as the path parameter."
+        },
+        {
+          "info": {
+            "name": "Create a workflow variable",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://platform.happyrobot.ai/api/v2/workflows/:workflow_id/variables",
+            "params": [
+              {
+                "name": "workflow_id",
+                "value": "",
+                "type": "path",
+                "description": "Workflow UUID or slug"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Creates a new variable scoped to the specified workflow. Accepts a workflow UUID or slug as the path parameter."
+        },
+        {
+          "info": {
+            "name": "Update a workflow variable",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://platform.happyrobot.ai/api/v2/workflows/:workflow_id/variables/:variable_id",
+            "params": [
+              {
+                "name": "workflow_id",
+                "value": "",
+                "type": "path",
+                "description": "Workflow UUID or slug"
+              },
+              {
+                "name": "variable_id",
+                "value": "",
+                "type": "path",
+                "description": "Variable UUID"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Updates one or more fields on a variable. Only the fields provided in the request body are updated."
+        },
+        {
+          "info": {
+            "name": "Delete a workflow variable",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://platform.happyrobot.ai/api/v2/workflows/:workflow_id/variables/:variable_id",
+            "params": [
+              {
+                "name": "workflow_id",
+                "value": "",
+                "type": "path",
+                "description": "Workflow UUID or slug"
+              },
+              {
+                "name": "variable_id",
+                "value": "",
+                "type": "path",
+                "description": "Variable UUID"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Permanently deletes a variable from a workflow. This action cannot be undone."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Audits",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List northstar audits for a workflow",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform.happyrobot.ai/api/v2/workflows/:workflow_id/audits/northstars",
+            "params": [
+              {
+                "name": "from_date",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "to_date",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "version_id",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "enabled",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "search",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "workflow_id",
+                "value": "",
+                "type": "path",
+                "description": "Workflow UUID or slug"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns paginated northstar audit results for a workflow, showing pass/fail rates per behavioral criterion."
+        },
+        {
+          "info": {
+            "name": "List audit remarks for a northstar",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform.happyrobot.ai/api/v2/workflows/:workflow_id/audits/northstars/:northstar_id/remarks",
+            "params": [
+              {
+                "name": "grade",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "workflow_id",
+                "value": "",
+                "type": "path",
+                "description": "Workflow UUID or slug"
+              },
+              {
+                "name": "northstar_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns cursor-paginated audit remarks for a specific northstar criterion, optionally filtered by grade."
+        },
+        {
+          "info": {
+            "name": "List audit remarks for a workflow",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform.happyrobot.ai/api/v2/workflows/:workflow_id/audits/remarks",
+            "params": [
+              {
+                "name": "northstar_id",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "grade",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "workflow_id",
+                "value": "",
+                "type": "path",
+                "description": "Workflow UUID or slug"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns cursor-paginated behavioral audit remarks across all northstar criteria for a workflow. Optionally filter by northstar, grade, or status."
+        },
+        {
+          "info": {
+            "name": "List node errors for a workflow",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform.happyrobot.ai/api/v2/workflows/:workflow_id/audits/node-errors",
+            "params": [
+              {
+                "name": "from_date",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "to_date",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "search",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "workflow_id",
+                "value": "",
+                "type": "path",
+                "description": "Workflow UUID or slug"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns paginated node execution errors for a workflow, grouped by node and error type."
+        },
+        {
+          "info": {
+            "name": "Get audit stats for the live workflow version",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform.happyrobot.ai/api/v2/workflows/:workflow_id/audits/stats",
+            "params": [
+              {
+                "name": "workflow_id",
+                "value": "",
+                "type": "path",
+                "description": "Workflow UUID or slug"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns aggregate audit statistics for the live (or most recently audited) version of a workflow."
+        },
+        {
+          "info": {
+            "name": "List audited versions for a workflow",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform.happyrobot.ai/api/v2/workflows/:workflow_id/audits/versions",
+            "params": [
+              {
+                "name": "workflow_id",
+                "value": "",
+                "type": "path",
+                "description": "Workflow UUID or slug"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns all versions of a workflow that have audit data, indicating which is the live version."
+        },
+        {
+          "info": {
+            "name": "Get an audit remark by ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform.happyrobot.ai/api/v2/audit-remarks/:audit_remark_id",
+            "params": [
+              {
+                "name": "audit_remark_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns a single behavioral audit remark, including its northstar criterion, grade, correction, evaluated messages, and status."
+        },
+        {
+          "info": {
+            "name": "Get feedback for an audit remark",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform.happyrobot.ai/api/v2/audit-remarks/:audit_remark_id/feedback",
+            "params": [
+              {
+                "name": "audit_remark_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns the current user's feedback for an audit remark, or null if none exists. Requires a user-level API key."
+        },
+        {
+          "info": {
+            "name": "Submit feedback for an audit remark",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://platform.happyrobot.ai/api/v2/audit-remarks/:audit_remark_id/feedback",
+            "params": [
+              {
+                "name": "audit_remark_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Submit a thumbs up/down for an audit remark. Requires a user-level API key. A thumbs-up automatically adds the remark as a northstar example."
+        },
+        {
+          "info": {
+            "name": "Delete feedback for an audit remark",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://platform.happyrobot.ai/api/v2/audit-remarks/:audit_remark_id/feedback",
+            "params": [
+              {
+                "name": "audit_remark_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Removes the current user's feedback for an audit remark. Requires a user-level API key."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Issues",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List issues for a workflow",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform.happyrobot.ai/api/v2/workflows/:workflow_id/issues",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "source",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "workflow_id",
+                "value": "",
+                "type": "path",
+                "description": "Workflow UUID or slug"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns paginated quality issues (flags) for a workflow, optionally filtered by status or source."
+        },
+        {
+          "info": {
+            "name": "Update issue status",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://platform.happyrobot.ai/api/v2/issues/:issue_id",
+            "params": [
+              {
+                "name": "issue_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Updates the status of a quality issue (flag)."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Apps",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Duplicate an app",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://platform.happyrobot.ai/api/v2/apps/:app_slug/duplicate",
+            "params": [
+              {
+                "name": "app_slug",
+                "value": "",
+                "type": "path",
+                "description": "Slug of the source app to duplicate"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Creates a copy of a managed custom app, including source code and custom environment variables.\n\nThis is a long-running request and may take a while before responding.\n\n- **name** — Optional. Display name for the new app. Defaults to `'{original name} Copy'`.\n- **description** — Optional. Defaults to the source app description.\n- **tag_ids** — Optional. Tags to assign on the new app.\n\nPlatform-managed environment variables are regenerated for the new app. Service credentials are **not** copied a"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Versions",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get a version with nodes summary",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform.happyrobot.ai/api/v2/versions/:version_id/",
+            "params": [
+              {
+                "name": "version_id",
+                "value": "",
+                "type": "path",
+                "description": "Version UUID or slug"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns a single version by UUID or slug with metadata, node count, node counts by type, and the list of events (action node types) used."
+        },
+        {
+          "info": {
+            "name": "Update a version",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://platform.happyrobot.ai/api/v2/versions/:version_id/",
+            "params": [
+              {
+                "name": "version_id",
+                "value": "",
+                "type": "path",
+                "description": "Version UUID or slug"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Updates version metadata (name and/or description). Accepts a version UUID or slug as the path parameter."
+        },
+        {
+          "info": {
+            "name": "Fork a version",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://platform.happyrobot.ai/api/v2/versions/:version_id/fork",
+            "params": [
+              {
+                "name": "version_id",
+                "value": "",
+                "type": "path",
+                "description": "Version UUID or slug"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Creates a new version by copying all nodes from the specified version. The new version gets the next available version number and is unlocked/unpublished. If the source uses workflow engine v2, the fork remains an editable v2 draft and cannot be published through the public API until upgraded to v3. Any existing published v2 version remains live and continues running until explicitly unpublished. Accepts a version UUID or slug as the path parameter."
+        },
+        {
+          "info": {
+            "name": "Publish a version",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://platform.happyrobot.ai/api/v2/versions/:version_id/publish",
+            "params": [
+              {
+                "name": "version_id",
+                "value": "",
+                "type": "path",
+                "description": "Version UUID or slug"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Publishes the specified version to make it live. Before publishing, node configuration completeness is validated. If untested nodes exist, a synchronous test-all is triggered automatically. Test errors do not block publishing (matching UI behavior) but are returned as informational warnings in the `test_errors` field. Workflow engine v2 versions cannot be published through the public API. Existing published v2 versions remain live and continue running until explicitly unpublished; this endpoint "
+        },
+        {
+          "info": {
+            "name": "Lock a version",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://platform.happyrobot.ai/api/v2/versions/:version_id/lock",
+            "params": [
+              {
+                "name": "version_id",
+                "value": "",
+                "type": "path",
+                "description": "Version UUID or slug"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Locks the specified version, preventing further edits to its nodes. Accepts a version UUID or slug as the path parameter."
+        },
+        {
+          "info": {
+            "name": "Unlock a version",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://platform.happyrobot.ai/api/v2/versions/:version_id/unlock",
+            "params": [
+              {
+                "name": "version_id",
+                "value": "",
+                "type": "path",
+                "description": "Version UUID or slug"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Unlocks the specified version, allowing edits to its nodes. A version that is currently live cannot be unlocked — use unpublish instead. Accepts a version UUID or slug as the path parameter."
+        },
+        {
+          "info": {
+            "name": "Unpublish a version",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://platform.happyrobot.ai/api/v2/versions/:version_id/unpublish",
+            "params": [
+              {
+                "name": "version_id",
+                "value": "",
+                "type": "path",
+                "description": "Version UUID or slug"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Unpublishes the version (takes it offline) and unlocks it for editing. The version will no longer be live and its published lock is removed, allowing further modifications. The version must currently be live. Accepts a version UUID or slug as the path parameter."
+        },
+        {
+          "info": {
+            "name": "List version nodes",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform.happyrobot.ai/api/v2/versions/:version_id/nodes",
+            "params": [
+              {
+                "name": "version_id",
+                "value": "",
+                "type": "path",
+                "description": "Version UUID or slug"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns all workflow nodes belonging to the specified version. The version can be identified by its UUID or slug."
+        },
+        {
+          "info": {
+            "name": "Add nodes to a version",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://platform.happyrobot.ai/api/v2/versions/:version_id/nodes",
+            "params": [
+              {
+                "name": "version_id",
+                "value": "",
+                "type": "path",
+                "description": "Version UUID or slug"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Adds one or more nodes to the specified version. Nodes are processed sequentially in array order, so later nodes can reference earlier ones via `parent_node_index` (0-based index into this array) or existing DB nodes via `parent_node_id`. Each node must include a `type` discriminator: `\"trigger\"`, `\"action\"`, `\"agent\"`, `\"tool\"`, `\"prompt\"`, `\"condition\"`, `\"module-change\"`, `\"loop\"`, `\"path\"`, or `\"loop_break\"`. When a trigger node is included, all existing nodes in the version are replaced and"
+        },
+        {
+          "info": {
+            "name": "Get a single node",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform.happyrobot.ai/api/v2/versions/:version_id/nodes/:node_id",
+            "params": [
+              {
+                "name": "version_id",
+                "value": "",
+                "type": "path",
+                "description": "Version UUID or slug"
+              },
+              {
+                "name": "node_id",
+                "value": "",
+                "type": "path",
+                "description": "Node UUID"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns the full details of a single node including its configuration. For webhook trigger nodes (INCOMING_HOOK or PREDEFINED_REQUEST), the response also includes production, staging, development, and test webhook URLs."
+        },
+        {
+          "info": {
+            "name": "Update a node",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://platform.happyrobot.ai/api/v2/versions/:version_id/nodes/:node_id",
+            "params": [
+              {
+                "name": "version_id",
+                "value": "",
+                "type": "path",
+                "description": "Version UUID or slug"
+              },
+              {
+                "name": "node_id",
+                "value": "",
+                "type": "path",
+                "description": "Node UUID to update"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Updates the specified node. The request body must include a `type` discriminator matching the node type. Updatable fields depend on the type:\n- **trigger**: `name`, `configuration`, `webhook_payload`\n- **action**: `name`, `configuration`, `webhook_payload`\n- **agent**: `name`, `configuration`, `prompt`\n- **tool**: `name`, `function`\n- **prompt**: `name`, `prompt_md`, `initial_message`, `model`\n- **condition**: `name`, `type_of_condition`, `order`, `conditions`\n- **module-change**: `name`, `confi"
+        },
+        {
+          "info": {
+            "name": "Delete a node",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://platform.happyrobot.ai/api/v2/versions/:version_id/nodes/:node_id",
+            "params": [
+              {
+                "name": "version_id",
+                "value": "",
+                "type": "path",
+                "description": "Version UUID or slug"
+              },
+              {
+                "name": "node_id",
+                "value": "",
+                "type": "path",
+                "description": "Node UUID to delete"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Deletes the specified node. For tool, condition, and paths-root nodes, owned child nodes are also cascade-deleted. For action, prompt, and module-change nodes, children are reparented to the deleted node's parent so the workflow chain is preserved. Agent nodes delete their internal children (prompt + tools) while reparenting downstream workflow nodes. The trigger node (root node with no parent) cannot be deleted."
+        },
+        {
+          "info": {
+            "name": "List available variables for a node",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform.happyrobot.ai/api/v2/versions/:version_id/nodes/:node_id/available-vars",
+            "params": [
+              {
+                "name": "version_id",
+                "value": "",
+                "type": "path",
+                "description": "Version UUID or slug"
+              },
+              {
+                "name": "node_id",
+                "value": "",
+                "type": "path",
+                "description": "The UUID of the node"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns all variable groups available to the specified node, including system variables, environment variables, and upstream node outputs."
+        },
+        {
+          "info": {
+            "name": "Get config schema for a node",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform.happyrobot.ai/api/v2/versions/:version_id/nodes/:node_id/config-schema",
+            "params": [
+              {
+                "name": "version_id",
+                "value": "",
+                "type": "path",
+                "description": "Version UUID or slug"
+              },
+              {
+                "name": "node_id",
+                "value": "",
+                "type": "path",
+                "description": "The UUID of the node"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns the configuration schema for the node's event, including field types, required fields, current values, defaults, and validation status. Only works for action nodes (nodes with an event_id)."
+        },
+        {
+          "info": {
+            "name": "Set custom node output",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://platform.happyrobot.ai/api/v2/versions/:version_id/nodes/:node_id/custom-output",
+            "params": [
+              {
+                "name": "version_id",
+                "value": "",
+                "type": "path",
+                "description": "Version UUID or slug"
+              },
+              {
+                "name": "node_id",
+                "value": "",
+                "type": "path",
+                "description": "Node UUID"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Sets a custom JSON object as the node's output for testing purposes. This creates a new node output record and links it to the node, marking the node as complete. Useful for defining output schemas on trigger nodes, webhooks, or any node where you want to manually specify the output shape without running the actual test."
+        },
+        {
+          "info": {
+            "name": "Test a single node",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://platform.happyrobot.ai/api/v2/versions/:version_id/nodes/:node_id/test",
+            "params": [
+              {
+                "name": "version_id",
+                "value": "",
+                "type": "path",
+                "description": "Version UUID or slug"
+              },
+              {
+                "name": "node_id",
+                "value": "",
+                "type": "path",
+                "description": "Node UUID"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Triggers a test run for a single node in the specified version. The node must have a complete configuration and the version must not be published. Returns the generated node output (schema) on success."
+        },
+        {
+          "info": {
+            "name": "Test all nodes in a version",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://platform.happyrobot.ai/api/v2/versions/:version_id/test-all",
+            "params": [
+              {
+                "name": "version_id",
+                "value": "",
+                "type": "path",
+                "description": "Version UUID or slug"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Triggers a synchronous test-all run for every testable node in the specified version. Nodes are executed in dependency waves — independent nodes run in parallel. If a node fails, dependent nodes are skipped. The endpoint blocks until all nodes have been tested and returns per-node results."
+        },
+        {
+          "info": {
+            "name": "List prompt issues",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform.happyrobot.ai/api/v2/versions/:version_id/prompt-issues",
+            "params": [
+              {
+                "name": "version_id",
+                "value": "",
+                "type": "path",
+                "description": "Version UUID or slug"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns prompt quality issues for all prompt nodes in the specified version. Issues are generated asynchronously by the platform's prompt analysis system. Each prompt node includes its current prompt text, issue generation status, and any open (non-rejected) issues with recommendations."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Workflow Folders",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List workflow folders",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform.happyrobot.ai/api/v2/workflow-folders/",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "search",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns paginated workflow folders for the authenticated organization. Supports searching by name."
+        },
+        {
+          "info": {
+            "name": "Create a workflow folder",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://platform.happyrobot.ai/api/v2/workflow-folders/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Creates a new workflow folder in the authenticated organization. Optionally nest it under a parent folder."
+        },
+        {
+          "info": {
+            "name": "Get a workflow folder",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform.happyrobot.ai/api/v2/workflow-folders/:folder_id",
+            "params": [
+              {
+                "name": "folder_id",
+                "value": "",
+                "type": "path",
+                "description": "Folder UUID or slug"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns a single workflow folder by UUID or slug."
+        },
+        {
+          "info": {
+            "name": "Update a workflow folder",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://platform.happyrobot.ai/api/v2/workflow-folders/:folder_id",
+            "params": [
+              {
+                "name": "folder_id",
+                "value": "",
+                "type": "path",
+                "description": "Folder UUID or slug"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Updates the name of a workflow folder identified by UUID or slug."
+        },
+        {
+          "info": {
+            "name": "Delete a workflow folder",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://platform.happyrobot.ai/api/v2/workflow-folders/:folder_id",
+            "params": [
+              {
+                "name": "folder_id",
+                "value": "",
+                "type": "path",
+                "description": "Folder UUID or slug"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Deletes a workflow folder by UUID or slug. Workflows inside the folder are moved to the folder specified by `move_to`, or to the parent folder if `move_to` is omitted. Sub-folders are also moved to the same destination."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Phone Numbers",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List phone numbers",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform.happyrobot.ai/api/v2/phone-numbers/",
+            "params": [
+              {
+                "name": "restrict",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated filter values: INBOUND, OUTBOUND_WITH_CALLBACK, OUTBOUND_WITH_CALLBACK_STAGING, OUTBOUND_WITH_CALLBACK_DEVELOPMENT, ALL"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns all phone numbers for the authenticated organization, including Twilio, Telnyx, and SIP trunk numbers with caller ID information."
+        },
+        {
+          "info": {
+            "name": "Purchase a phone number",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://platform.happyrobot.ai/api/v2/phone-numbers/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Purchases a new phone number from Twilio or Telnyx. For toll-free numbers (US/CA only), also submits toll-free verification. Rate limited to one purchase every 10 minutes per organization. Send force=true in the body to bypass this limit (use with caution — each number has a recurring monthly cost)."
+        },
+        {
+          "info": {
+            "name": "Validate toll-free numbers for TextAgent",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://platform.happyrobot.ai/api/v2/phone-numbers/validate-toll-free-numbers",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Validates toll-free phone numbers for use with TextAgent SMS. Outbound numbers are always valid. Inbound numbers are blocked if a live inbound TextAgent already uses them."
+        },
+        {
+          "info": {
+            "name": "Delete a toll-free verification",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://platform.happyrobot.ai/api/v2/phone-numbers/tollfree-verification/:verification_sid",
+            "params": [
+              {
+                "name": "verification_sid",
+                "value": "",
+                "type": "path",
+                "description": "Toll-free verification SID"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Deletes a toll-free verification request by its SID."
+        },
+        {
+          "info": {
+            "name": "Free up a phone number",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://platform.happyrobot.ai/api/v2/phone-numbers/free-up-number",
+            "params": [
+              {
+                "name": "phone_number_id",
+                "value": "",
+                "type": "path",
+                "description": "Phone number ID (Twilio SID or Telnyx ID)"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Removes a phone number from all workflows it is assigned to. The phone number must not be used in any live version."
+        },
+        {
+          "info": {
+            "name": "Delete a phone number",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://platform.happyrobot.ai/api/v2/phone-numbers/delete-number",
+            "params": [
+              {
+                "name": "phone_number_id",
+                "value": "",
+                "type": "path",
+                "description": "Phone number ID (Twilio SID or Telnyx ID)"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Permanently deletes a phone number. The phone number must not be in use by any workflow."
+        },
+        {
+          "info": {
+            "name": "Get phone number usage",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform.happyrobot.ai/api/v2/phone-numbers/usage",
+            "params": [
+              {
+                "name": "phone_number_id",
+                "value": "",
+                "type": "path",
+                "description": "Phone number ID (Twilio SID or Telnyx ID)"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns usage information for a phone number across all workflows and versions."
+        },
+        {
+          "info": {
+            "name": "Remove phone number from a workflow",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://platform.happyrobot.ai/api/v2/phone-numbers/remove-from-workflow",
+            "params": [
+              {
+                "name": "phone_number_id",
+                "value": "",
+                "type": "path",
+                "description": "Phone number ID (Twilio SID or Telnyx ID)"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Removes a phone number from a specific workflow and version. The version must not be live."
+        },
+        {
+          "info": {
+            "name": "Get toll-free verification status",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform.happyrobot.ai/api/v2/phone-numbers/tollfree-verification",
+            "params": [
+              {
+                "name": "phone_number_id",
+                "value": "",
+                "type": "path",
+                "description": "Phone number ID (Twilio SID or Telnyx ID)"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns toll-free verification status and submitted data for a phone number. Returns 204 when no verification exists."
+        },
+        {
+          "info": {
+            "name": "Submit toll-free verification",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://platform.happyrobot.ai/api/v2/phone-numbers/tollfree-verification",
+            "params": [
+              {
+                "name": "phone_number_id",
+                "value": "",
+                "type": "path",
+                "description": "Phone number ID (Twilio SID or Telnyx ID)"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Submits a toll-free verification request for a phone number. Requires business_name, notification_email, and sms_url."
+        },
+        {
+          "info": {
+            "name": "Create and attach SIP trunk",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://platform.happyrobot.ai/api/v2/phone-numbers/sip-trunk",
+            "params": [
+              {
+                "name": "phone_number_id",
+                "value": "",
+                "type": "path",
+                "description": "Phone number ID (Twilio SID or Telnyx ID)"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Creates a SIP trunk and attaches it to a Twilio phone number. Sets up both inbound and outbound trunks in LiveKit."
+        },
+        {
+          "info": {
+            "name": "Update a phone number",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://platform.happyrobot.ai/api/v2/phone-numbers/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Phone number ID"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Updates the display name and caller ID setting for a phone number."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "SIP Trunks",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List SIP trunks",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform.happyrobot.ai/api/v2/sip-trunks/",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns all SIP trunks for the organization."
+        },
+        {
+          "info": {
+            "name": "Create a SIP trunk",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://platform.happyrobot.ai/api/v2/sip-trunks/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Creates a new SIP trunk with inbound and outbound LiveKit trunks. Rate limited to one creation every 10 minutes per organization. Send force=true in the body to bypass this limit (use with caution — each trunk has a recurring monthly cost)."
+        },
+        {
+          "info": {
+            "name": "Get SIP trunk options",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform.happyrobot.ai/api/v2/sip-trunks/options",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns trunk options for UI (id, name, number)."
+        },
+        {
+          "info": {
+            "name": "Create multiple SIP trunks",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://platform.happyrobot.ai/api/v2/sip-trunks/bulk",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Creates multiple SIP trunks from a shared configuration. Returns the successfully created trunks. Rate limited to one creation every 10 minutes per organization. Send force=true in the body to bypass this limit (use with caution — each trunk has a recurring monthly cost)."
+        },
+        {
+          "info": {
+            "name": "Get a SIP trunk",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform.happyrobot.ai/api/v2/sip-trunks/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "SIP trunk ID"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns a single SIP trunk by ID."
+        },
+        {
+          "info": {
+            "name": "Update a SIP trunk",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://platform.happyrobot.ai/api/v2/sip-trunks/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "SIP trunk ID"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Updates a SIP trunk by ID."
+        },
+        {
+          "info": {
+            "name": "Delete a SIP trunk",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://platform.happyrobot.ai/api/v2/sip-trunks/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "SIP trunk ID"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Deletes a SIP trunk by ID. Fails if the trunk is still in use by a workflow."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Integrations",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List integrations",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform.happyrobot.ai/api/v2/integrations/",
+            "params": [
+              {
+                "name": "search",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "category",
+                "value": "",
+                "type": "query",
+                "description": "Filter by category. Works for both internal groups (e.g. 'Communications', 'Data') and delegated categories (e.g. 'crm', 'hris', 'ats'). Case-insensitive."
+              },
+              {
+                "name": "provider",
+                "value": "",
+                "type": "query",
+                "description": "Filter by provider slug. Works for both internal integrations (e.g. 'gmail', 'slack') and delegated providers (e.g. 'hubspot', 'workday')."
+              },
+              {
+                "name": "include_events",
+                "value": "",
+                "type": "query",
+                "description": "If true, include events per integration (default: false)"
+              },
+              {
+                "name": "include_credentials",
+                "value": "",
+                "type": "query",
+                "description": "If true, include the organization's connected credentials per integration (default: false)"
+              },
+              {
+                "name": "include_config_schema",
+                "value": "",
+                "type": "query",
+                "description": "If true, include config_schema per event. Only effective when include_events=true (default: false)"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns available integrations with optional events and credentials. Delegated providers (CRM, HRIS, ATS, etc.) are expanded into individual entries. Supports filtering by category, provider, and search. Paginated (default: 20 per page)."
+        },
+        {
+          "info": {
+            "name": "List integration categories with providers",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform.happyrobot.ai/api/v2/integrations/categories",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns a unified map of categories to their available providers. Includes both internal integration groups (Communications, Data, etc.) and delegated provider categories (CRM, HRIS, ATS, etc.)."
+        },
+        {
+          "info": {
+            "name": "Get an integration",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform.happyrobot.ai/api/v2/integrations/:integrationId",
+            "params": [
+              {
+                "name": "integrationId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns a single integration by ID, including its events and the organization's connected credentials. Supports both native integration UUIDs and delegated provider composite IDs (e.g. {uuid}--{provider_slug})."
+        },
+        {
+          "info": {
+            "name": "Create a credential for an integration",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://platform.happyrobot.ai/api/v2/integrations/:integrationId/create-credential",
+            "params": [
+              {
+                "name": "integrationId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Creates a new credential for a form-based integration. OAuth integrations are not supported via API — use the HappyRobot platform UI instead."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Integration Resources",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List WhatsApp message templates",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform.happyrobot.ai/api/v2/integrations/whatsapp/message-templates",
+            "params": [
+              {
+                "name": "credential_id",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "business_account_id",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns all approved WhatsApp message templates for the given credential and business account."
+        },
+        {
+          "info": {
+            "name": "List WhatsApp businesses",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform.happyrobot.ai/api/v2/integrations/whatsapp/businesses",
+            "params": [
+              {
+                "name": "credential_id",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns all WhatsApp businesses associated with the organization's credentials."
+        },
+        {
+          "info": {
+            "name": "List WhatsApp business accounts",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform.happyrobot.ai/api/v2/integrations/whatsapp/business-accounts",
+            "params": [
+              {
+                "name": "credential_id",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "business_id",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns all WhatsApp business accounts for a given business ID."
+        },
+        {
+          "info": {
+            "name": "List WhatsApp phone numbers",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform.happyrobot.ai/api/v2/integrations/whatsapp/phone-numbers",
+            "params": [
+              {
+                "name": "credential_id",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "business_account_id",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns all WhatsApp phone numbers for a given business account ID."
+        },
+        {
+          "info": {
+            "name": "List Slack channels",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform.happyrobot.ai/api/v2/integrations/slack/channels",
+            "params": [
+              {
+                "name": "credential_id",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns all Slack channels accessible with the organization's credentials."
+        },
+        {
+          "info": {
+            "name": "List Slack users",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform.happyrobot.ai/api/v2/integrations/slack/users",
+            "params": [
+              {
+                "name": "credential_id",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns all Slack users accessible with the organization's credentials."
+        },
+        {
+          "info": {
+            "name": "List Google Sheets spreadsheets",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform.happyrobot.ai/api/v2/integrations/google-sheets/spreadsheets",
+            "params": [
+              {
+                "name": "credential_id",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "search",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "page_token",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns Google Sheets spreadsheets accessible with the organization's credentials. Supports search and cursor-based pagination."
+        },
+        {
+          "info": {
+            "name": "List Google Sheets worksheets",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform.happyrobot.ai/api/v2/integrations/google-sheets/worksheets",
+            "params": [
+              {
+                "name": "credential_id",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "spreadsheet_id",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns all worksheets (tabs) within a Google Sheets spreadsheet."
+        },
+        {
+          "info": {
+            "name": "List Google Sheets columns",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform.happyrobot.ai/api/v2/integrations/google-sheets/columns",
+            "params": [
+              {
+                "name": "credential_id",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "spreadsheet_id",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "worksheet_name",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns all column headers from a specific worksheet within a Google Sheets spreadsheet."
+        },
+        {
+          "info": {
+            "name": "List Google Sheets rows",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform.happyrobot.ai/api/v2/integrations/google-sheets/rows",
+            "params": [
+              {
+                "name": "credential_id",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "spreadsheet_id",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "worksheet_name",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns all rows from a specific worksheet within a Google Sheets spreadsheet."
+        },
+        {
+          "info": {
+            "name": "List Microsoft Teams teams",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform.happyrobot.ai/api/v2/integrations/teams/teams",
+            "params": [
+              {
+                "name": "credential_id",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns all Microsoft Teams teams accessible with the organization's credentials."
+        },
+        {
+          "info": {
+            "name": "List Microsoft Teams channels",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform.happyrobot.ai/api/v2/integrations/teams/channels",
+            "params": [
+              {
+                "name": "credential_id",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "team_id",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns all Microsoft Teams channels. Optionally filter by team ID."
+        },
+        {
+          "info": {
+            "name": "List Microsoft Teams users",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform.happyrobot.ai/api/v2/integrations/teams/users",
+            "params": [
+              {
+                "name": "credential_id",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns all Microsoft Teams users accessible with the organization's credentials."
+        },
+        {
+          "info": {
+            "name": "List Twilio SMS phone numbers",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform.happyrobot.ai/api/v2/integrations/twilio-sms/phone-numbers",
+            "params": [
+              {
+                "name": "credential_id",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns all Twilio SMS phone numbers available for the organization."
+        },
+        {
+          "info": {
+            "name": "List Telnyx SMS phone numbers",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform.happyrobot.ai/api/v2/integrations/telnyx-sms/phone-numbers",
+            "params": [
+              {
+                "name": "credential_id",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns all Telnyx SMS phone numbers available for the organization."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Sessions",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List sessions by caller ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform.happyrobot.ai/api/v2/sessions/",
+            "params": [
+              {
+                "name": "caller_id",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "start_date",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "end_date",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "sort",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns paginated sessions whose caller phone number matches caller_id, ordered by timestamp. Optionally filter by session timestamp with start_date and/or end_date (ISO 8601). Resolves the phone number to a contact, so a session is only returned if it produced a communication event. Use the session id with GET /sessions/{session_id}/messages to fetch the transcript."
+        },
+        {
+          "info": {
+            "name": "Stream session messages (SSE)",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform.happyrobot.ai/api/v2/sessions/:session_id/stream",
+            "params": [
+              {
+                "name": "backfillLimit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "session_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Opens a Server-Sent Events stream for a single session. Optionally backfills the most recent messages. The stream emits `message` events in real-time and closes when the session ends."
+        },
+        {
+          "info": {
+            "name": "Get session",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform.happyrobot.ai/api/v2/sessions/:session_id",
+            "params": [
+              {
+                "name": "session_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns metadata for a single session."
+        },
+        {
+          "info": {
+            "name": "List session messages",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform.happyrobot.ai/api/v2/sessions/:session_id/messages",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "sort",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "session_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns paginated messages for a session, ordered by timestamp."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Messages",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List message flags",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform.happyrobot.ai/api/v2/messages/:message_id/flags",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "sort",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "message_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns paginated flags (issues) for a specific message, ordered by creation date."
+        },
+        {
+          "info": {
+            "name": "Create message flag",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://platform.happyrobot.ai/api/v2/messages/:message_id/flags",
+            "params": [
+              {
+                "name": "message_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Creates a new flag (issue) on a specific message. The flag is linked to the message and its parent run."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Organization",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get current organization",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform.happyrobot.ai/api/v2/org/",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns basic information about the authenticated organization."
+        },
+        {
+          "info": {
+            "name": "Add a member to the current organization",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://platform.happyrobot.ai/api/v2/org/members/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Adds a member to the authenticated organization by email. Internal users are added immediately; everyone else receives an email invitation to accept. Role must be editor or viewer (owners cannot be assigned via the API); defaults to viewer."
+        },
+        {
+          "info": {
+            "name": "Remove a member from the current organization",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://platform.happyrobot.ai/api/v2/org/members/",
+            "params": [
+              {
+                "name": "email",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "user_id",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Removes a member from the authenticated organization, identified by email or user_id. Owners cannot be removed via the API."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "MCP Servers",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List MCP servers",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform.happyrobot.ai/api/v2/mcp/",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "sort",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "search",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns paginated MCP servers for the authenticated organization."
+        },
+        {
+          "info": {
+            "name": "Create MCP server",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://platform.happyrobot.ai/api/v2/mcp/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Creates a new MCP server connection. Tests connectivity and discovers available tools before saving."
+        },
+        {
+          "info": {
+            "name": "Refresh MCP server tools",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://platform.happyrobot.ai/api/v2/mcp/:mcpId/refresh",
+            "params": [
+              {
+                "name": "mcpId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Re-connects to an existing MCP server and refreshes the list of discovered tools."
+        },
+        {
+          "info": {
+            "name": "List authorized organizations",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform.happyrobot.ai/api/v2/mcp/authorized-orgs",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns the organizations this MCP token is authorized to act on."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Northstars",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List northstars for a prompt node",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform.happyrobot.ai/api/v2/nodes/:node_id/northstars",
+            "params": [
+              {
+                "name": "node_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns all northstars for a prompt node along with AI generation and coverage assessment statuses."
+        },
+        {
+          "info": {
+            "name": "Create a northstar for a prompt node",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://platform.happyrobot.ai/api/v2/nodes/:node_id/northstars",
+            "params": [
+              {
+                "name": "node_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Create a new northstar evaluation criterion for this prompt node."
+        },
+        {
+          "info": {
+            "name": "Generate northstars for a prompt node",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://platform.happyrobot.ai/api/v2/nodes/:node_id/northstars/generate",
+            "params": [
+              {
+                "name": "node_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Generate northstars for this node using AI. If northstars already exist they are force-regenerated."
+        },
+        {
+          "info": {
+            "name": "Batch toggle northstars",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://platform.happyrobot.ai/api/v2/nodes/:node_id/northstars/batch-toggle",
+            "params": [
+              {
+                "name": "node_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Enable or disable all northstars for this prompt node at once."
+        },
+        {
+          "info": {
+            "name": "Iterate northstars for a prompt node",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://platform.happyrobot.ai/api/v2/nodes/:node_id/northstars/iterate",
+            "params": [
+              {
+                "name": "node_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Rewrite existing northstars to reflect recent changes made to the prompt node."
+        },
+        {
+          "info": {
+            "name": "Assess northstar coverage for a prompt node",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://platform.happyrobot.ai/api/v2/nodes/:node_id/northstars/assess-coverage",
+            "params": [
+              {
+                "name": "node_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Trigger an AI assessment of how well current northstars cover the prompt's expected behaviors."
+        },
+        {
+          "info": {
+            "name": "Create a northstar folder for a prompt node",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://platform.happyrobot.ai/api/v2/nodes/:node_id/northstars/folders",
+            "params": [
+              {
+                "name": "node_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Create a folder for organizing this prompt node's northstars. File northstars into it via folder_id on create or update."
+        },
+        {
+          "info": {
+            "name": "Get a northstar by ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform.happyrobot.ai/api/v2/northstars/:northstar_id",
+            "params": [
+              {
+                "name": "northstar_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Get a northstar by ID"
+        },
+        {
+          "info": {
+            "name": "Update a northstar",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://platform.happyrobot.ai/api/v2/northstars/:northstar_id",
+            "params": [
+              {
+                "name": "northstar_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Update any subset of: name, description, category, examples, enabled state, priority, or folder_id."
+        },
+        {
+          "info": {
+            "name": "Delete a northstar",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://platform.happyrobot.ai/api/v2/northstars/:northstar_id",
+            "params": [
+              {
+                "name": "northstar_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Delete a northstar"
+        },
+        {
+          "info": {
+            "name": "Get northstar history",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform.happyrobot.ai/api/v2/northstars/:northstar_id/history",
+            "params": [
+              {
+                "name": "northstar_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Fetch the full regeneration chain — every version this northstar was derived from, oldest first."
+        },
+        {
+          "info": {
+            "name": "Submit northstar feedback",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://platform.happyrobot.ai/api/v2/northstars/:northstar_id/feedback",
+            "params": [
+              {
+                "name": "northstar_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Submit a correctness rating (-2 = strongly wrong, +2 = strongly correct). One entry per API key/user."
+        },
+        {
+          "info": {
+            "name": "Delete northstar feedback",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://platform.happyrobot.ai/api/v2/northstars/:northstar_id/feedback",
+            "params": [
+              {
+                "name": "northstar_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Remove your feedback on a northstar."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Custom Evals",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List custom evals for a prompt node",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform.happyrobot.ai/api/v2/nodes/:node_id/custom-evals",
+            "params": [
+              {
+                "name": "node_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "List custom evals for a prompt node"
+        },
+        {
+          "info": {
+            "name": "Create a custom eval for a prompt node",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://platform.happyrobot.ai/api/v2/nodes/:node_id/custom-evals",
+            "params": [
+              {
+                "name": "node_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Create a custom eval for a prompt node"
+        },
+        {
+          "info": {
+            "name": "Get available tools for custom evals",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform.happyrobot.ai/api/v2/nodes/:node_id/custom-evals/tools",
+            "params": [
+              {
+                "name": "node_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Available tool/function definitions for this node — for building expected_tool_calls."
+        },
+        {
+          "info": {
+            "name": "Get default variables for custom evals",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform.happyrobot.ai/api/v2/nodes/:node_id/custom-evals/default-variables",
+            "params": [
+              {
+                "name": "version_id",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "node_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Merged default variable values available at runtime (org + use-case + workflow levels)."
+        },
+        {
+          "info": {
+            "name": "Extract custom eval from a run",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://platform.happyrobot.ai/api/v2/nodes/:node_id/custom-evals/extract-from-run",
+            "params": [
+              {
+                "name": "node_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Build a custom eval from an existing run. Auto-extracts messages, variables, and suggests a name."
+        },
+        {
+          "info": {
+            "name": "Create a custom eval folder for a prompt node",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://platform.happyrobot.ai/api/v2/nodes/:node_id/custom-evals/folders",
+            "params": [
+              {
+                "name": "node_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Create a folder for organizing this prompt node's custom evals. File evals into it via folder_id on update."
+        },
+        {
+          "info": {
+            "name": "Get a custom eval by ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform.happyrobot.ai/api/v2/custom-evals/:eval_id",
+            "params": [
+              {
+                "name": "eval_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Get a custom eval by ID"
+        },
+        {
+          "info": {
+            "name": "Update a custom eval",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://platform.happyrobot.ai/api/v2/custom-evals/:eval_id",
+            "params": [
+              {
+                "name": "eval_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Update a custom eval"
+        },
+        {
+          "info": {
+            "name": "Delete a custom eval",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://platform.happyrobot.ai/api/v2/custom-evals/:eval_id",
+            "params": [
+              {
+                "name": "eval_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Delete a custom eval"
+        },
+        {
+          "info": {
+            "name": "Run a custom eval",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://platform.happyrobot.ai/api/v2/custom-evals/:eval_id/run",
+            "params": [
+              {
+                "name": "eval_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Execute the eval asynchronously. Poll /custom-evals/:eval_id/runs for results."
+        },
+        {
+          "info": {
+            "name": "List custom eval runs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform.happyrobot.ai/api/v2/custom-evals/:eval_id/runs",
+            "params": [
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "eval_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "List custom eval runs"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Adversarial Tests",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List adversarial tests for a node",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform.happyrobot.ai/api/v2/nodes/:node_id/adversarial-tests",
+            "params": [
+              {
+                "name": "version_id",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "node_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "List adversarial tests for a node"
+        },
+        {
+          "info": {
+            "name": "Create an adversarial test for a node",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://platform.happyrobot.ai/api/v2/nodes/:node_id/adversarial-tests",
+            "params": [
+              {
+                "name": "node_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Create an adversarial test for a node"
+        },
+        {
+          "info": {
+            "name": "Create an adversarial folder for an agent node",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://platform.happyrobot.ai/api/v2/nodes/:node_id/adversarial-tests/folders",
+            "params": [
+              {
+                "name": "node_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Create a folder for organizing this agent node's adversarial tests and suites. File them into it via folder_id on update."
+        },
+        {
+          "info": {
+            "name": "Get an adversarial test by ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform.happyrobot.ai/api/v2/adversarial-tests/:test_id",
+            "params": [
+              {
+                "name": "test_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Get an adversarial test by ID"
+        },
+        {
+          "info": {
+            "name": "Update an adversarial test",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://platform.happyrobot.ai/api/v2/adversarial-tests/:test_id",
+            "params": [
+              {
+                "name": "test_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Update an adversarial test"
+        },
+        {
+          "info": {
+            "name": "Delete an adversarial test",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://platform.happyrobot.ai/api/v2/adversarial-tests/:test_id",
+            "params": [
+              {
+                "name": "test_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Delete an adversarial test"
+        },
+        {
+          "info": {
+            "name": "Run an adversarial test",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://platform.happyrobot.ai/api/v2/adversarial-tests/:test_id/run",
+            "params": [
+              {
+                "name": "test_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Execute the adversarial test asynchronously. Poll /adversarial-tests/:test_id/runs for results."
+        },
+        {
+          "info": {
+            "name": "List adversarial test runs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform.happyrobot.ai/api/v2/adversarial-tests/:test_id/runs",
+            "params": [
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "test_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "List adversarial test runs"
+        },
+        {
+          "info": {
+            "name": "Get adversarial test run by ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform.happyrobot.ai/api/v2/adversarial-tests/runs/:run_id",
+            "params": [
+              {
+                "name": "run_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Full status and audit remarks for a single test run."
+        },
+        {
+          "info": {
+            "name": "Get adversarial test run messages",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform.happyrobot.ai/api/v2/adversarial-tests/runs/:run_id/messages",
+            "params": [
+              {
+                "name": "run_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "The full conversation that took place during this adversarial test run."
+        },
+        {
+          "info": {
+            "name": "Get the resolved audit scope for an adversarial test",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform.happyrobot.ai/api/v2/adversarial-tests/:test_id/effective-scope",
+            "params": [
+              {
+                "name": "test_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns the northstar categories that BEA will grade against when this test runs. Generated tests inherit the suite's scope; standalone tests carry their own. Use this to display 'currently grading against tags: [...]' without re-implementing the resolution."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Adversarial Suites",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List adversarial suites for a node",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform.happyrobot.ai/api/v2/nodes/:node_id/adversarial-suites",
+            "params": [
+              {
+                "name": "version_id",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "node_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "List adversarial suites for a node"
+        },
+        {
+          "info": {
+            "name": "Create an adversarial suite for a node",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://platform.happyrobot.ai/api/v2/nodes/:node_id/adversarial-suites",
+            "params": [
+              {
+                "name": "node_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Create a suite. The generation_prompt drives AI auto-generation of individual tests."
+        },
+        {
+          "info": {
+            "name": "Get an adversarial suite by ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform.happyrobot.ai/api/v2/adversarial-suites/:suite_id",
+            "params": [
+              {
+                "name": "suite_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns the suite and the mermaid workflow graph if already generated."
+        },
+        {
+          "info": {
+            "name": "Update an adversarial suite",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://platform.happyrobot.ai/api/v2/adversarial-suites/:suite_id",
+            "params": [
+              {
+                "name": "suite_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Update an adversarial suite"
+        },
+        {
+          "info": {
+            "name": "Delete an adversarial suite",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://platform.happyrobot.ai/api/v2/adversarial-suites/:suite_id",
+            "params": [
+              {
+                "name": "suite_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Delete an adversarial suite"
+        },
+        {
+          "info": {
+            "name": "Generate adversarial suite tests",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://platform.happyrobot.ai/api/v2/adversarial-suites/:suite_id/generate",
+            "params": [
+              {
+                "name": "suite_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Auto-generate individual adversarial tests from the suite's generation_prompt using AI."
+        },
+        {
+          "info": {
+            "name": "Generate adversarial suite workflow graph",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://platform.happyrobot.ai/api/v2/adversarial-suites/:suite_id/generate-graph",
+            "params": [
+              {
+                "name": "suite_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Generate a mermaid workflow graph visualizing the test paths in this suite."
+        },
+        {
+          "info": {
+            "name": "Run an adversarial suite",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://platform.happyrobot.ai/api/v2/adversarial-suites/:suite_id/run",
+            "params": [
+              {
+                "name": "suite_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Execute all tests in the suite asynchronously."
+        },
+        {
+          "info": {
+            "name": "List adversarial suite runs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform.happyrobot.ai/api/v2/adversarial-suites/:suite_id/runs",
+            "params": [
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "suite_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "List adversarial suite runs"
+        },
+        {
+          "info": {
+            "name": "Get adversarial suite run by ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform.happyrobot.ai/api/v2/adversarial-suites/runs/:suite_run_id",
+            "params": [
+              {
+                "name": "suite_run_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Full status and aggregate counts for a suite run."
+        },
+        {
+          "info": {
+            "name": "List test runs in a suite run",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform.happyrobot.ai/api/v2/adversarial-suites/runs/:suite_run_id/test-runs",
+            "params": [
+              {
+                "name": "suite_run_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "All individual adversarial test results within this suite run."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Events",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get config schema for an event",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform.happyrobot.ai/api/v2/events/:event_id/config-schema",
+            "params": [
+              {
+                "name": "event_id",
+                "value": "",
+                "type": "path",
+                "description": "The event ID"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns the configuration schema for an event, including field types, required fields, defaults, and available options. Use this to inspect what an event expects before creating a node."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Twin",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Twin database schema",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform.happyrobot.ai/api/v2/twin/schema",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Get Twin database schema"
+        },
+        {
+          "info": {
+            "name": "Create a Twin table",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://platform.happyrobot.ai/api/v2/twin/tables",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Create a Twin table"
+        },
+        {
+          "info": {
+            "name": "Get Twin table data",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform.happyrobot.ai/api/v2/twin/tables/:tableName",
+            "params": [
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "tableName",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Get Twin table data"
+        },
+        {
+          "info": {
+            "name": "Drop a Twin table",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://platform.happyrobot.ai/api/v2/twin/tables/:tableName",
+            "params": [
+              {
+                "name": "tableName",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Drop a Twin table"
+        },
+        {
+          "info": {
+            "name": "Insert a row into a Twin table",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://platform.happyrobot.ai/api/v2/twin/tables/:tableName/rows",
+            "params": [
+              {
+                "name": "tableName",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Insert a row into a Twin table"
+        },
+        {
+          "info": {
+            "name": "Update a row in a Twin table",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://platform.happyrobot.ai/api/v2/twin/tables/:tableName/rows",
+            "params": [
+              {
+                "name": "tableName",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Update a row in a Twin table"
+        },
+        {
+          "info": {
+            "name": "Delete rows from a Twin table",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://platform.happyrobot.ai/api/v2/twin/tables/:tableName/rows",
+            "params": [
+              {
+                "name": "tableName",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Delete rows from a Twin table"
+        },
+        {
+          "info": {
+            "name": "Execute SQL on Twin database",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://platform.happyrobot.ai/api/v2/twin/sql",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Execute SQL on Twin database"
+        },
+        {
+          "info": {
+            "name": "Create a Twin workflow dump table",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://platform.happyrobot.ai/api/v2/twin/dump",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Creates a Twin table plus a dump config that maps workflow run values into its columns. Unlike POST /twin/tables (a bare table), the server resolves the workflow's variable catalog and binds each column to a variable, so completed runs populate the table automatically. Captures every variable by default; use `include` for a subset and `pk` to choose the primary key."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Chat",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create a chat client token",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://platform.happyrobot.ai/api/v2/chat/tokens/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Generates a scoped JWT for browser-side chat operations. Call this from your backend with your API key, then pass the token to the frontend."
+        },
+        {
+          "info": {
+            "name": "Create a chat session",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://platform.happyrobot.ai/api/v2/chat/sessions/",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Creates a new chat session for the workflow scoped in the client token."
+        },
+        {
+          "info": {
+            "name": "Send a chat message",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://platform.happyrobot.ai/api/v2/chat/sessions/:id/messages",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Sends a user message to the chat session. The AI response will arrive via WebSocket."
+        },
+        {
+          "info": {
+            "name": "Close a chat session",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://platform.happyrobot.ai/api/v2/chat/sessions/:id/close",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Ends the chat session, stopping the AI agent. The session cannot be resumed after this call."
+        },
+        {
+          "info": {
+            "name": "Get chat session history",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform.happyrobot.ai/api/v2/chat/sessions/:id/history",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Retrieves message history for a chat session. Useful for page reloads or reconnects."
+        },
+        {
+          "info": {
+            "name": "Get presigned upload URL",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform.happyrobot.ai/api/v2/chat/upload/presigned",
+            "params": [
+              {
+                "name": "filename",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "mime_type",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns a presigned S3 URL for direct file upload from the browser. After uploading, call POST /chat/upload/complete to register the artifact."
+        },
+        {
+          "info": {
+            "name": "Complete file upload",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://platform.happyrobot.ai/api/v2/chat/upload/complete",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Registers an uploaded artifact after direct S3 upload. Call this after uploading the file to the presigned URL."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Realtime",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create a realtime client token",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://platform.happyrobot.ai/api/v2/realtime/tokens",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Generates a scoped JWT for browser-side realtime connections."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Artifacts",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Resolve artifact download URLs",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://platform.happyrobot.ai/api/v2/artifacts/resolve",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns fresh presigned URLs for one or more artifact S3 keys."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Voice",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create a voice call token",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://platform.happyrobot.ai/api/v2/voice/tokens/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Generates a LiveKit token for browser-side voice calls with AI agents. Call this from your backend with your API key, then pass the token to the frontend. Use workflow_id to start a new call, or session_id to join/take over an in-progress call."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Signals",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List signal keys for the org",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform.happyrobot.ai/api/v2/signals/keys",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns all configured custom signal keys for nodes in the API key org."
+        },
+        {
+          "info": {
+            "name": "Add a custom signal key to node",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://platform.happyrobot.ai/api/v2/signals/keys",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Appends a custom signal key to the target node configuration in all environments."
+        },
+        {
+          "info": {
+            "name": "Delete a custom signal key from node",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://platform.happyrobot.ai/api/v2/signals/keys",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Removes a custom signal key from the target node configuration in all environments."
+        },
+        {
+          "info": {
+            "name": "Publish an immediate signal",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://platform.happyrobot.ai/api/v2/signals/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Publishes a signal to internal signal service. payload.org_id is always derived from API key org. Built-in keys (org., usecase., session.) are allowed for targeting active sessions."
+        },
+        {
+          "info": {
+            "name": "Schedule a delayed signal",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://platform.happyrobot.ai/api/v2/signals/scheduled-signals",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Schedules a delayed signal in internal signal service. payload.org_id is always derived from API key org."
+        },
+        {
+          "info": {
+            "name": "Patch a scheduled signal",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://platform.happyrobot.ai/api/v2/signals/scheduled-signals/:scheduled_signal_id",
+            "params": [
+              {
+                "name": "scheduled_signal_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Updates a scheduled signal. When payload is provided, payload.org_id is always derived from API key org."
+        },
+        {
+          "info": {
+            "name": "Delete a scheduled signal",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://platform.happyrobot.ai/api/v2/signals/scheduled-signals/:scheduled_signal_id",
+            "params": [
+              {
+                "name": "scheduled_signal_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Cancels a scheduled signal."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

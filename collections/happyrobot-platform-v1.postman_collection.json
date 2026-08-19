@@ -1,0 +1,2135 @@
+{
+  "item": [
+    {
+      "id": "30818fe2-a0eb-498b-bfb6-22f1020168dc",
+      "name": "Runs",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "5d95c099-3433-461f-ae69-6265e9e5d8fc",
+          "name": "DEPRECATED: Get runs",
+          "request": {
+            "name": "DEPRECATED: Get runs",
+            "description": {
+              "content": "DEPRECATED: Use the new /runs endpoint instead. Get runs for a use case with pagination.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "use-cases",
+                ":use_case_id",
+                "runs"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "offset",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "sort",
+                  "value": "desc",
+                  "description": "The sort order of the runs. Defaults to desc."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "use_case_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) ",
+                "key": "x-organization-id",
+                "value": "<string>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "d4757faf-a7da-454f-9a7b-b19fb7fd61c8",
+              "name": "200",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "use-cases",
+                    ":use_case_id",
+                    "runs"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "sort",
+                      "value": "desc"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "use_case_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "authorization",
+                    "value": "Bearer API_KEY"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "x-organization-id",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"id\": \"535f8ccb-71df-fd2e-d4af-af405ae7f0dd\",\n    \"org_id\": \"c31abdcc-17fc-1e56-ce4f-02aa63ce3858\",\n    \"use_case_id\": \"3b827972-6a5a-bec4-231a-c1945396bf9d\",\n    \"version_id\": \"82897588-fe91-e0e6-b53c-1e525fa4f6e2\",\n    \"status\": \"running\",\n    \"annotation\": \"critical\",\n    \"timestamp\": \"2024-03-31T06:07:17.706Z\",\n    \"data\": {\n      \"key_0\": {},\n      \"key_1\": {},\n      \"key_2\": {}\n    },\n    \"issuesCount\": 1303.3707722002507,\n    \"version\": {\n      \"id\": \"b12b7a53-0326-7c45-af6d-1fdb2002c414\",\n      \"slug\": \"string\",\n      \"org_id\": \"2636bfd2-8fbc-7aad-c091-ace0b3d3cb77\",\n      \"use_case_id\": \"2ab28a1e-52a3-ee53-dd1d-885030813f40\",\n      \"version_number\": 6216.941207829361,\n      \"name\": \"string\",\n      \"is_published\": false,\n      \"is_live\": false,\n      \"environment\": \"staging\",\n      \"source_version_id\": \"d3b1271b-3ae3-0f7c-5266-a3885e9d7dad\",\n      \"timestamp\": \"2004-06-23T05:26:46.158Z\",\n      \"published_at\": \"1963-05-07T17:58:21.579Z\",\n      \"is_deleted\": true,\n      \"description\": \"string\",\n      \"created_by\": \"a1cf7311-38f3-9080-c982-a1d2b1fd72d4\"\n    }\n  },\n  {\n    \"id\": \"e1fa6136-dbb4-249d-860b-34da0fb01e3a\",\n    \"org_id\": \"baba1559-8d65-5de7-e4e7-eed4d98b622f\",\n    \"use_case_id\": \"ffcb66ba-5250-bb73-8335-cce975072813\",\n    \"version_id\": \"27a2f97f-8d9c-7b2f-ac3b-97c6abe066e7\",\n    \"status\": \"scheduled\",\n    \"annotation\": \"critical\",\n    \"timestamp\": \"2008-10-03T13:56:14.071Z\",\n    \"data\": {\n      \"key_0\": {},\n      \"key_1\": {}\n    },\n    \"issuesCount\": 5794.047060039491,\n    \"version\": {\n      \"id\": \"6a7de1e6-38b4-e4b5-98d3-9cc02f7932e3\",\n      \"slug\": \"string\",\n      \"org_id\": \"d0d1d059-b23b-6d6b-323b-043fb5b835b0\",\n      \"use_case_id\": \"bde4ea98-1eca-2679-1cc0-f8c0a12468bd\",\n      \"version_number\": 5070.0468570692765,\n      \"name\": \"string\",\n      \"is_published\": false,\n      \"is_live\": true,\n      \"environment\": \"production\",\n      \"source_version_id\": \"4c9cef16-b05f-6ef4-237b-ef17c68dabb6\",\n      \"timestamp\": \"2009-11-05T17:24:15.526Z\",\n      \"published_at\": \"2025-07-12T23:59:49.372Z\",\n      \"is_deleted\": true,\n      \"description\": \"string\",\n      \"created_by\": \"42a90269-09f9-a425-2d71-95cecb04bacc\"\n    }\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "93daa63a-50a6-4f17-b35e-6437fbbcf1eb",
+              "name": "401",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "use-cases",
+                    ":use_case_id",
+                    "runs"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "sort",
+                      "value": "desc"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "use_case_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "authorization",
+                    "value": "Bearer API_KEY"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "x-organization-id",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "7295e9ae-7ed3-481c-843f-994f9877c939",
+          "name": "Get runs",
+          "request": {
+            "name": "Get runs",
+            "description": {
+              "content": "Get runs for the organization with the variables you've added to your runs table.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "runs"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "<number>",
+                  "description": "The number of runs to return. Defaults to 1000."
+                },
+                {
+                  "disabled": false,
+                  "key": "offset",
+                  "value": "<number>",
+                  "description": "The number of runs to skip. Defaults to 0."
+                },
+                {
+                  "disabled": false,
+                  "key": "use_case_id",
+                  "value": "",
+                  "description": "(Required) The ID of the use case to filter runs by. Defaults to all runs in all use cases."
+                },
+                {
+                  "disabled": false,
+                  "key": "status",
+                  "value": "success",
+                  "description": "The status of the runs to filter by."
+                },
+                {
+                  "disabled": false,
+                  "key": "start",
+                  "value": "<dateTime>",
+                  "description": "The start date to filter runs by. Defaults to all runs."
+                },
+                {
+                  "disabled": false,
+                  "key": "end",
+                  "value": "<dateTime>",
+                  "description": "The end date to filter runs by. Defaults to all runs."
+                },
+                {
+                  "disabled": false,
+                  "key": "sort",
+                  "value": "desc",
+                  "description": "The sort order of the runs by their timestamp (does not sort by completion date). Defaults to desc."
+                },
+                {
+                  "disabled": false,
+                  "key": "completed_start",
+                  "value": "<dateTime>",
+                  "description": "Filter runs by completion date, starting from this date. If not specified, includes runs completed at any time."
+                },
+                {
+                  "disabled": false,
+                  "key": "completed_end",
+                  "value": "<dateTime>",
+                  "description": "Filter runs by completion date, ending at this date. If not specified, includes runs completed at any time."
+                },
+                {
+                  "disabled": false,
+                  "key": "key_0",
+                  "value": "[\"<string>\",\"<string>\"]",
+                  "description": "Filters based on a particular node output in the run. The syntax for this property is `'{{node.id}}.property.to.filter.by': ['{{value}}']`. The simpliest way to get the key is to add the var to your runs table and to view the keys in the `data` property of the `/runs` response. If you need assistance with this, please reach out to your HappyRobot representative."
+                },
+                {
+                  "disabled": false,
+                  "key": "key_1",
+                  "value": "[\"<string>\",\"<string>\"]",
+                  "description": "Filters based on a particular node output in the run. The syntax for this property is `'{{node.id}}.property.to.filter.by': ['{{value}}']`. The simpliest way to get the key is to add the var to your runs table and to view the keys in the `data` property of the `/runs` response. If you need assistance with this, please reach out to your HappyRobot representative."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) ",
+                "key": "x-organization-id",
+                "value": "<string>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "c169aca2-13f1-49c7-8b43-282fb2b5ba13",
+              "name": "200",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "runs"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "1000"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "500"
+                    },
+                    {
+                      "key": "use_case_id",
+                      "value": ""
+                    },
+                    {
+                      "key": "status",
+                      "value": "success"
+                    },
+                    {
+                      "key": "start",
+                      "value": "2024-01-01T00:00:00.000Z"
+                    },
+                    {
+                      "key": "end",
+                      "value": "2024-01-01T00:00:00.000Z"
+                    },
+                    {
+                      "key": "sort",
+                      "value": "desc"
+                    },
+                    {
+                      "key": "completed_start",
+                      "value": "2024-01-01T00:00:00.000Z"
+                    },
+                    {
+                      "key": "completed_end",
+                      "value": "2024-01-01T00:00:00.000Z"
+                    },
+                    {
+                      "key": "key_0",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "key_1",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "key_2",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "key_3",
+                      "value": "<string>,<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "authorization",
+                    "value": "Bearer API_KEY"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "x-organization-id",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"id\": \"9c7e78de-f511-9a7f-d629-a22abffa5d91\",\n    \"org_id\": \"a201c474-2e94-2aa6-cd2a-28ba8f83b320\",\n    \"use_case_id\": \"b1fe46e3-9eef-51af-2b82-08914c4270f2\",\n    \"version_id\": \"aa841e51-7cf5-e7ed-74c8-ecdba02834b5\",\n    \"status\": \"canceled\",\n    \"annotation\": \"critical\",\n    \"timestamp\": \"1957-04-05T07:45:16.577Z\",\n    \"data\": {\n      \"key_0\": {},\n      \"key_1\": {}\n    },\n    \"completed_at\": \"1996-02-22T07:52:07.122Z\"\n  },\n  {\n    \"id\": \"bf1b0265-e05a-ca3a-25f5-6b9d471ba122\",\n    \"org_id\": \"58f36b3e-f149-8a44-f002-84cfbb50db97\",\n    \"use_case_id\": \"7a99c9ec-e04e-d88b-2b21-f79403fe3135\",\n    \"version_id\": \"9c8d5253-6172-abe3-1654-d0789160cca4\",\n    \"status\": \"completed\",\n    \"annotation\": \"incorrect\",\n    \"timestamp\": \"1986-04-19T21:11:37.191Z\",\n    \"data\": {\n      \"key_0\": {},\n      \"key_1\": {},\n      \"key_2\": {}\n    },\n    \"completed_at\": \"1994-08-06T18:45:05.163Z\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a0cac056-37cb-48e5-b215-636c624d5702",
+              "name": "401",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "runs"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "1000"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "500"
+                    },
+                    {
+                      "key": "use_case_id",
+                      "value": ""
+                    },
+                    {
+                      "key": "status",
+                      "value": "success"
+                    },
+                    {
+                      "key": "start",
+                      "value": "2024-01-01T00:00:00.000Z"
+                    },
+                    {
+                      "key": "end",
+                      "value": "2024-01-01T00:00:00.000Z"
+                    },
+                    {
+                      "key": "sort",
+                      "value": "desc"
+                    },
+                    {
+                      "key": "completed_start",
+                      "value": "2024-01-01T00:00:00.000Z"
+                    },
+                    {
+                      "key": "completed_end",
+                      "value": "2024-01-01T00:00:00.000Z"
+                    },
+                    {
+                      "key": "key_0",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "key_1",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "key_2",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "key_3",
+                      "value": "<string>,<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "authorization",
+                    "value": "Bearer API_KEY"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "x-organization-id",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "2ad6d596-2c08-4e11-9411-5b6129005cb8",
+          "name": "Get a run by ID",
+          "request": {
+            "name": "Get a run by ID",
+            "description": {
+              "content": "Get a run by ID with all its events and session outputs.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "runs",
+                ":run_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "run_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) ",
+                "key": "x-organization-id",
+                "value": "<string>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "9af42c8b-71e9-4be1-8668-135c8d88642b",
+              "name": "200",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "runs",
+                    ":run_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "run_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "authorization",
+                    "value": "Bearer API_KEY"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "x-organization-id",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"ccbadf6a-721e-6a88-d5d7-c2cddb8f8d23\",\n  \"org_id\": \"55fb89cd-3c19-8ffb-5a5a-7ebec2d70b69\",\n  \"use_case_id\": \"e8370a67-44b6-0a85-5ed1-018186fa7468\",\n  \"version_id\": \"af8bfa9a-78a5-e6b8-d694-c820452309c3\",\n  \"status\": \"failed\",\n  \"annotation\": \"incorrect\",\n  \"timestamp\": \"1987-01-21T15:47:56.181Z\",\n  \"completed_at\": \"2022-11-07T01:56:02.240Z\",\n  \"events\": [\n    {\n      \"type\": \"action\",\n      \"timestamp\": \"1961-07-23T13:57:06.889Z\",\n      \"output\": {\n        \"key_0\": {}\n      },\n      \"node_id\": \"string\",\n      \"integration_name\": \"string\",\n      \"event_name\": \"string\",\n      \"intermediate\": {\n        \"id\": \"faa01280-fe99-52f2-c25e-ce60efa1e292\",\n        \"run_id\": \"2405822a-fc85-8e39-8d25-a8a6b8bd6668\",\n        \"node_id\": \"d7851810-aac4-115d-7aeb-9c2ef1e641a4\",\n        \"event_id\": \"fa84606f-9333-ab65-4f1b-57f337edb178\",\n        \"session_id\": \"352b2889-f2a6-d298-f000-c547d43e63aa\",\n        \"name\": \"string\",\n        \"data\": {\n          \"key_0\": {},\n          \"key_1\": {}\n        },\n        \"error\": \"string\",\n        \"timestamp\": \"2005-11-11T13:54:50.272Z\",\n        \"data_deleted\": true\n      }\n    },\n    {\n      \"type\": \"action\",\n      \"timestamp\": \"2025-02-14T19:49:14.267Z\",\n      \"output\": {\n        \"key_0\": {}\n      },\n      \"node_id\": \"string\",\n      \"integration_name\": \"string\",\n      \"event_name\": \"string\",\n      \"intermediate\": {\n        \"id\": \"6e349b72-3820-cb18-e4c3-3536b3e27952\",\n        \"run_id\": \"4e73a237-29a3-8116-ca1e-f97426d748c5\",\n        \"node_id\": \"b5ec70a3-784e-7f7d-49c3-a5cb5c026b15\",\n        \"event_id\": \"53e4ccf2-1a6b-669d-ebef-3112f8089c66\",\n        \"session_id\": \"bbe4197f-ee3a-5029-3e1d-e039211c7c0c\",\n        \"name\": \"string\",\n        \"data\": {\n          \"key_0\": {},\n          \"key_1\": {}\n        },\n        \"error\": \"string\",\n        \"timestamp\": \"1993-03-31T15:48:50.109Z\",\n        \"data_deleted\": false\n      }\n    }\n  ],\n  \"issues\": [\n    {\n      \"id\": \"e327c9ba-7fd0-1887-499f-62edeb902b0c\",\n      \"use_case_id\": \"a6f3c02e-6ec3-7bf2-e3bb-027466f8795b\",\n      \"org_id\": \"9e2adbf7-f1da-5b3b-9f85-11f638b6067c\",\n      \"run_id\": \"76720b33-26cf-3268-cac6-975644f05ed8\",\n      \"run_version_id\": \"078542bd-7d8d-2084-1149-2c211a9a7e59\",\n      \"status\": \"closed\",\n      \"priority\": \"high\",\n      \"created_at\": \"2011-08-13T03:56:18.228Z\",\n      \"type\": \"end_of_sentence\",\n      \"updated_at\": \"2020-08-10T21:26:29.577Z\",\n      \"assignee\": \"5a7f36a3-191b-9496-270a-414dbace7860\",\n      \"created_by\": \"b117dd27-94c6-08d2-21a7-2d31b58a0816\",\n      \"updated_by\": \"ba24ca20-fb87-d8f5-e1c3-3371ed808654\",\n      \"message_id\": \"8b7c210a-e0fb-ad99-23a0-6ba0877de8ab\",\n      \"correction\": \"string\",\n      \"correction_reason\": \"string\",\n      \"northstar_id\": \"eddea938-1754-8c1a-c5ee-58818785faea\"\n    },\n    {\n      \"id\": \"e65fa0bc-b755-eae2-10e7-25d769583b79\",\n      \"use_case_id\": \"28b24282-ab44-7266-535c-ae40e8b4b105\",\n      \"org_id\": \"d1f2a4a7-0e78-26db-93e5-b55de8506b61\",\n      \"run_id\": \"34dc309a-0e1f-de8e-32e1-688b93226f41\",\n      \"run_version_id\": \"36e39d7f-6713-887a-a2f2-2ea6d22d2229\",\n      \"status\": \"approved\",\n      \"priority\": \"low\",\n      \"created_at\": \"1976-06-18T06:27:20.851Z\",\n      \"type\": \"run\",\n      \"updated_at\": \"2018-04-21T08:33:14.238Z\",\n      \"assignee\": \"8034c5ec-d541-c606-9144-7749b8ac4347\",\n      \"created_by\": \"702d611a-fd8d-c7f0-7907-f00776b71350\",\n      \"updated_by\": \"427c32be-11c6-4c75-047b-05363121d796\",\n      \"message_id\": \"a44e0d15-26e1-1bf8-0e4b-01f999a9725f\",\n      \"correction\": \"string\",\n      \"correction_reason\": \"string\",\n      \"northstar_id\": \"cf67df70-26cd-518c-a3e9-7eb1c0f9fe2c\"\n    }\n  ],\n  \"version\": {\n    \"id\": \"319c7b07-77f7-d7f5-061e-27d8ebd6192c\",\n    \"slug\": \"string\",\n    \"org_id\": \"9dbae23a-1745-43ff-9068-38658e998c2e\",\n    \"use_case_id\": \"40c7066c-3dff-c9b5-3883-2d1ff8ecaeee\",\n    \"version_number\": 6018.8982999363725,\n    \"name\": \"string\",\n    \"is_published\": true,\n    \"is_live\": true,\n    \"environment\": \"production\",\n    \"source_version_id\": \"1eaa22a9-4ae7-5ae4-b556-89fa1eb48928\",\n    \"timestamp\": \"2004-06-13T06:20:39.147Z\",\n    \"published_at\": \"1986-01-29T11:27:17.172Z\",\n    \"is_deleted\": false,\n    \"description\": \"string\",\n    \"created_by\": \"5115dba9-a22a-ec42-a934-b4a443e1e649\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "09bdd709-c38a-4a7c-98d1-dd040a33dadc",
+              "name": "401",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "runs",
+                    ":run_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "run_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "authorization",
+                    "value": "Bearer API_KEY"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "x-organization-id",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "15999d83-4454-4725-8f21-ccb9f0ea6fef",
+              "name": "404",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "runs",
+                    ":run_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "run_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "authorization",
+                    "value": "Bearer API_KEY"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "x-organization-id",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "de7a1936-6dc3-4b22-a4ef-210a8918b577",
+          "name": "Get a run's recordings",
+          "request": {
+            "name": "Get a run's recordings",
+            "description": {
+              "content": "Get a run's recordings.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "runs",
+                ":run_id",
+                "recordings"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "session_id",
+                  "value": "<string>",
+                  "description": "The session ID to filter recordings by."
+                },
+                {
+                  "disabled": false,
+                  "key": "url_expires_in_days",
+                  "value": "1",
+                  "description": "The number of days to expire the presigned URL for."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "run_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) ",
+                "key": "x-organization-id",
+                "value": "<string>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "68bbe757-165a-4379-94ae-c4beee3ef6f3",
+              "name": "200",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "runs",
+                    ":run_id",
+                    "recordings"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "session_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "url_expires_in_days",
+                      "value": "1"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "run_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "authorization",
+                    "value": "Bearer API_KEY"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "x-organization-id",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"recordings\": [\n    {\n      \"session_id\": \"string\",\n      \"url\": \"string\"\n    },\n    {\n      \"session_id\": \"string\",\n      \"url\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "92f068c0-605e-4c98-8dc6-4715e02af265",
+              "name": "401",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "runs",
+                    ":run_id",
+                    "recordings"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "session_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "url_expires_in_days",
+                      "value": "1"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "run_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "authorization",
+                    "value": "Bearer API_KEY"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "x-organization-id",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7071aa02-b84f-4689-bbaf-76b14c36711b",
+              "name": "404",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "runs",
+                    ":run_id",
+                    "recordings"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "session_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "url_expires_in_days",
+                      "value": "1"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "run_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "authorization",
+                    "value": "Bearer API_KEY"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "x-organization-id",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "b4dfe072-16f0-4ee4-9a45-a8d308344b80",
+      "name": "UseCases",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "51900204-7e9e-4b61-a97c-33bb404b6a1c",
+          "name": "Get use cases",
+          "request": {
+            "name": "Get use cases",
+            "description": {
+              "content": "Get use cases for the organization",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "use-cases"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) ",
+                "key": "x-organization-id",
+                "value": "<string>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "d7e52cd1-f2bc-43f4-acb0-29238ff87bf9",
+              "name": "200",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "use-cases"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "authorization",
+                    "value": "Bearer API_KEY"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "x-organization-id",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"id\": \"a4b494e8-618b-db66-33e7-f5b8472e6278\",\n    \"org_id\": \"43f722a7-e092-52ad-ba7c-8068afee2b6e\",\n    \"icon\": \"string\",\n    \"name\": \"string\",\n    \"source_use_case_version_id\": \"0fde39e0-b422-aedb-6168-1dc0c477eba5\",\n    \"slug\": \"string\",\n    \"order\": 1118.5988223820852,\n    \"run_columns\": [\n      {\n        \"group_id\": \"string\",\n        \"variable_id\": \"string\",\n        \"name\": \"string\"\n      },\n      {\n        \"group_id\": \"string\",\n        \"variable_id\": \"string\",\n        \"name\": \"string\"\n      }\n    ],\n    \"timestamp\": \"1949-02-21T06:11:52.833Z\",\n    \"data_retention_days\": 740.4713784223749,\n    \"webhooks\": {},\n    \"versions\": [\n      {\n        \"id\": \"ef10b239-257c-6d1d-46f4-c3b9026b6471\",\n        \"slug\": \"string\",\n        \"org_id\": \"8c3b7021-f1b2-ec03-b10b-8c55ac9219d1\",\n        \"use_case_id\": \"a2a7b7c0-1764-e34e-001b-541092a47ee9\",\n        \"version_number\": 5439.829893890011,\n        \"name\": \"string\",\n        \"is_published\": false,\n        \"is_live\": true,\n        \"environment\": \"staging\",\n        \"source_version_id\": \"fee96de4-4e46-7ecc-a08c-9562d94337d9\",\n        \"timestamp\": \"1983-04-13T20:40:22.915Z\",\n        \"published_at\": \"2011-07-03T15:38:19.474Z\",\n        \"is_deleted\": true,\n        \"description\": \"string\",\n        \"created_by\": \"ee9f4df3-2431-f0f0-dba2-19386e706a1c\"\n      },\n      {\n        \"id\": \"0d9d9db6-24eb-2941-8617-92eab80c8749\",\n        \"slug\": \"string\",\n        \"org_id\": \"7b24e2a7-1872-f073-03bf-d84bee8717c7\",\n        \"use_case_id\": \"cd37c78f-31cd-4535-fc9b-2e6506642189\",\n        \"version_number\": 5839.818434170144,\n        \"name\": \"string\",\n        \"is_published\": true,\n        \"is_live\": false,\n        \"environment\": \"staging\",\n        \"source_version_id\": \"577e1188-be95-6496-0068-526f92ba78f8\",\n        \"timestamp\": \"1957-08-21T19:22:15.473Z\",\n        \"published_at\": \"2016-10-04T16:06:17.640Z\",\n        \"is_deleted\": true,\n        \"description\": \"string\",\n        \"created_by\": \"5e6cdca6-ab42-73b4-befe-8076d612852b\"\n      }\n    ]\n  },\n  {\n    \"id\": \"4b59c62e-98e7-d659-3640-482009421526\",\n    \"org_id\": \"3a6a629b-dca7-31fb-073d-060989cf0c39\",\n    \"icon\": \"string\",\n    \"name\": \"string\",\n    \"source_use_case_version_id\": \"61c95a07-b3dc-8597-74e2-3c1dd4abd05c\",\n    \"slug\": \"string\",\n    \"order\": 5068.026442390735,\n    \"run_columns\": [\n      {\n        \"group_id\": \"string\",\n        \"variable_id\": \"string\",\n        \"name\": \"string\"\n      },\n      {\n        \"group_id\": \"string\",\n        \"variable_id\": \"string\",\n        \"name\": \"string\"\n      }\n    ],\n    \"timestamp\": \"1954-07-03T01:13:49.365Z\",\n    \"data_retention_days\": 9467.723088820667,\n    \"webhooks\": {},\n    \"versions\": [\n      {\n        \"id\": \"36baa739-fd86-58d9-fb5b-289d581e6dac\",\n        \"slug\": \"string\",\n        \"org_id\": \"a3cbef24-722f-5ac9-e143-de0aa4b65dfc\",\n        \"use_case_id\": \"25e8a60d-d592-d299-0f2c-aa24b7fce88f\",\n        \"version_number\": 12.72583173908548,\n        \"name\": \"string\",\n        \"is_published\": false,\n        \"is_live\": false,\n        \"environment\": \"production\",\n        \"source_version_id\": \"c625a5f8-0065-ee68-d3b1-f2772234c392\",\n        \"timestamp\": \"1989-03-20T20:37:27.674Z\",\n        \"published_at\": \"1977-11-12T01:41:37.456Z\",\n        \"is_deleted\": true,\n        \"description\": \"string\",\n        \"created_by\": \"612e305f-fc1d-cb1f-290a-28f120cabf0c\"\n      },\n      {\n        \"id\": \"9acf21bc-b8aa-f7a2-f445-1b5069cda729\",\n        \"slug\": \"string\",\n        \"org_id\": \"78baee5a-03f4-f8b4-2ad3-8e103587b7eb\",\n        \"use_case_id\": \"3cd0e7cb-8a21-55d6-0cc5-85760264d90c\",\n        \"version_number\": 5448.829580251066,\n        \"name\": \"string\",\n        \"is_published\": true,\n        \"is_live\": true,\n        \"environment\": \"production\",\n        \"source_version_id\": \"d3d3b302-85ce-5b15-8cfd-6ae459222a8d\",\n        \"timestamp\": \"1985-06-19T13:07:19.094Z\",\n        \"published_at\": \"1981-08-04T07:22:36.376Z\",\n        \"is_deleted\": false,\n        \"description\": \"string\",\n        \"created_by\": \"642efb09-519f-88cc-3e0f-83c038cffab5\"\n      }\n    ]\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a9ba4170-49b2-4e55-a300-009e89d8d472",
+              "name": "401",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "use-cases"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "authorization",
+                    "value": "Bearer API_KEY"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "x-organization-id",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "e7e198df-8bb5-402a-9bdd-484921567fda",
+          "name": "Get a use case by ID",
+          "request": {
+            "name": "Get a use case by ID",
+            "description": {
+              "content": "Query a use case and it's details by ID",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "use-cases",
+                ":use_case_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "use_case_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) ",
+                "key": "x-organization-id",
+                "value": "<string>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "81e6f46f-1a99-4b73-97e5-0ff9c63eba36",
+              "name": "200",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "use-cases",
+                    ":use_case_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "use_case_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "authorization",
+                    "value": "Bearer API_KEY"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "x-organization-id",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"24f39a16-d253-675e-a272-01d62efb8fc3\",\n  \"org_id\": \"61949466-8b28-75e2-fd78-ea4c2baab3a5\",\n  \"icon\": \"string\",\n  \"name\": \"string\",\n  \"source_use_case_version_id\": \"46ce3f0b-98e3-9616-9a64-4ea8b4391f17\",\n  \"slug\": \"string\",\n  \"order\": 6497.270048521636,\n  \"run_columns\": [\n    {\n      \"group_id\": \"string\",\n      \"variable_id\": \"string\",\n      \"name\": \"string\"\n    },\n    {\n      \"group_id\": \"string\",\n      \"variable_id\": \"string\",\n      \"name\": \"string\"\n    }\n  ],\n  \"timestamp\": \"1995-02-07T01:59:48.584Z\",\n  \"data_retention_days\": 2652.5526776499373,\n  \"webhooks\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "cd35bdd8-bf55-4f95-8c08-33ccd2c95ced",
+              "name": "401",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "use-cases",
+                    ":use_case_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "use_case_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "authorization",
+                    "value": "Bearer API_KEY"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "x-organization-id",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "fe74c6df-b370-4fb2-bfc4-143b63bf09b0",
+      "name": "Versions",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "39e7600c-62fd-4754-8d98-91956728a67c",
+          "name": "Get workflow versions",
+          "request": {
+            "name": "Get workflow versions",
+            "description": {
+              "content": "Get all workflow versions for a given use case",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "versions"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "use_case_id",
+                  "value": "<string>",
+                  "description": "(Required) The ID of the use case."
+                },
+                {
+                  "disabled": false,
+                  "key": "with_changelog",
+                  "value": "false",
+                  "description": "Whether to include the changelog."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) ",
+                "key": "x-organization-id",
+                "value": "<string>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "c1e39f2f-d89e-44e8-8f63-02e192e92d8a",
+              "name": "200",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "versions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "use_case_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "with_changelog",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "authorization",
+                    "value": "Bearer API_KEY"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "x-organization-id",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"id\": \"5b13d1f0-caaf-3b96-16de-4e61fb98e247\",\n    \"slug\": \"string\",\n    \"org_id\": \"dfee2a94-988a-b45d-5108-52a48d1dda18\",\n    \"use_case_id\": \"5684a147-9724-e4a5-cf92-d90d0260f049\",\n    \"version_number\": 6162.463511052179,\n    \"name\": \"string\",\n    \"is_published\": false,\n    \"is_live\": false,\n    \"environment\": \"staging\",\n    \"source_version_id\": \"79fdd12f-e65b-e00e-2de1-118c4331a0e4\",\n    \"timestamp\": \"1958-03-13T20:38:24.155Z\",\n    \"published_at\": \"1996-01-06T12:02:13.480Z\",\n    \"is_deleted\": false,\n    \"description\": \"string\",\n    \"created_by\": \"e41641c4-e947-d519-3b51-f214adbd9b8e\",\n    \"changelog\": {\n      \"id\": \"69cdd3ea-9eb1-ff70-4522-562d60a5d8c5\",\n      \"version_id\": \"a041d67a-b8b2-c8b3-9c48-b964a5bcc100\",\n      \"created_at\": \"1979-11-28T02:11:55.386Z\",\n      \"type\": \"unpublish\",\n      \"description\": \"string\",\n      \"created_by\": \"e7e1e79c-4cf0-9d7c-ac23-751edf141f3b\"\n    }\n  },\n  {\n    \"id\": \"c398eca3-6ac0-69e5-76b8-769b40e9de8b\",\n    \"slug\": \"string\",\n    \"org_id\": \"dec49a77-ae42-34f7-a67c-8c101ac25d4e\",\n    \"use_case_id\": \"02b88df1-65b0-4906-d9d4-b38d0416b973\",\n    \"version_number\": 7336.741364164442,\n    \"name\": \"string\",\n    \"is_published\": false,\n    \"is_live\": true,\n    \"environment\": \"staging\",\n    \"source_version_id\": \"53b76e83-7fa7-98b5-77bc-d8d97e1957ed\",\n    \"timestamp\": \"1970-02-03T00:44:50.593Z\",\n    \"published_at\": \"1976-11-13T18:48:23.064Z\",\n    \"is_deleted\": true,\n    \"description\": \"string\",\n    \"created_by\": \"6531ce76-352c-c1ad-4377-342502b07181\",\n    \"changelog\": {\n      \"id\": \"59047d25-9d54-89bb-65ab-6bcbd9bca0c7\",\n      \"version_id\": \"d6278a84-f57b-b8c7-dacc-e7cc2dfe9638\",\n      \"created_at\": \"2005-03-20T05:10:58.778Z\",\n      \"type\": \"unpublish\",\n      \"description\": \"string\",\n      \"created_by\": \"1eb4c0aa-a231-251c-ee44-fe798d60faee\"\n    }\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7494222b-88d4-4a48-8ca5-23265dc6f579",
+              "name": "404",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "versions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "use_case_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "with_changelog",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "authorization",
+                    "value": "Bearer API_KEY"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "x-organization-id",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "bc613be0-be7b-4e7e-b91c-e91b32a24672",
+          "name": "Get a workflow version",
+          "request": {
+            "name": "Get a workflow version",
+            "description": {
+              "content": "Get a workflow version by ID",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "versions",
+                ":version_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "version_id",
+                  "description": "(Required) The ID of the workflow version."
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) ",
+                "key": "x-organization-id",
+                "value": "<string>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "4a2add51-b1b5-40c7-8111-37e53ee1291e",
+              "name": "200",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "versions",
+                    ":version_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "version_id",
+                      "description": "(Required) The ID of the workflow version."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "authorization",
+                    "value": "Bearer API_KEY"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "x-organization-id",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"b4fc8694-07be-6c60-eb58-8a88f60bb37c\",\n  \"slug\": \"string\",\n  \"org_id\": \"3c67e134-a116-609c-3ac1-35ece59041e6\",\n  \"use_case_id\": \"1e2d6e50-4e7e-6e9c-e756-dffc327e15a4\",\n  \"version_number\": 2967.924671932741,\n  \"name\": \"string\",\n  \"is_published\": true,\n  \"is_live\": true,\n  \"environment\": \"production\",\n  \"source_version_id\": \"d0c8c3e1-daa9-65b5-c177-2c915baf7280\",\n  \"timestamp\": \"1974-12-03T09:12:20.173Z\",\n  \"published_at\": \"1970-06-05T13:05:15.459Z\",\n  \"is_deleted\": true,\n  \"description\": \"string\",\n  \"created_by\": \"bbacfd37-4496-8942-94d7-40f2010aa6cd\",\n  \"changelog\": [\n    {\n      \"id\": \"0a5954c3-22f7-0315-d9c4-8e5cdf1f7edf\",\n      \"version_id\": \"c2569c05-746d-758a-feb5-3fc51d2f2bab\",\n      \"created_at\": \"2012-03-28T19:51:33.647Z\",\n      \"type\": \"unpublish\",\n      \"description\": \"string\",\n      \"created_by\": \"819aff61-956f-bb25-c84e-8626aaed5ba3\"\n    },\n    {\n      \"id\": \"bd3fc4f8-8d33-4953-6b41-803725cb20b1\",\n      \"version_id\": \"71185fd3-5397-0aca-9689-75dbab36d844\",\n      \"created_at\": \"2024-07-17T04:41:57.948Z\",\n      \"type\": \"publish\",\n      \"description\": \"string\",\n      \"created_by\": \"27c0ef78-aa73-9183-9161-ac04d71cdb46\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8c122083-7621-41a0-9bc7-54eb18f9102f",
+              "name": "404",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "versions",
+                    ":version_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "version_id",
+                      "description": "(Required) The ID of the workflow version."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "authorization",
+                    "value": "Bearer API_KEY"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "x-organization-id",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "0127d72b-0309-4b28-9b14-8397c9ec7f3c",
+      "name": "Issues",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "6095657b-27ad-4218-8898-b0701f633b96",
+          "name": "Get all issues",
+          "request": {
+            "name": "Get all issues",
+            "description": {},
+            "url": {
+              "path": [
+                "issues"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "use_case_id",
+                  "value": "<string>",
+                  "description": "The ID of the use case."
+                },
+                {
+                  "disabled": false,
+                  "key": "run_id",
+                  "value": "<string>",
+                  "description": "The ID of the run."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) ",
+                "key": "x-organization-id",
+                "value": "<string>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "7aa7cac2-86de-4031-8650-b85f4be47d89",
+              "name": "200",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "issues"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "use_case_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "run_id",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "authorization",
+                    "value": "Bearer API_KEY"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "x-organization-id",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"id\": \"f7c17c45-33d3-148c-d042-12e56c267d4c\",\n    \"use_case_id\": \"29bb8a2f-8fb0-931c-4e22-d56599ca8218\",\n    \"org_id\": \"d1e21274-b86c-d0c5-dbc8-7a8c3a76f3ae\",\n    \"run_id\": \"f12c91a9-22ce-dda9-d8a7-fee3f3e74181\",\n    \"run_version_id\": \"4839b1b9-3fae-27d6-1b36-2d5c11787f4f\",\n    \"status\": \"open\",\n    \"priority\": \"low\",\n    \"created_at\": \"1991-09-02T01:09:14.173Z\",\n    \"type\": \"interruption\",\n    \"updated_at\": \"1953-04-22T21:38:40.563Z\",\n    \"assignee\": \"3d0cb7d4-880f-69ee-56f2-a669e8e60bbe\",\n    \"created_by\": \"5baadf89-9c5a-1848-d94a-35ce2ff5142f\",\n    \"updated_by\": \"b95f807b-82b6-27c2-0b6d-246a9a5f8b53\",\n    \"message_id\": \"5c1c4ddc-69de-bccb-07ec-d448c0d4356a\",\n    \"correction\": \"string\",\n    \"correction_reason\": \"string\",\n    \"northstar_id\": \"9dad311f-e0c0-7f97-27ae-de0e80f80a88\"\n  },\n  {\n    \"id\": \"620c8475-47f7-9abb-6698-6aacbcd40df5\",\n    \"use_case_id\": \"857f5686-6b4c-8c51-89e9-f862fe1fd5fe\",\n    \"org_id\": \"f38d60c3-942f-8f61-4d21-fb31e2b4acf8\",\n    \"run_id\": \"3181b24f-9adb-86c5-1afd-d5402b6de979\",\n    \"run_version_id\": \"45c9ef52-7b58-f259-86f5-3fecbcdefa2a\",\n    \"status\": \"closed\",\n    \"priority\": \"high\",\n    \"created_at\": \"1954-08-18T22:00:55.681Z\",\n    \"type\": \"interruption\",\n    \"updated_at\": \"1986-06-04T05:56:31.244Z\",\n    \"assignee\": \"51f4ab3f-8fee-0d2b-a526-399a5302eab0\",\n    \"created_by\": \"cfa44294-c1ea-e264-4ae1-6919a190a0ce\",\n    \"updated_by\": \"23abb4ae-0df9-d3b2-ae33-9226a5253c14\",\n    \"message_id\": \"4e476a8e-8e8b-4d8b-9b7d-ec88c73d0055\",\n    \"correction\": \"string\",\n    \"correction_reason\": \"string\",\n    \"northstar_id\": \"38ce6ad8-43ed-82f3-e8a4-46c072c03535\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "52b23129-17f2-4166-842e-3229f9e105d7",
+              "name": "401",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "issues"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "use_case_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "run_id",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "authorization",
+                    "value": "Bearer API_KEY"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "x-organization-id",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "19463e55-e19b-4bad-b41a-9c57dac871c0",
+              "name": "500",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "issues"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "use_case_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "run_id",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "authorization",
+                    "value": "Bearer API_KEY"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "x-organization-id",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "351b3477-4f63-42a5-a408-1678364458d2",
+      "name": "Billing",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "81937201-9ac2-4fe4-992b-3cfea851b61e",
+          "name": "Get the usage for the given organization",
+          "request": {
+            "name": "Get the usage for the given organization",
+            "description": {},
+            "url": {
+              "path": [
+                "usage"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "start",
+                  "value": "<dateTime>",
+                  "description": "The start date to filter usages by. Defaults to all usages."
+                },
+                {
+                  "disabled": false,
+                  "key": "end",
+                  "value": "<dateTime>",
+                  "description": "The end date to filter usages by. Defaults to all usages."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) ",
+                "key": "x-organization-id",
+                "value": "<string>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "ca573123-f945-4500-8c0c-414d5ae73d4b",
+              "name": "200",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "usage"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "start",
+                      "value": "2024-01-01T00:00:00.000Z"
+                    },
+                    {
+                      "key": "end",
+                      "value": "2024-01-01T00:00:00.000Z"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "authorization",
+                    "value": "Bearer API_KEY"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "x-organization-id",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"org_id\": \"4e964abd-1104-7989-acd9-0d822c0bcebd\",\n    \"use_case_id\": \"92ee67c2-c3fd-2e8e-b395-77945ee9aee5\",\n    \"start\": \"2007-08-06T13:16:59.698Z\",\n    \"end\": \"1986-03-14T15:53:05.326Z\",\n    \"calls\": 4265.197455863944,\n    \"minutes\": 3285.291691868096\n  },\n  {\n    \"org_id\": \"73f6d818-6714-a607-6fcd-b572bb9cc9e9\",\n    \"use_case_id\": \"305cc8d2-5748-6951-ea53-5bd30eef47f5\",\n    \"start\": \"1985-01-05T14:50:35.247Z\",\n    \"end\": \"1953-06-07T05:38:40.026Z\",\n    \"calls\": 5835.591663533032,\n    \"minutes\": 8993.901416895447\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8412a3ee-e145-4af2-8fcd-25e6ab89c426",
+              "name": "401",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "usage"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "start",
+                      "value": "2024-01-01T00:00:00.000Z"
+                    },
+                    {
+                      "key": "end",
+                      "value": "2024-01-01T00:00:00.000Z"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "authorization",
+                    "value": "Bearer API_KEY"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "x-organization-id",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4f91855a-d02f-4746-bb36-5efa90393d8d",
+              "name": "500",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "usage"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "start",
+                      "value": "2024-01-01T00:00:00.000Z"
+                    },
+                    {
+                      "key": "end",
+                      "value": "2024-01-01T00:00:00.000Z"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "authorization",
+                    "value": "Bearer API_KEY"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "x-organization-id",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://platform.happyrobot.ai/api/v1",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "31145de1-e959-40db-9f77-694dcb06a174",
+    "name": "Happyrobot Platform API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "",
+      "type": "text/plain"
+    }
+  }
+}

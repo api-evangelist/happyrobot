@@ -1,0 +1,428 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Happyrobot Platform API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Runs",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "DEPRECATED: Get runs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform.happyrobot.ai/api/v1/use-cases/:use_case_id/runs",
+            "headers": [
+              {
+                "name": "authorization",
+                "value": ""
+              },
+              {
+                "name": "x-organization-id",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "use_case_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "sort",
+                "value": "",
+                "type": "query",
+                "description": "The sort order of the runs. Defaults to desc."
+              }
+            ]
+          },
+          "docs": "DEPRECATED: Use the new /runs endpoint instead. Get runs for a use case with pagination."
+        },
+        {
+          "info": {
+            "name": "Get runs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform.happyrobot.ai/api/v1/runs",
+            "headers": [
+              {
+                "name": "authorization",
+                "value": ""
+              },
+              {
+                "name": "x-organization-id",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "The number of runs to return. Defaults to 1000."
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "The number of runs to skip. Defaults to 0."
+              },
+              {
+                "name": "use_case_id",
+                "value": "",
+                "type": "query",
+                "description": "The ID of the use case to filter runs by. Defaults to all runs in all use cases."
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "The status of the runs to filter by."
+              },
+              {
+                "name": "start",
+                "value": "",
+                "type": "query",
+                "description": "The start date to filter runs by. Defaults to all runs."
+              },
+              {
+                "name": "end",
+                "value": "",
+                "type": "query",
+                "description": "The end date to filter runs by. Defaults to all runs."
+              },
+              {
+                "name": "sort",
+                "value": "",
+                "type": "query",
+                "description": "The sort order of the runs by their timestamp (does not sort by completion date). Defaults to desc."
+              },
+              {
+                "name": "completed_start",
+                "value": "",
+                "type": "query",
+                "description": "Filter runs by completion date, starting from this date. If not specified, includes runs completed at any time."
+              },
+              {
+                "name": "completed_end",
+                "value": "",
+                "type": "query",
+                "description": "Filter runs by completion date, ending at this date. If not specified, includes runs completed at any time."
+              },
+              {
+                "name": "node_output_filters",
+                "value": "",
+                "type": "query",
+                "description": "Filters based on a particular node output in the run. The syntax for this property is `'{{node.id}}.property.to.filter.by': ['{{value}}']`. The simpliest way to get the key is to add the var to your runs table and to view the keys in the `data` property of the `/runs` response. If you need assistance with this, please reach out to your HappyRobot representative."
+              }
+            ]
+          },
+          "docs": "Get runs for the organization with the variables you've added to your runs table."
+        },
+        {
+          "info": {
+            "name": "Get a run by ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform.happyrobot.ai/api/v1/runs/:run_id",
+            "headers": [
+              {
+                "name": "authorization",
+                "value": ""
+              },
+              {
+                "name": "x-organization-id",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "run_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get a run by ID with all its events and session outputs."
+        },
+        {
+          "info": {
+            "name": "Get a run's recordings",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform.happyrobot.ai/api/v1/runs/:run_id/recordings",
+            "headers": [
+              {
+                "name": "authorization",
+                "value": ""
+              },
+              {
+                "name": "x-organization-id",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "run_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "session_id",
+                "value": "",
+                "type": "query",
+                "description": "The session ID to filter recordings by."
+              },
+              {
+                "name": "url_expires_in_days",
+                "value": "",
+                "type": "query",
+                "description": "The number of days to expire the presigned URL for."
+              }
+            ]
+          },
+          "docs": "Get a run's recordings."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "UseCases",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get use cases",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform.happyrobot.ai/api/v1/use-cases",
+            "headers": [
+              {
+                "name": "authorization",
+                "value": ""
+              },
+              {
+                "name": "x-organization-id",
+                "value": ""
+              }
+            ]
+          },
+          "docs": "Get use cases for the organization"
+        },
+        {
+          "info": {
+            "name": "Get a use case by ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform.happyrobot.ai/api/v1/use-cases/:use_case_id",
+            "headers": [
+              {
+                "name": "authorization",
+                "value": ""
+              },
+              {
+                "name": "x-organization-id",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "use_case_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Query a use case and it's details by ID"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Versions",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get workflow versions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform.happyrobot.ai/api/v1/versions",
+            "headers": [
+              {
+                "name": "authorization",
+                "value": ""
+              },
+              {
+                "name": "x-organization-id",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "use_case_id",
+                "value": "",
+                "type": "query",
+                "description": "The ID of the use case."
+              },
+              {
+                "name": "with_changelog",
+                "value": "",
+                "type": "query",
+                "description": "Whether to include the changelog."
+              }
+            ]
+          },
+          "docs": "Get all workflow versions for a given use case"
+        },
+        {
+          "info": {
+            "name": "Get a workflow version",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform.happyrobot.ai/api/v1/versions/:version_id",
+            "headers": [
+              {
+                "name": "authorization",
+                "value": ""
+              },
+              {
+                "name": "x-organization-id",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "version_id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the workflow version."
+              }
+            ]
+          },
+          "docs": "Get a workflow version by ID"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Issues",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get all issues",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform.happyrobot.ai/api/v1/issues",
+            "headers": [
+              {
+                "name": "authorization",
+                "value": ""
+              },
+              {
+                "name": "x-organization-id",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "use_case_id",
+                "value": "",
+                "type": "query",
+                "description": "The ID of the use case."
+              },
+              {
+                "name": "run_id",
+                "value": "",
+                "type": "query",
+                "description": "The ID of the run."
+              }
+            ]
+          },
+          "docs": "Get all issues"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Billing",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get the usage for the given organization",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform.happyrobot.ai/api/v1/usage",
+            "headers": [
+              {
+                "name": "authorization",
+                "value": ""
+              },
+              {
+                "name": "x-organization-id",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "start",
+                "value": "",
+                "type": "query",
+                "description": "The start date to filter usages by. Defaults to all usages."
+              },
+              {
+                "name": "end",
+                "value": "",
+                "type": "query",
+                "description": "The end date to filter usages by. Defaults to all usages."
+              }
+            ]
+          },
+          "docs": "Get the usage for the given organization"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

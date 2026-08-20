@@ -20,6 +20,21 @@ specificationVersion: '0.23'
 created: '2026-08-01'
 modified: '2026-08-01'
 tags:
+- AI Agents
+- Agent Orchestration
+- Voice AI
+- Conversational AI
+- Logistics
+- Freight
+- Supply Chain
+- Workflow-Automation
+- Contact Center
+- Telephony
+- MCP
+- agent-native
+- Agent Governance
+- Enterprise Automation
+tags_raw:
 - ai-agents
 - agent-orchestration
 - voice-ai
@@ -48,6 +63,14 @@ apis:
   humanURL: https://docs.happyrobot.ai/api-reference
   baseURL: https://platform.happyrobot.ai/api/v2
   tags:
+  - AI Agents
+  - Agent Orchestration
+  - Workflow-Automation
+  - Voice AI
+  - Conversational AI
+  - Telephony
+  - Agent Governance
+  tags_raw:
   - ai-agents
   - agent-orchestration
   - workflow-automation
@@ -85,6 +108,10 @@ apis:
   humanURL: https://docs.happyrobot.ai/api-reference
   baseURL: https://platform.happyrobot.ai/api/v1
   tags:
+  - AI Agents
+  - Workflow-Automation
+  - Telephony
+  tags_raw:
   - ai-agents
   - workflow-automation
   - telephony
@@ -103,6 +130,10 @@ apis:
   humanURL: https://docs.happyrobot.ai/api-reference
   baseURL: https://platform.eu.happyrobot.ai/api/v2
   tags:
+  - AI Agents
+  - Workflow-Automation
+  - Data Residency
+  tags_raw:
   - ai-agents
   - workflow-automation
   - data-residency
@@ -123,6 +154,11 @@ apis:
   humanURL: https://docs.happyrobot.ai/developer-tools/mcp
   baseURL: https://mcp.platform.happyrobot.ai/workflows/mcp
   tags:
+  - MCP
+  - agent-native
+  - AI Agents
+  - Workflow-Automation
+  tags_raw:
   - mcp
   - agent-native
   - ai-agents
@@ -148,6 +184,10 @@ apis:
   humanURL: https://docs.happyrobot.ai/developer-tools/mcp-twin
   baseURL: https://mcp.platform.happyrobot.ai/twin/mcp
   tags:
+  - MCP
+  - agent-native
+  - Database
+  tags_raw:
   - mcp
   - agent-native
   - database
@@ -170,6 +210,10 @@ apis:
   humanURL: https://docs.happyrobot.ai
   baseURL: https://docs.happyrobot.ai/mcp
   tags:
+  - MCP
+  - agent-native
+  - Documentation
+  tags_raw:
   - mcp
   - agent-native
   - documentation

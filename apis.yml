@@ -50,106 +50,14 @@ tags_raw:
 - agent-governance
 - enterprise-automation
 apis:
-- name: Happyrobot Public API
-  description: >-
-    The current Happyrobot Public API (v2) — 205 operations over 162 paths, described by a live OpenAPI 3.0.3
-    document served from the API host at /api/v2/docs/json. Covers workflows, workflow folders and variables,
-    versions and nodes, runs, sessions and messages, contacts and contact memories, knowledge bases, phone
-    numbers, SIP trunks, toll-free verification, integrations (Slack, Teams, WhatsApp, Google Sheets, Twilio
-    SMS, Telnyx SMS), chat and voice session tokens, realtime tokens, signals and scheduled signals, the Twin
-    data store, billing usage, organization and members, MCP server registration, and the agent-quality
-    surface (audits, issues, northstars, custom evals, adversarial tests and suites). Bearer API key auth,
-    applied to every operation.
-  humanURL: https://docs.happyrobot.ai/api-reference
-  baseURL: https://platform.happyrobot.ai/api/v2
-  tags:
-  - AI Agents
-  - Agent Orchestration
-  - Workflow-Automation
-  - Voice AI
-  - Conversational AI
-  - Telephony
-  - Agent Governance
-  tags_raw:
-  - ai-agents
-  - agent-orchestration
-  - workflow-automation
-  - voice-ai
-  - conversational-ai
-  - telephony
-  - agent-governance
-  properties:
-  - type: OpenAPI
-    url: openapi/happyrobot-public-api-openapi.json
-  - type: Documentation
-    url: https://docs.happyrobot.ai/api-reference
-  - type: APIReference
-    url: https://docs.happyrobot.ai/api-reference
-  - type: Authentication
-    url: authentication/happyrobot-authentication.yml
-  - type: Conventions
-    url: conventions/happyrobot-conventions.yml
-  - type: ErrorCatalog
-    url: errors/happyrobot-problem-types.yml
-  - type: DataModel
-    url: data-model/happyrobot-data-model.yml
-  - type: Overlay
-    url: overlays/happyrobot-public-api-overlay.yaml
-  - type: Webhooks
-    url: asyncapi/happyrobot-events.yml
-  - type: AgenticAccess
-    url: agentic-access/happyrobot-agentic-access.yml
-- name: Happyrobot Platform API v1
-  description: >-
-    The legacy v1 read API, described by an OpenAPI 3.0.2 document at /api/v1/openapi.json. Ten read-only
-    operations covering runs, run recordings, use cases, workflow versions, issues and organization usage.
-    Authenticated with an `authorization` header plus an `x-organization-id` header. One operation
-    (GET /use-cases/{use_case_id}/runs) is explicitly marked DEPRECATED in favour of the v2 /runs endpoint.
-  humanURL: https://docs.happyrobot.ai/api-reference
-  baseURL: https://platform.happyrobot.ai/api/v1
-  tags:
-  - AI Agents
-  - Workflow-Automation
-  - Telephony
-  tags_raw:
-  - ai-agents
-  - workflow-automation
-  - telephony
-  properties:
-  - type: OpenAPI
-    url: openapi/happyrobot-platform-v1-openapi.json
-  - type: Documentation
-    url: https://docs.happyrobot.ai/api-reference
-  - type: Lifecycle
-    url: lifecycle/happyrobot-lifecycle.yml
-- name: Happyrobot Public API (EU cluster)
-  description: >-
-    EU data-residency mirror of the Happyrobot Public API, serving an identical OpenAPI 3.0.3 document with
-    its own OAuth authorization server and its own MCP hosts. Selected in the SDKs and MCP packages with
-    HAPPYROBOT_CLUSTER=eu. Verified live on 2026-08-01.
-  humanURL: https://docs.happyrobot.ai/api-reference
-  baseURL: https://platform.eu.happyrobot.ai/api/v2
-  tags:
-  - AI Agents
-  - Workflow-Automation
-  - Data Residency
-  tags_raw:
-  - ai-agents
-  - workflow-automation
-  - data-residency
-  properties:
-  - type: OpenAPI
-    url: openapi/happyrobot-public-api-openapi.json
-  - type: Documentation
-    url: https://docs.happyrobot.ai/api-reference
 - name: Happyrobot Workflows MCP Server
   description: >-
     Happyrobot's first-party remote MCP server for building and governing workflows — 26 published tools
     plus 5 MCP prompts, served over Streamable HTTP and protected by OAuth 2.0 (scope mcp:full, RFC 9728
     protected-resource metadata, RFC 7591 dynamic client registration, PKCE S256). It supersedes the now
     deprecated stdio package @happyrobot-ai/mcp. The tool surface is builder-shaped: it covers workflow
-    authoring, versioning, testing, evaluation and red-teaming, telephony and integrations, and binds to
-    150 of the 205 Public API operations. Live tools/list is auth-gated; the published tool list is
+    authoring, versioning, testing, evaluation and red-teaming, telephony and integrations, and binds
+    to 150 of the 205 Public API operations. Live tools/list is auth-gated; the published tool list is
     captured verbatim from the vendor's own package documentation.
   humanURL: https://docs.happyrobot.ai/developer-tools/mcp
   baseURL: https://mcp.platform.happyrobot.ai/workflows/mcp
@@ -177,10 +85,10 @@ apis:
 - name: Happyrobot Twin MCP Server
   description: >-
     First-party remote MCP server over the customer's Twin database — 9 published tools covering schema
-    introspection, paginated reads, table creation, row insert/update/delete, table drop, and arbitrary SQL
-    execution (SELECT, INSERT, UPDATE, DELETE and DDL). Streamable HTTP, OAuth 2.0 under the same single
-    coarse mcp:full scope as the Workflows server, so there is no read-only scope with which to bind a
-    research agent. Supersedes the deprecated stdio package @happyrobot-ai/mcp-twin.
+    introspection, paginated reads, table creation, row insert/update/delete, table drop, and arbitrary
+    SQL execution (SELECT, INSERT, UPDATE, DELETE and DDL). Streamable HTTP, OAuth 2.0 under the same
+    single coarse mcp:full scope as the Workflows server, so there is no read-only scope with which to
+    bind a research agent. Supersedes the deprecated stdio package @happyrobot-ai/mcp-twin.
   humanURL: https://docs.happyrobot.ai/developer-tools/mcp-twin
   baseURL: https://mcp.platform.happyrobot.ai/twin/mcp
   tags:
@@ -205,8 +113,8 @@ apis:
     A hosted documentation-search MCP server on the docs host, discovered via RFC 9728 protected-resource
     metadata at https://docs.happyrobot.ai/.well-known/oauth-protected-resource. It advertises a single
     mcp:search scope through its own authorization server at https://docs.happyrobot.ai/mcp/oauth. The
-    endpoint answers MCP JSON-RPC with HTTP 401 invalid_token plus a WWW-Authenticate Bearer challenge that
-    points back at the protected-resource document, so its tool list requires an authenticated introspection.
+    endpoint answers MCP JSON-RPC with HTTP 401 invalid_token plus a WWW-Authenticate Bearer challenge
+    that points back at the protected-resource document, so its tool list requires an authenticated introspection.
   humanURL: https://docs.happyrobot.ai
   baseURL: https://docs.happyrobot.ai/mcp
   tags:
@@ -222,6 +130,931 @@ apis:
     url: mcp/happyrobot-mcp.yml
   - type: OAuthScopes
     url: scopes/happyrobot-scopes.yml
+- aid: happyrobot:happyrobot-adversarial-suites-api
+  name: Happyrobot Adversarial Suites API
+  description: The Adversarial Suites API from Happyrobot — 8 operation(s) for adversarial suites.
+  humanURL: https://docs.happyrobot.ai/api-reference
+  baseURL: https://platform.happyrobot.ai/api/v2
+  tags:
+  - Adversarial Suites
+  properties:
+  - type: OpenAPI
+    url: openapi/happyrobot-adversarial-suites-api-openapi.yml
+  - type: Documentation
+    url: https://docs.happyrobot.ai/api-reference
+  - type: APIReference
+    url: https://docs.happyrobot.ai/api-reference
+  - type: Authentication
+    url: authentication/happyrobot-authentication.yml
+  - type: Conventions
+    url: conventions/happyrobot-conventions.yml
+  - type: ErrorCatalog
+    url: errors/happyrobot-problem-types.yml
+  - type: DataModel
+    url: data-model/happyrobot-data-model.yml
+  - type: Webhooks
+    url: asyncapi/happyrobot-events.yml
+  - type: AgenticAccess
+    url: agentic-access/happyrobot-agentic-access.yml
+  - type: Lifecycle
+    url: lifecycle/happyrobot-lifecycle.yml
+- aid: happyrobot:happyrobot-adversarial-tests-api
+  name: Happyrobot Adversarial Tests API
+  description: The Adversarial Tests API from Happyrobot — 8 operation(s) for adversarial tests.
+  humanURL: https://docs.happyrobot.ai/api-reference
+  baseURL: https://platform.happyrobot.ai/api/v2
+  tags:
+  - Adversarial Tests
+  properties:
+  - type: OpenAPI
+    url: openapi/happyrobot-adversarial-tests-api-openapi.yml
+  - type: Documentation
+    url: https://docs.happyrobot.ai/api-reference
+  - type: APIReference
+    url: https://docs.happyrobot.ai/api-reference
+  - type: Authentication
+    url: authentication/happyrobot-authentication.yml
+  - type: Conventions
+    url: conventions/happyrobot-conventions.yml
+  - type: ErrorCatalog
+    url: errors/happyrobot-problem-types.yml
+  - type: DataModel
+    url: data-model/happyrobot-data-model.yml
+  - type: Webhooks
+    url: asyncapi/happyrobot-events.yml
+  - type: AgenticAccess
+    url: agentic-access/happyrobot-agentic-access.yml
+  - type: Lifecycle
+    url: lifecycle/happyrobot-lifecycle.yml
+- aid: happyrobot:happyrobot-api-keys-api
+  name: Happyrobot API Keys API
+  description: The API Keys API from Happyrobot — 1 operation(s) for api keys.
+  humanURL: https://docs.happyrobot.ai/api-reference
+  baseURL: https://platform.happyrobot.ai/api/v2
+  tags:
+  - API Keys
+  properties:
+  - type: OpenAPI
+    url: openapi/happyrobot-api-keys-api-openapi.yml
+  - type: Documentation
+    url: https://docs.happyrobot.ai/api-reference
+  - type: APIReference
+    url: https://docs.happyrobot.ai/api-reference
+  - type: Authentication
+    url: authentication/happyrobot-authentication.yml
+  - type: Conventions
+    url: conventions/happyrobot-conventions.yml
+  - type: ErrorCatalog
+    url: errors/happyrobot-problem-types.yml
+  - type: DataModel
+    url: data-model/happyrobot-data-model.yml
+  - type: Webhooks
+    url: asyncapi/happyrobot-events.yml
+  - type: AgenticAccess
+    url: agentic-access/happyrobot-agentic-access.yml
+  - type: Lifecycle
+    url: lifecycle/happyrobot-lifecycle.yml
+- aid: happyrobot:happyrobot-apps-api
+  name: Happyrobot Apps API
+  description: The Apps API from Happyrobot — 1 operation(s) for apps.
+  humanURL: https://docs.happyrobot.ai/api-reference
+  baseURL: https://platform.happyrobot.ai/api/v2
+  tags:
+  - Apps
+  properties:
+  - type: OpenAPI
+    url: openapi/happyrobot-apps-api-openapi.yml
+  - type: Documentation
+    url: https://docs.happyrobot.ai/api-reference
+  - type: APIReference
+    url: https://docs.happyrobot.ai/api-reference
+  - type: Authentication
+    url: authentication/happyrobot-authentication.yml
+  - type: Conventions
+    url: conventions/happyrobot-conventions.yml
+  - type: ErrorCatalog
+    url: errors/happyrobot-problem-types.yml
+  - type: DataModel
+    url: data-model/happyrobot-data-model.yml
+  - type: Webhooks
+    url: asyncapi/happyrobot-events.yml
+  - type: AgenticAccess
+    url: agentic-access/happyrobot-agentic-access.yml
+  - type: Lifecycle
+    url: lifecycle/happyrobot-lifecycle.yml
+- aid: happyrobot:happyrobot-artifacts-api
+  name: Happyrobot Artifacts API
+  description: The Artifacts API from Happyrobot — 1 operation(s) for artifacts.
+  humanURL: https://docs.happyrobot.ai/api-reference
+  baseURL: https://platform.happyrobot.ai/api/v2
+  tags:
+  - Artifacts
+  properties:
+  - type: OpenAPI
+    url: openapi/happyrobot-artifacts-api-openapi.yml
+  - type: Documentation
+    url: https://docs.happyrobot.ai/api-reference
+  - type: APIReference
+    url: https://docs.happyrobot.ai/api-reference
+  - type: Authentication
+    url: authentication/happyrobot-authentication.yml
+  - type: Conventions
+    url: conventions/happyrobot-conventions.yml
+  - type: ErrorCatalog
+    url: errors/happyrobot-problem-types.yml
+  - type: DataModel
+    url: data-model/happyrobot-data-model.yml
+  - type: Webhooks
+    url: asyncapi/happyrobot-events.yml
+  - type: AgenticAccess
+    url: agentic-access/happyrobot-agentic-access.yml
+  - type: Lifecycle
+    url: lifecycle/happyrobot-lifecycle.yml
+- aid: happyrobot:happyrobot-audits-api
+  name: Happyrobot Audits API
+  description: The Audits API from Happyrobot — 8 operation(s) for audits.
+  humanURL: https://docs.happyrobot.ai/api-reference
+  baseURL: https://platform.happyrobot.ai/api/v2
+  tags:
+  - Audits
+  properties:
+  - type: OpenAPI
+    url: openapi/happyrobot-audits-api-openapi.yml
+  - type: Documentation
+    url: https://docs.happyrobot.ai/api-reference
+  - type: APIReference
+    url: https://docs.happyrobot.ai/api-reference
+  - type: Authentication
+    url: authentication/happyrobot-authentication.yml
+  - type: Conventions
+    url: conventions/happyrobot-conventions.yml
+  - type: ErrorCatalog
+    url: errors/happyrobot-problem-types.yml
+  - type: DataModel
+    url: data-model/happyrobot-data-model.yml
+  - type: Webhooks
+    url: asyncapi/happyrobot-events.yml
+  - type: AgenticAccess
+    url: agentic-access/happyrobot-agentic-access.yml
+  - type: Lifecycle
+    url: lifecycle/happyrobot-lifecycle.yml
+- aid: happyrobot:happyrobot-billing-api
+  name: Happyrobot Billing API
+  description: The Billing API from Happyrobot — 4 operation(s) for billing.
+  humanURL: https://docs.happyrobot.ai/api-reference
+  baseURL: https://platform.happyrobot.ai/api/v2
+  tags:
+  - Billing
+  properties:
+  - type: OpenAPI
+    url: openapi/happyrobot-billing-api-openapi.yml
+  - type: Documentation
+    url: https://docs.happyrobot.ai/api-reference
+  - type: APIReference
+    url: https://docs.happyrobot.ai/api-reference
+  - type: Authentication
+    url: authentication/happyrobot-authentication.yml
+  - type: Conventions
+    url: conventions/happyrobot-conventions.yml
+  - type: ErrorCatalog
+    url: errors/happyrobot-problem-types.yml
+  - type: DataModel
+    url: data-model/happyrobot-data-model.yml
+  - type: Webhooks
+    url: asyncapi/happyrobot-events.yml
+  - type: AgenticAccess
+    url: agentic-access/happyrobot-agentic-access.yml
+  - type: Lifecycle
+    url: lifecycle/happyrobot-lifecycle.yml
+- aid: happyrobot:happyrobot-chat-api
+  name: Happyrobot Chat API
+  description: The Chat API from Happyrobot — 7 operation(s) for chat.
+  humanURL: https://docs.happyrobot.ai/api-reference
+  baseURL: https://platform.happyrobot.ai/api/v2
+  tags:
+  - Chat
+  properties:
+  - type: OpenAPI
+    url: openapi/happyrobot-chat-api-openapi.yml
+  - type: Documentation
+    url: https://docs.happyrobot.ai/api-reference
+  - type: APIReference
+    url: https://docs.happyrobot.ai/api-reference
+  - type: Authentication
+    url: authentication/happyrobot-authentication.yml
+  - type: Conventions
+    url: conventions/happyrobot-conventions.yml
+  - type: ErrorCatalog
+    url: errors/happyrobot-problem-types.yml
+  - type: DataModel
+    url: data-model/happyrobot-data-model.yml
+  - type: Webhooks
+    url: asyncapi/happyrobot-events.yml
+  - type: AgenticAccess
+    url: agentic-access/happyrobot-agentic-access.yml
+  - type: Lifecycle
+    url: lifecycle/happyrobot-lifecycle.yml
+- aid: happyrobot:happyrobot-contacts-api
+  name: Happyrobot Contacts API
+  description: The Contacts API from Happyrobot — 5 operation(s) for contacts.
+  humanURL: https://docs.happyrobot.ai/api-reference
+  baseURL: https://platform.happyrobot.ai/api/v2
+  tags:
+  - Contacts
+  properties:
+  - type: OpenAPI
+    url: openapi/happyrobot-contacts-api-openapi.yml
+  - type: Documentation
+    url: https://docs.happyrobot.ai/api-reference
+  - type: APIReference
+    url: https://docs.happyrobot.ai/api-reference
+  - type: Authentication
+    url: authentication/happyrobot-authentication.yml
+  - type: Conventions
+    url: conventions/happyrobot-conventions.yml
+  - type: ErrorCatalog
+    url: errors/happyrobot-problem-types.yml
+  - type: DataModel
+    url: data-model/happyrobot-data-model.yml
+  - type: Webhooks
+    url: asyncapi/happyrobot-events.yml
+  - type: AgenticAccess
+    url: agentic-access/happyrobot-agentic-access.yml
+  - type: Lifecycle
+    url: lifecycle/happyrobot-lifecycle.yml
+- aid: happyrobot:happyrobot-custom-evals-api
+  name: Happyrobot Custom Evals API
+  description: The Custom Evals API from Happyrobot — 8 operation(s) for custom evals.
+  humanURL: https://docs.happyrobot.ai/api-reference
+  baseURL: https://platform.happyrobot.ai/api/v2
+  tags:
+  - Custom Evals
+  properties:
+  - type: OpenAPI
+    url: openapi/happyrobot-custom-evals-api-openapi.yml
+  - type: Documentation
+    url: https://docs.happyrobot.ai/api-reference
+  - type: APIReference
+    url: https://docs.happyrobot.ai/api-reference
+  - type: Authentication
+    url: authentication/happyrobot-authentication.yml
+  - type: Conventions
+    url: conventions/happyrobot-conventions.yml
+  - type: ErrorCatalog
+    url: errors/happyrobot-problem-types.yml
+  - type: DataModel
+    url: data-model/happyrobot-data-model.yml
+  - type: Webhooks
+    url: asyncapi/happyrobot-events.yml
+  - type: AgenticAccess
+    url: agentic-access/happyrobot-agentic-access.yml
+  - type: Lifecycle
+    url: lifecycle/happyrobot-lifecycle.yml
+- aid: happyrobot:happyrobot-events-api
+  name: Happyrobot Events API
+  description: The Events API from Happyrobot — 1 operation(s) for events.
+  humanURL: https://docs.happyrobot.ai/api-reference
+  baseURL: https://platform.happyrobot.ai/api/v2
+  tags:
+  - Events
+  properties:
+  - type: OpenAPI
+    url: openapi/happyrobot-events-api-openapi.yml
+  - type: Documentation
+    url: https://docs.happyrobot.ai/api-reference
+  - type: APIReference
+    url: https://docs.happyrobot.ai/api-reference
+  - type: Authentication
+    url: authentication/happyrobot-authentication.yml
+  - type: Conventions
+    url: conventions/happyrobot-conventions.yml
+  - type: ErrorCatalog
+    url: errors/happyrobot-problem-types.yml
+  - type: DataModel
+    url: data-model/happyrobot-data-model.yml
+  - type: Webhooks
+    url: asyncapi/happyrobot-events.yml
+  - type: AgenticAccess
+    url: agentic-access/happyrobot-agentic-access.yml
+  - type: Lifecycle
+    url: lifecycle/happyrobot-lifecycle.yml
+- aid: happyrobot:happyrobot-integration-resources-api
+  name: Happyrobot Integration Resources API
+  description: >-
+    The Integration Resources API from Happyrobot — 15 operation(s) for integration resources.
+  humanURL: https://docs.happyrobot.ai/api-reference
+  baseURL: https://platform.happyrobot.ai/api/v2
+  tags:
+  - Integration Resources
+  properties:
+  - type: OpenAPI
+    url: openapi/happyrobot-integration-resources-api-openapi.yml
+  - type: Documentation
+    url: https://docs.happyrobot.ai/api-reference
+  - type: APIReference
+    url: https://docs.happyrobot.ai/api-reference
+  - type: Authentication
+    url: authentication/happyrobot-authentication.yml
+  - type: Conventions
+    url: conventions/happyrobot-conventions.yml
+  - type: ErrorCatalog
+    url: errors/happyrobot-problem-types.yml
+  - type: DataModel
+    url: data-model/happyrobot-data-model.yml
+  - type: Webhooks
+    url: asyncapi/happyrobot-events.yml
+  - type: AgenticAccess
+    url: agentic-access/happyrobot-agentic-access.yml
+  - type: Lifecycle
+    url: lifecycle/happyrobot-lifecycle.yml
+- aid: happyrobot:happyrobot-integrations-api
+  name: Happyrobot Integrations API
+  description: The Integrations API from Happyrobot — 4 operation(s) for integrations.
+  humanURL: https://docs.happyrobot.ai/api-reference
+  baseURL: https://platform.happyrobot.ai/api/v2
+  tags:
+  - Integrations
+  properties:
+  - type: OpenAPI
+    url: openapi/happyrobot-integrations-api-openapi.yml
+  - type: Documentation
+    url: https://docs.happyrobot.ai/api-reference
+  - type: APIReference
+    url: https://docs.happyrobot.ai/api-reference
+  - type: Authentication
+    url: authentication/happyrobot-authentication.yml
+  - type: Conventions
+    url: conventions/happyrobot-conventions.yml
+  - type: ErrorCatalog
+    url: errors/happyrobot-problem-types.yml
+  - type: DataModel
+    url: data-model/happyrobot-data-model.yml
+  - type: Webhooks
+    url: asyncapi/happyrobot-events.yml
+  - type: AgenticAccess
+    url: agentic-access/happyrobot-agentic-access.yml
+  - type: Lifecycle
+    url: lifecycle/happyrobot-lifecycle.yml
+- aid: happyrobot:happyrobot-issues-api
+  name: Happyrobot Issues API
+  description: The Issues API from Happyrobot — 3 operation(s) for issues.
+  humanURL: https://docs.happyrobot.ai/api-reference
+  baseURL: https://platform.happyrobot.ai/api/v2
+  tags:
+  - Issues
+  properties:
+  - type: OpenAPI
+    url: openapi/happyrobot-issues-api-openapi.yml
+  - type: Documentation
+    url: https://docs.happyrobot.ai/api-reference
+  - type: APIReference
+    url: https://docs.happyrobot.ai/api-reference
+  - type: Authentication
+    url: authentication/happyrobot-authentication.yml
+  - type: Conventions
+    url: conventions/happyrobot-conventions.yml
+  - type: ErrorCatalog
+    url: errors/happyrobot-problem-types.yml
+  - type: DataModel
+    url: data-model/happyrobot-data-model.yml
+  - type: Webhooks
+    url: asyncapi/happyrobot-events.yml
+  - type: AgenticAccess
+    url: agentic-access/happyrobot-agentic-access.yml
+  - type: Lifecycle
+    url: lifecycle/happyrobot-lifecycle.yml
+- aid: happyrobot:happyrobot-knowledge-bases-api
+  name: Happyrobot Knowledge Bases API
+  description: The Knowledge Bases API from Happyrobot — 6 operation(s) for knowledge bases.
+  humanURL: https://docs.happyrobot.ai/api-reference
+  baseURL: https://platform.happyrobot.ai/api/v2
+  tags:
+  - Knowledge Bases
+  properties:
+  - type: OpenAPI
+    url: openapi/happyrobot-knowledge-bases-api-openapi.yml
+  - type: Documentation
+    url: https://docs.happyrobot.ai/api-reference
+  - type: APIReference
+    url: https://docs.happyrobot.ai/api-reference
+  - type: Authentication
+    url: authentication/happyrobot-authentication.yml
+  - type: Conventions
+    url: conventions/happyrobot-conventions.yml
+  - type: ErrorCatalog
+    url: errors/happyrobot-problem-types.yml
+  - type: DataModel
+    url: data-model/happyrobot-data-model.yml
+  - type: Webhooks
+    url: asyncapi/happyrobot-events.yml
+  - type: AgenticAccess
+    url: agentic-access/happyrobot-agentic-access.yml
+  - type: Lifecycle
+    url: lifecycle/happyrobot-lifecycle.yml
+- aid: happyrobot:happyrobot-mcp-servers-api
+  name: Happyrobot MCP Servers API
+  description: The MCP Servers API from Happyrobot — 3 operation(s) for mcp servers.
+  humanURL: https://docs.happyrobot.ai/api-reference
+  baseURL: https://platform.happyrobot.ai/api/v2
+  tags:
+  - MCP Servers
+  properties:
+  - type: OpenAPI
+    url: openapi/happyrobot-mcp-servers-api-openapi.yml
+  - type: Documentation
+    url: https://docs.happyrobot.ai/api-reference
+  - type: APIReference
+    url: https://docs.happyrobot.ai/api-reference
+  - type: Authentication
+    url: authentication/happyrobot-authentication.yml
+  - type: Conventions
+    url: conventions/happyrobot-conventions.yml
+  - type: ErrorCatalog
+    url: errors/happyrobot-problem-types.yml
+  - type: DataModel
+    url: data-model/happyrobot-data-model.yml
+  - type: Webhooks
+    url: asyncapi/happyrobot-events.yml
+  - type: AgenticAccess
+    url: agentic-access/happyrobot-agentic-access.yml
+  - type: Lifecycle
+    url: lifecycle/happyrobot-lifecycle.yml
+- aid: happyrobot:happyrobot-messages-api
+  name: Happyrobot Messages API
+  description: The Messages API from Happyrobot — 1 operation(s) for messages.
+  humanURL: https://docs.happyrobot.ai/api-reference
+  baseURL: https://platform.happyrobot.ai/api/v2
+  tags:
+  - Messages
+  properties:
+  - type: OpenAPI
+    url: openapi/happyrobot-messages-api-openapi.yml
+  - type: Documentation
+    url: https://docs.happyrobot.ai/api-reference
+  - type: APIReference
+    url: https://docs.happyrobot.ai/api-reference
+  - type: Authentication
+    url: authentication/happyrobot-authentication.yml
+  - type: Conventions
+    url: conventions/happyrobot-conventions.yml
+  - type: ErrorCatalog
+    url: errors/happyrobot-problem-types.yml
+  - type: DataModel
+    url: data-model/happyrobot-data-model.yml
+  - type: Webhooks
+    url: asyncapi/happyrobot-events.yml
+  - type: AgenticAccess
+    url: agentic-access/happyrobot-agentic-access.yml
+  - type: Lifecycle
+    url: lifecycle/happyrobot-lifecycle.yml
+- aid: happyrobot:happyrobot-northstars-api
+  name: Happyrobot Northstars API
+  description: The Northstars API from Happyrobot — 9 operation(s) for northstars.
+  humanURL: https://docs.happyrobot.ai/api-reference
+  baseURL: https://platform.happyrobot.ai/api/v2
+  tags:
+  - Northstars
+  properties:
+  - type: OpenAPI
+    url: openapi/happyrobot-northstars-api-openapi.yml
+  - type: Documentation
+    url: https://docs.happyrobot.ai/api-reference
+  - type: APIReference
+    url: https://docs.happyrobot.ai/api-reference
+  - type: Authentication
+    url: authentication/happyrobot-authentication.yml
+  - type: Conventions
+    url: conventions/happyrobot-conventions.yml
+  - type: ErrorCatalog
+    url: errors/happyrobot-problem-types.yml
+  - type: DataModel
+    url: data-model/happyrobot-data-model.yml
+  - type: Webhooks
+    url: asyncapi/happyrobot-events.yml
+  - type: AgenticAccess
+    url: agentic-access/happyrobot-agentic-access.yml
+  - type: Lifecycle
+    url: lifecycle/happyrobot-lifecycle.yml
+- aid: happyrobot:happyrobot-organization-api
+  name: Happyrobot Organization API
+  description: The Organization API from Happyrobot — 2 operation(s) for organization.
+  humanURL: https://docs.happyrobot.ai/api-reference
+  baseURL: https://platform.happyrobot.ai/api/v2
+  tags:
+  - Organization
+  properties:
+  - type: OpenAPI
+    url: openapi/happyrobot-organization-api-openapi.yml
+  - type: Documentation
+    url: https://docs.happyrobot.ai/api-reference
+  - type: APIReference
+    url: https://docs.happyrobot.ai/api-reference
+  - type: Authentication
+    url: authentication/happyrobot-authentication.yml
+  - type: Conventions
+    url: conventions/happyrobot-conventions.yml
+  - type: ErrorCatalog
+    url: errors/happyrobot-problem-types.yml
+  - type: DataModel
+    url: data-model/happyrobot-data-model.yml
+  - type: Webhooks
+    url: asyncapi/happyrobot-events.yml
+  - type: AgenticAccess
+    url: agentic-access/happyrobot-agentic-access.yml
+  - type: Lifecycle
+    url: lifecycle/happyrobot-lifecycle.yml
+- aid: happyrobot:happyrobot-phone-numbers-api
+  name: Happyrobot Phone Numbers API
+  description: The Phone Numbers API from Happyrobot — 10 operation(s) for phone numbers.
+  humanURL: https://docs.happyrobot.ai/api-reference
+  baseURL: https://platform.happyrobot.ai/api/v2
+  tags:
+  - Phone Numbers
+  properties:
+  - type: OpenAPI
+    url: openapi/happyrobot-phone-numbers-api-openapi.yml
+  - type: Documentation
+    url: https://docs.happyrobot.ai/api-reference
+  - type: APIReference
+    url: https://docs.happyrobot.ai/api-reference
+  - type: Authentication
+    url: authentication/happyrobot-authentication.yml
+  - type: Conventions
+    url: conventions/happyrobot-conventions.yml
+  - type: ErrorCatalog
+    url: errors/happyrobot-problem-types.yml
+  - type: DataModel
+    url: data-model/happyrobot-data-model.yml
+  - type: Webhooks
+    url: asyncapi/happyrobot-events.yml
+  - type: AgenticAccess
+    url: agentic-access/happyrobot-agentic-access.yml
+  - type: Lifecycle
+    url: lifecycle/happyrobot-lifecycle.yml
+- aid: happyrobot:happyrobot-realtime-api
+  name: Happyrobot Realtime API
+  description: The Realtime API from Happyrobot — 1 operation(s) for realtime.
+  humanURL: https://docs.happyrobot.ai/api-reference
+  baseURL: https://platform.happyrobot.ai/api/v2
+  tags:
+  - Realtime
+  properties:
+  - type: OpenAPI
+    url: openapi/happyrobot-realtime-api-openapi.yml
+  - type: Documentation
+    url: https://docs.happyrobot.ai/api-reference
+  - type: APIReference
+    url: https://docs.happyrobot.ai/api-reference
+  - type: Authentication
+    url: authentication/happyrobot-authentication.yml
+  - type: Conventions
+    url: conventions/happyrobot-conventions.yml
+  - type: ErrorCatalog
+    url: errors/happyrobot-problem-types.yml
+  - type: DataModel
+    url: data-model/happyrobot-data-model.yml
+  - type: Webhooks
+    url: asyncapi/happyrobot-events.yml
+  - type: AgenticAccess
+    url: agentic-access/happyrobot-agentic-access.yml
+  - type: Lifecycle
+    url: lifecycle/happyrobot-lifecycle.yml
+- aid: happyrobot:happyrobot-runs-api
+  name: Happyrobot Runs API
+  description: The Runs API from Happyrobot — 12 operation(s) for runs.
+  humanURL: https://docs.happyrobot.ai/api-reference
+  baseURL: https://platform.happyrobot.ai/api/v2
+  tags:
+  - Runs
+  properties:
+  - type: OpenAPI
+    url: openapi/happyrobot-runs-api-openapi.yml
+  - type: Documentation
+    url: https://docs.happyrobot.ai/api-reference
+  - type: APIReference
+    url: https://docs.happyrobot.ai/api-reference
+  - type: Authentication
+    url: authentication/happyrobot-authentication.yml
+  - type: Conventions
+    url: conventions/happyrobot-conventions.yml
+  - type: ErrorCatalog
+    url: errors/happyrobot-problem-types.yml
+  - type: DataModel
+    url: data-model/happyrobot-data-model.yml
+  - type: Webhooks
+    url: asyncapi/happyrobot-events.yml
+  - type: AgenticAccess
+    url: agentic-access/happyrobot-agentic-access.yml
+  - type: Lifecycle
+    url: lifecycle/happyrobot-lifecycle.yml
+- aid: happyrobot:happyrobot-sessions-api
+  name: Happyrobot Sessions API
+  description: The Sessions API from Happyrobot — 4 operation(s) for sessions.
+  humanURL: https://docs.happyrobot.ai/api-reference
+  baseURL: https://platform.happyrobot.ai/api/v2
+  tags:
+  - Sessions
+  properties:
+  - type: OpenAPI
+    url: openapi/happyrobot-sessions-api-openapi.yml
+  - type: Documentation
+    url: https://docs.happyrobot.ai/api-reference
+  - type: APIReference
+    url: https://docs.happyrobot.ai/api-reference
+  - type: Authentication
+    url: authentication/happyrobot-authentication.yml
+  - type: Conventions
+    url: conventions/happyrobot-conventions.yml
+  - type: ErrorCatalog
+    url: errors/happyrobot-problem-types.yml
+  - type: DataModel
+    url: data-model/happyrobot-data-model.yml
+  - type: Webhooks
+    url: asyncapi/happyrobot-events.yml
+  - type: AgenticAccess
+    url: agentic-access/happyrobot-agentic-access.yml
+  - type: Lifecycle
+    url: lifecycle/happyrobot-lifecycle.yml
+- aid: happyrobot:happyrobot-signals-api
+  name: Happyrobot Signals API
+  description: The Signals API from Happyrobot — 4 operation(s) for signals.
+  humanURL: https://docs.happyrobot.ai/api-reference
+  baseURL: https://platform.happyrobot.ai/api/v2
+  tags:
+  - Signals
+  properties:
+  - type: OpenAPI
+    url: openapi/happyrobot-signals-api-openapi.yml
+  - type: Documentation
+    url: https://docs.happyrobot.ai/api-reference
+  - type: APIReference
+    url: https://docs.happyrobot.ai/api-reference
+  - type: Authentication
+    url: authentication/happyrobot-authentication.yml
+  - type: Conventions
+    url: conventions/happyrobot-conventions.yml
+  - type: ErrorCatalog
+    url: errors/happyrobot-problem-types.yml
+  - type: DataModel
+    url: data-model/happyrobot-data-model.yml
+  - type: Webhooks
+    url: asyncapi/happyrobot-events.yml
+  - type: AgenticAccess
+    url: agentic-access/happyrobot-agentic-access.yml
+  - type: Lifecycle
+    url: lifecycle/happyrobot-lifecycle.yml
+- aid: happyrobot:happyrobot-sip-trunks-api
+  name: Happyrobot SIP Trunks API
+  description: The SIP Trunks API from Happyrobot — 4 operation(s) for sip trunks.
+  humanURL: https://docs.happyrobot.ai/api-reference
+  baseURL: https://platform.happyrobot.ai/api/v2
+  tags:
+  - SIP Trunks
+  properties:
+  - type: OpenAPI
+    url: openapi/happyrobot-sip-trunks-api-openapi.yml
+  - type: Documentation
+    url: https://docs.happyrobot.ai/api-reference
+  - type: APIReference
+    url: https://docs.happyrobot.ai/api-reference
+  - type: Authentication
+    url: authentication/happyrobot-authentication.yml
+  - type: Conventions
+    url: conventions/happyrobot-conventions.yml
+  - type: ErrorCatalog
+    url: errors/happyrobot-problem-types.yml
+  - type: DataModel
+    url: data-model/happyrobot-data-model.yml
+  - type: Webhooks
+    url: asyncapi/happyrobot-events.yml
+  - type: AgenticAccess
+    url: agentic-access/happyrobot-agentic-access.yml
+  - type: Lifecycle
+    url: lifecycle/happyrobot-lifecycle.yml
+- aid: happyrobot:happyrobot-twin-api
+  name: Happyrobot Twin API
+  description: The Twin API from Happyrobot — 6 operation(s) for twin.
+  humanURL: https://docs.happyrobot.ai/api-reference
+  baseURL: https://platform.happyrobot.ai/api/v2
+  tags:
+  - Twin
+  properties:
+  - type: OpenAPI
+    url: openapi/happyrobot-twin-api-openapi.yml
+  - type: Documentation
+    url: https://docs.happyrobot.ai/api-reference
+  - type: APIReference
+    url: https://docs.happyrobot.ai/api-reference
+  - type: Authentication
+    url: authentication/happyrobot-authentication.yml
+  - type: Conventions
+    url: conventions/happyrobot-conventions.yml
+  - type: ErrorCatalog
+    url: errors/happyrobot-problem-types.yml
+  - type: DataModel
+    url: data-model/happyrobot-data-model.yml
+  - type: Webhooks
+    url: asyncapi/happyrobot-events.yml
+  - type: AgenticAccess
+    url: agentic-access/happyrobot-agentic-access.yml
+  - type: Lifecycle
+    url: lifecycle/happyrobot-lifecycle.yml
+- aid: happyrobot:happyrobot-use-cases-api
+  name: Happyrobot Use Cases API
+  description: The Use Cases API from Happyrobot — 1 operation(s) for use cases.
+  humanURL: https://docs.happyrobot.ai/api-reference
+  baseURL: https://platform.happyrobot.ai/api/v2
+  tags:
+  - Use Cases
+  properties:
+  - type: OpenAPI
+    url: openapi/happyrobot-use-cases-api-openapi.yml
+  - type: Documentation
+    url: https://docs.happyrobot.ai/api-reference
+  - type: APIReference
+    url: https://docs.happyrobot.ai/api-reference
+  - type: Authentication
+    url: authentication/happyrobot-authentication.yml
+  - type: Conventions
+    url: conventions/happyrobot-conventions.yml
+  - type: ErrorCatalog
+    url: errors/happyrobot-problem-types.yml
+  - type: DataModel
+    url: data-model/happyrobot-data-model.yml
+  - type: Webhooks
+    url: asyncapi/happyrobot-events.yml
+  - type: AgenticAccess
+    url: agentic-access/happyrobot-agentic-access.yml
+  - type: Lifecycle
+    url: lifecycle/happyrobot-lifecycle.yml
+- aid: happyrobot:happyrobot-usecases-api
+  name: Happyrobot Use Cases API
+  description: The UseCases API from Happyrobot — 2 operation(s) for usecases.
+  humanURL: https://docs.happyrobot.ai/api-reference
+  baseURL: https://platform.happyrobot.ai/api/v2
+  tags:
+  - UseCases
+  properties:
+  - type: OpenAPI
+    url: openapi/happyrobot-usecases-api-openapi.yml
+  - type: Documentation
+    url: https://docs.happyrobot.ai/api-reference
+  - type: APIReference
+    url: https://docs.happyrobot.ai/api-reference
+  - type: Authentication
+    url: authentication/happyrobot-authentication.yml
+  - type: Conventions
+    url: conventions/happyrobot-conventions.yml
+  - type: ErrorCatalog
+    url: errors/happyrobot-problem-types.yml
+  - type: DataModel
+    url: data-model/happyrobot-data-model.yml
+  - type: Webhooks
+    url: asyncapi/happyrobot-events.yml
+  - type: AgenticAccess
+    url: agentic-access/happyrobot-agentic-access.yml
+  - type: Lifecycle
+    url: lifecycle/happyrobot-lifecycle.yml
+- aid: happyrobot:happyrobot-versions-api
+  name: Happyrobot Versions API
+  description: The Versions API from Happyrobot — 16 operation(s) for versions.
+  humanURL: https://docs.happyrobot.ai/api-reference
+  baseURL: https://platform.happyrobot.ai/api/v2
+  tags:
+  - Versions
+  properties:
+  - type: OpenAPI
+    url: openapi/happyrobot-versions-api-openapi.yml
+  - type: Documentation
+    url: https://docs.happyrobot.ai/api-reference
+  - type: APIReference
+    url: https://docs.happyrobot.ai/api-reference
+  - type: Authentication
+    url: authentication/happyrobot-authentication.yml
+  - type: Conventions
+    url: conventions/happyrobot-conventions.yml
+  - type: ErrorCatalog
+    url: errors/happyrobot-problem-types.yml
+  - type: DataModel
+    url: data-model/happyrobot-data-model.yml
+  - type: Webhooks
+    url: asyncapi/happyrobot-events.yml
+  - type: AgenticAccess
+    url: agentic-access/happyrobot-agentic-access.yml
+  - type: Lifecycle
+    url: lifecycle/happyrobot-lifecycle.yml
+- aid: happyrobot:happyrobot-voice-api
+  name: Happyrobot Voice API
+  description: The Voice API from Happyrobot — 1 operation(s) for voice.
+  humanURL: https://docs.happyrobot.ai/api-reference
+  baseURL: https://platform.happyrobot.ai/api/v2
+  tags:
+  - Voice
+  properties:
+  - type: OpenAPI
+    url: openapi/happyrobot-voice-api-openapi.yml
+  - type: Documentation
+    url: https://docs.happyrobot.ai/api-reference
+  - type: APIReference
+    url: https://docs.happyrobot.ai/api-reference
+  - type: Authentication
+    url: authentication/happyrobot-authentication.yml
+  - type: Conventions
+    url: conventions/happyrobot-conventions.yml
+  - type: ErrorCatalog
+    url: errors/happyrobot-problem-types.yml
+  - type: DataModel
+    url: data-model/happyrobot-data-model.yml
+  - type: Webhooks
+    url: asyncapi/happyrobot-events.yml
+  - type: AgenticAccess
+    url: agentic-access/happyrobot-agentic-access.yml
+  - type: Lifecycle
+    url: lifecycle/happyrobot-lifecycle.yml
+- aid: happyrobot:happyrobot-workflow-folders-api
+  name: Happyrobot Workflow Folders API
+  description: The Workflow Folders API from Happyrobot — 2 operation(s) for workflow folders.
+  humanURL: https://docs.happyrobot.ai/api-reference
+  baseURL: https://platform.happyrobot.ai/api/v2
+  tags:
+  - Workflow Folders
+  properties:
+  - type: OpenAPI
+    url: openapi/happyrobot-workflow-folders-api-openapi.yml
+  - type: Documentation
+    url: https://docs.happyrobot.ai/api-reference
+  - type: APIReference
+    url: https://docs.happyrobot.ai/api-reference
+  - type: Authentication
+    url: authentication/happyrobot-authentication.yml
+  - type: Conventions
+    url: conventions/happyrobot-conventions.yml
+  - type: ErrorCatalog
+    url: errors/happyrobot-problem-types.yml
+  - type: DataModel
+    url: data-model/happyrobot-data-model.yml
+  - type: Webhooks
+    url: asyncapi/happyrobot-events.yml
+  - type: AgenticAccess
+    url: agentic-access/happyrobot-agentic-access.yml
+  - type: Lifecycle
+    url: lifecycle/happyrobot-lifecycle.yml
+- aid: happyrobot:happyrobot-workflow-variables-api
+  name: Happyrobot Workflow Variables API
+  description: The Workflow Variables API from Happyrobot — 2 operation(s) for workflow variables.
+  humanURL: https://docs.happyrobot.ai/api-reference
+  baseURL: https://platform.happyrobot.ai/api/v2
+  tags:
+  - Workflow Variables
+  properties:
+  - type: OpenAPI
+    url: openapi/happyrobot-workflow-variables-api-openapi.yml
+  - type: Documentation
+    url: https://docs.happyrobot.ai/api-reference
+  - type: APIReference
+    url: https://docs.happyrobot.ai/api-reference
+  - type: Authentication
+    url: authentication/happyrobot-authentication.yml
+  - type: Conventions
+    url: conventions/happyrobot-conventions.yml
+  - type: ErrorCatalog
+    url: errors/happyrobot-problem-types.yml
+  - type: DataModel
+    url: data-model/happyrobot-data-model.yml
+  - type: Webhooks
+    url: asyncapi/happyrobot-events.yml
+  - type: AgenticAccess
+    url: agentic-access/happyrobot-agentic-access.yml
+  - type: Lifecycle
+    url: lifecycle/happyrobot-lifecycle.yml
+- aid: happyrobot:happyrobot-workflows-api
+  name: Happyrobot Workflows API
+  description: The Workflows API from Happyrobot — 10 operation(s) for workflows.
+  humanURL: https://docs.happyrobot.ai/api-reference
+  baseURL: https://platform.happyrobot.ai/api/v2
+  tags:
+  - Workflows
+  properties:
+  - type: OpenAPI
+    url: openapi/happyrobot-workflows-api-openapi.yml
+  - type: Documentation
+    url: https://docs.happyrobot.ai/api-reference
+  - type: APIReference
+    url: https://docs.happyrobot.ai/api-reference
+  - type: Authentication
+    url: authentication/happyrobot-authentication.yml
+  - type: Conventions
+    url: conventions/happyrobot-conventions.yml
+  - type: ErrorCatalog
+    url: errors/happyrobot-problem-types.yml
+  - type: DataModel
+    url: data-model/happyrobot-data-model.yml
+  - type: Webhooks
+    url: asyncapi/happyrobot-events.yml
+  - type: AgenticAccess
+    url: agentic-access/happyrobot-agentic-access.yml
+  - type: Lifecycle
+    url: lifecycle/happyrobot-lifecycle.yml
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com

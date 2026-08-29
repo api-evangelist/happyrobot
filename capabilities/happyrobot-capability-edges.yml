@@ -1,0 +1,26 @@
+slug: happyrobot
+provider: Happyrobot
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Software & Technology
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 1
+edges:
+- tag: Billing
+  spec_file: happyrobot-billing-api-openapi.yml
+  capability_id: BC-4250.10
+  capability_id_l1: BC-4250
+  capability_name: Usage Metering
+  confidence: 0.75
+  evidence: GET /billing/usage/totals — Get total org usage between date range; GET /billing/usage/credits
+    — Get credit consumption by component per workflow
+  reason: Exposes aggregated per-organisation consumption and credit usage that underpins consumption-based
+    charging — usage metering for the SaaS billing model. Slight ambiguity between metering and downstream
+    rating, so L2 confidence moderated.

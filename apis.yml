@@ -1072,6 +1072,9 @@ maintainers:
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: CapabilityMap
+  url: capabilities/happyrobot-capability-edges.yml
+  name: Happyrobot Business Capability Map
 - type: Website
   url: https://www.happyrobot.ai/
 - type: DeveloperPortal

@@ -13,6 +13,17 @@ description: >-
   environment; the platform additionally runs an Auth0 OIDC tenant for human sign-in and an OAuth 2.0
   authorization server for its MCP surface.
 url: https://raw.githubusercontent.com/api-evangelist/happyrobot/refs/heads/main/apis.yml
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: false
+  label: Hosted service · you call their endpoint
+  confidence: medium
+  source:
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 image: https://happyrobot.b-cdn.net/HappyRobot_HeroLoop_v01%20(00184)%201-1200x630.png
 x-type: company
 x-source: harvest:secondary-market

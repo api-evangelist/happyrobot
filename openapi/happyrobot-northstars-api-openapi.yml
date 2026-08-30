@@ -1,0 +1,2022 @@
+openapi: 3.2.0
+info:
+  title: Happyrobot Public Northstars API
+  description: Public API endpoints for Happyrobot
+  version: 0.1.1
+servers:
+- url: https://platform.happyrobot.ai/api/v2
+security:
+- bearerAuth: []
+tags:
+- name: Northstars
+paths:
+  /nodes/{node_id}/northstars:
+    get:
+      summary: List northstars for a prompt node
+      tags:
+      - Northstars
+      description: Returns all northstars for a prompt node along with AI generation and coverage assessment statuses.
+      parameters:
+      - schema:
+          type: string
+          format: uuid
+          pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+        in: path
+        name: node_id
+        required: true
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        name:
+                          type: string
+                        description:
+                          type: array
+                          items:
+                            type: object
+                            additionalProperties: {}
+                        category:
+                          type: string
+                        category_config: {}
+                        enabled:
+                          type: boolean
+                        priority:
+                          type: string
+                        positive_examples:
+                          type: array
+                          items:
+                            type: object
+                            additionalProperties: {}
+                        negative_examples:
+                          type: array
+                          items:
+                            type: object
+                            additionalProperties: {}
+                        node_ids:
+                          type:
+                          - array
+                          - 'null'
+                          items:
+                            type: string
+                        agent_id:
+                          type:
+                          - string
+                          - 'null'
+                        org_id:
+                          type: string
+                        workflow_id:
+                          type:
+                          - string
+                          - 'null'
+                        version_id:
+                          type:
+                          - string
+                          - 'null'
+                        prompt_node_id:
+                          type:
+                          - string
+                          - 'null'
+                        prompt_component_id:
+                          type:
+                          - string
+                          - 'null'
+                        folder_id:
+                          type:
+                          - string
+                          - 'null'
+                        regenerated_from_northstar_id:
+                          type:
+                          - string
+                          - 'null'
+                        is_deleted:
+                          type: boolean
+                        created_at:
+                          type: string
+                        updated_at:
+                          type: string
+                        user_feedback:
+                          type:
+                          - object
+                          - 'null'
+                          properties:
+                            id:
+                              type: string
+                            northstar_id:
+                              type: string
+                            correctness:
+                              type: number
+                            feedback:
+                              type:
+                              - string
+                              - 'null'
+                            created_at:
+                              type: string
+                            created_by:
+                              type:
+                              - string
+                              - 'null'
+                            created_by_api_key:
+                              type:
+                              - string
+                              - 'null'
+                          required:
+                          - id
+                          - northstar_id
+                          - correctness
+                          - created_at
+                          additionalProperties: false
+                      required:
+                      - id
+                      - name
+                      - description
+                      - category
+                      - category_config
+                      - enabled
+                      - priority
+                      - positive_examples
+                      - negative_examples
+                      - node_ids
+                      - agent_id
+                      - org_id
+                      - workflow_id
+                      - version_id
+                      - prompt_node_id
+                      - prompt_component_id
+                      - folder_id
+                      - regenerated_from_northstar_id
+                      - is_deleted
+                      - created_at
+                      - updated_at
+                      additionalProperties: false
+                  folders:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        name:
+                          type: string
+                      required:
+                      - id
+                      - name
+                      additionalProperties: false
+                  generation_status:
+                    type:
+                    - string
+                    - 'null'
+                    enum:
+                    - in_progress
+                    - completed
+                    - error
+                  coverage_assessment_status:
+                    type:
+                    - string
+                    - 'null'
+                    enum:
+                    - in_progress
+                    - completed
+                    - error
+                required:
+                - data
+                - folders
+                - generation_status
+                - coverage_assessment_status
+                additionalProperties: false
+        '401':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '404':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '500':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+    post:
+      summary: Create a northstar for a prompt node
+      tags:
+      - Northstars
+      description: Create a new northstar evaluation criterion for this prompt node.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  minLength: 1
+                description:
+                  type: array
+                  items:
+                    type: object
+                    additionalProperties: {}
+                category:
+                  type: string
+                  enum:
+                  - notes
+                  - style
+                  - tool
+                  - sequential
+                version_id:
+                  type: string
+                  minLength: 1
+                  description: Version UUID or slug
+                priority:
+                  type: string
+                  enum:
+                  - low
+                  - medium
+                  - high
+                positive_examples:
+                  type: array
+                  items:
+                    type: object
+                    additionalProperties: {}
+                negative_examples:
+                  type: array
+                  items:
+                    type: object
+                    additionalProperties: {}
+                category_config:
+                  type: object
+                  properties:
+                    current_stage:
+                      type: string
+                      minLength: 1
+                    prerequisite_stage:
+                      type: string
+                      minLength: 1
+                  required:
+                  - current_stage
+                  - prerequisite_stage
+                folder_id:
+                  type:
+                  - string
+                  - 'null'
+                  format: uuid
+                  pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+              required:
+              - name
+              - description
+              - category
+              - version_id
+        required: true
+      parameters:
+      - schema:
+          type: string
+          format: uuid
+          pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+        in: path
+        name: node_id
+        required: true
+      security:
+      - bearerAuth: []
+      responses:
+        '201':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  northstar:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      name:
+                        type: string
+                      description:
+                        type: array
+                        items:
+                          type: object
+                          additionalProperties: {}
+                      category:
+                        type: string
+                      category_config: {}
+                      enabled:
+                        type: boolean
+                      priority:
+                        type: string
+                      positive_examples:
+                        type: array
+                        items:
+                          type: object
+                          additionalProperties: {}
+                      negative_examples:
+                        type: array
+                        items:
+                          type: object
+                          additionalProperties: {}
+                      node_ids:
+                        type:
+                        - array
+                        - 'null'
+                        items:
+                          type: string
+                      agent_id:
+                        type:
+                        - string
+                        - 'null'
+                      org_id:
+                        type: string
+                      workflow_id:
+                        type:
+                        - string
+                        - 'null'
+                      version_id:
+                        type:
+                        - string
+                        - 'null'
+                      prompt_node_id:
+                        type:
+                        - string
+                        - 'null'
+                      prompt_component_id:
+                        type:
+                        - string
+                        - 'null'
+                      folder_id:
+                        type:
+                        - string
+                        - 'null'
+                      regenerated_from_northstar_id:
+                        type:
+                        - string
+                        - 'null'
+                      is_deleted:
+                        type: boolean
+                      created_at:
+                        type: string
+                      updated_at:
+                        type: string
+                      user_feedback:
+                        type:
+                        - object
+                        - 'null'
+                        properties:
+                          id:
+                            type: string
+                          northstar_id:
+                            type: string
+                          correctness:
+                            type: number
+                          feedback:
+                            type:
+                            - string
+                            - 'null'
+                          created_at:
+                            type: string
+                          created_by:
+                            type:
+                            - string
+                            - 'null'
+                          created_by_api_key:
+                            type:
+                            - string
+                            - 'null'
+                        required:
+                        - id
+                        - northstar_id
+                        - correctness
+                        - created_at
+                        additionalProperties: false
+                    required:
+                    - id
+                    - name
+                    - description
+                    - category
+                    - category_config
+                    - enabled
+                    - priority
+                    - positive_examples
+                    - negative_examples
+                    - node_ids
+                    - agent_id
+                    - org_id
+                    - workflow_id
+                    - version_id
+                    - prompt_node_id
+                    - prompt_component_id
+                    - folder_id
+                    - regenerated_from_northstar_id
+                    - is_deleted
+                    - created_at
+                    - updated_at
+                    additionalProperties: false
+                required:
+                - northstar
+                additionalProperties: false
+        '401':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '404':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '500':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+  /nodes/{node_id}/northstars/generate:
+    post:
+      summary: Generate northstars for a prompt node
+      tags:
+      - Northstars
+      description: Generate northstars for this node using AI. If northstars already exist they are force-regenerated.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                version_id:
+                  type: string
+                  minLength: 1
+                  description: Version UUID or slug
+              required:
+              - version_id
+        required: true
+      parameters:
+      - schema:
+          type: string
+          format: uuid
+          pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+        in: path
+        name: node_id
+        required: true
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    enum:
+                    - true
+                required:
+                - ok
+                additionalProperties: false
+        '401':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '404':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '500':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+  /nodes/{node_id}/northstars/batch-toggle:
+    patch:
+      summary: Batch toggle northstars
+      tags:
+      - Northstars
+      description: Enable or disable all northstars for this prompt node at once.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                enabled:
+                  type: boolean
+              required:
+              - enabled
+        required: true
+      parameters:
+      - schema:
+          type: string
+          format: uuid
+          pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+        in: path
+        name: node_id
+        required: true
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  updated_count:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                required:
+                - updated_count
+                additionalProperties: false
+        '401':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '404':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '500':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+  /nodes/{node_id}/northstars/iterate:
+    post:
+      summary: Iterate northstars for a prompt node
+      tags:
+      - Northstars
+      description: Rewrite existing northstars to reflect recent changes made to the prompt node.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                version_id:
+                  type: string
+                  minLength: 1
+                  description: Version UUID or slug
+              required:
+              - version_id
+        required: true
+      parameters:
+      - schema:
+          type: string
+          format: uuid
+          pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+        in: path
+        name: node_id
+        required: true
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    enum:
+                    - true
+                required:
+                - ok
+                additionalProperties: false
+        '401':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '404':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '500':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+  /nodes/{node_id}/northstars/assess-coverage:
+    post:
+      summary: Assess northstar coverage for a prompt node
+      tags:
+      - Northstars
+      description: Trigger an AI assessment of how well current northstars cover the prompt's expected behaviors.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                version_id:
+                  type: string
+                  minLength: 1
+                  description: Version UUID or slug
+              required:
+              - version_id
+        required: true
+      parameters:
+      - schema:
+          type: string
+          format: uuid
+          pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+        in: path
+        name: node_id
+        required: true
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    enum:
+                    - true
+                required:
+                - ok
+                additionalProperties: false
+        '401':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '404':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '500':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+  /nodes/{node_id}/northstars/folders:
+    post:
+      summary: Create a northstar folder for a prompt node
+      tags:
+      - Northstars
+      description: Create a folder for organizing this prompt node's northstars. File northstars into it via folder_id on create or update.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  minLength: 1
+              required:
+              - name
+        required: true
+      parameters:
+      - schema:
+          type: string
+          format: uuid
+          pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+        in: path
+        name: node_id
+        required: true
+      security:
+      - bearerAuth: []
+      responses:
+        '201':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  folder:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      name:
+                        type: string
+                    required:
+                    - id
+                    - name
+                    additionalProperties: false
+                required:
+                - folder
+                additionalProperties: false
+        '401':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '404':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '500':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+  /northstars/{northstar_id}:
+    get:
+      summary: Get a northstar by ID
+      tags:
+      - Northstars
+      parameters:
+      - schema:
+          type: string
+          format: uuid
+          pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+        in: path
+        name: northstar_id
+        required: true
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  northstar:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      name:
+                        type: string
+                      description:
+                        type: array
+                        items:
+                          type: object
+                          additionalProperties: {}
+                      category:
+                        type: string
+                      category_config: {}
+                      enabled:
+                        type: boolean
+                      priority:
+                        type: string
+                      positive_examples:
+                        type: array
+                        items:
+                          type: object
+                          additionalProperties: {}
+                      negative_examples:
+                        type: array
+                        items:
+                          type: object
+                          additionalProperties: {}
+                      node_ids:
+                        type:
+                        - array
+                        - 'null'
+                        items:
+                          type: string
+                      agent_id:
+                        type:
+                        - string
+                        - 'null'
+                      org_id:
+                        type: string
+                      workflow_id:
+                        type:
+                        - string
+                        - 'null'
+                      version_id:
+                        type:
+                        - string
+                        - 'null'
+                      prompt_node_id:
+                        type:
+                        - string
+                        - 'null'
+                      prompt_component_id:
+                        type:
+                        - string
+                        - 'null'
+                      folder_id:
+                        type:
+                        - string
+                        - 'null'
+                      regenerated_from_northstar_id:
+                        type:
+                        - string
+                        - 'null'
+                      is_deleted:
+                        type: boolean
+                      created_at:
+                        type: string
+                      updated_at:
+                        type: string
+                      user_feedback:
+                        type:
+                        - object
+                        - 'null'
+                        properties:
+                          id:
+                            type: string
+                          northstar_id:
+                            type: string
+                          correctness:
+                            type: number
+                          feedback:
+                            type:
+                            - string
+                            - 'null'
+                          created_at:
+                            type: string
+                          created_by:
+                            type:
+                            - string
+                            - 'null'
+                          created_by_api_key:
+                            type:
+                            - string
+                            - 'null'
+                        required:
+                        - id
+                        - northstar_id
+                        - correctness
+                        - created_at
+                        additionalProperties: false
+                    required:
+                    - id
+                    - name
+                    - description
+                    - category
+                    - category_config
+                    - enabled
+                    - priority
+                    - positive_examples
+                    - negative_examples
+                    - node_ids
+                    - agent_id
+                    - org_id
+                    - workflow_id
+                    - version_id
+                    - prompt_node_id
+                    - prompt_component_id
+                    - folder_id
+                    - regenerated_from_northstar_id
+                    - is_deleted
+                    - created_at
+                    - updated_at
+                    additionalProperties: false
+                required:
+                - northstar
+                additionalProperties: false
+        '401':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '404':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '500':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+    patch:
+      summary: Update a northstar
+      tags:
+      - Northstars
+      description: 'Update any subset of: name, description, category, examples, enabled state, priority, or folder_id.'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  minLength: 1
+                description:
+                  type: array
+                  items:
+                    type: object
+                    additionalProperties: {}
+                category:
+                  type: string
+                  enum:
+                  - notes
+                  - style
+                  - contradiction
+                  - tool
+                  - sequential
+                enabled:
+                  type: boolean
+                priority:
+                  type: string
+                  enum:
+                  - low
+                  - medium
+                  - high
+                positive_examples:
+                  type: array
+                  items:
+                    type: object
+                    additionalProperties: {}
+                negative_examples:
+                  type: array
+                  items:
+                    type: object
+                    additionalProperties: {}
+                category_config:
+                  type:
+                  - object
+                  - 'null'
+                  properties:
+                    current_stage:
+                      type: string
+                      minLength: 1
+                    prerequisite_stage:
+                      type: string
+                      minLength: 1
+                  required:
+                  - current_stage
+                  - prerequisite_stage
+                folder_id:
+                  type:
+                  - string
+                  - 'null'
+                  format: uuid
+                  pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+      parameters:
+      - schema:
+          type: string
+          format: uuid
+          pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+        in: path
+        name: northstar_id
+        required: true
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  northstar:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      name:
+                        type: string
+                      description:
+                        type: array
+                        items:
+                          type: object
+                          additionalProperties: {}
+                      category:
+                        type: string
+                      category_config: {}
+                      enabled:
+                        type: boolean
+                      priority:
+                        type: string
+                      positive_examples:
+                        type: array
+                        items:
+                          type: object
+                          additionalProperties: {}
+                      negative_examples:
+                        type: array
+                        items:
+                          type: object
+                          additionalProperties: {}
+                      node_ids:
+                        type:
+                        - array
+                        - 'null'
+                        items:
+                          type: string
+                      agent_id:
+                        type:
+                        - string
+                        - 'null'
+                      org_id:
+                        type: string
+                      workflow_id:
+                        type:
+                        - string
+                        - 'null'
+                      version_id:
+                        type:
+                        - string
+                        - 'null'
+                      prompt_node_id:
+                        type:
+                        - string
+                        - 'null'
+                      prompt_component_id:
+                        type:
+                        - string
+                        - 'null'
+                      folder_id:
+                        type:
+                        - string
+                        - 'null'
+                      regenerated_from_northstar_id:
+                        type:
+                        - string
+                        - 'null'
+                      is_deleted:
+                        type: boolean
+                      created_at:
+                        type: string
+                      updated_at:
+                        type: string
+                      user_feedback:
+                        type:
+                        - object
+                        - 'null'
+                        properties:
+                          id:
+                            type: string
+                          northstar_id:
+                            type: string
+                          correctness:
+                            type: number
+                          feedback:
+                            type:
+                            - string
+                            - 'null'
+                          created_at:
+                            type: string
+                          created_by:
+                            type:
+                            - string
+                            - 'null'
+                          created_by_api_key:
+                            type:
+                            - string
+                            - 'null'
+                        required:
+                        - id
+                        - northstar_id
+                        - correctness
+                        - created_at
+                        additionalProperties: false
+                    required:
+                    - id
+                    - name
+                    - description
+                    - category
+                    - category_config
+                    - enabled
+                    - priority
+                    - positive_examples
+                    - negative_examples
+                    - node_ids
+                    - agent_id
+                    - org_id
+                    - workflow_id
+                    - version_id
+                    - prompt_node_id
+                    - prompt_component_id
+                    - folder_id
+                    - regenerated_from_northstar_id
+                    - is_deleted
+                    - created_at
+                    - updated_at
+                    additionalProperties: false
+                required:
+                - northstar
+                additionalProperties: false
+        '401':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '404':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '500':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+    delete:
+      summary: Delete a northstar
+      tags:
+      - Northstars
+      parameters:
+      - schema:
+          type: string
+          format: uuid
+          pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+        in: path
+        name: northstar_id
+        required: true
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    enum:
+                    - true
+                required:
+                - ok
+                additionalProperties: false
+        '401':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '404':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '500':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+  /northstars/{northstar_id}/history:
+    get:
+      summary: Get northstar history
+      tags:
+      - Northstars
+      description: Fetch the full regeneration chain — every version this northstar was derived from, oldest first.
+      parameters:
+      - schema:
+          type: string
+          format: uuid
+          pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+        in: path
+        name: northstar_id
+        required: true
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  history:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        name:
+                          type: string
+                        description:
+                          type: array
+                          items:
+                            type: object
+                            additionalProperties: {}
+                        category:
+                          type: string
+                        category_config: {}
+                        enabled:
+                          type: boolean
+                        priority:
+                          type: string
+                        positive_examples:
+                          type: array
+                          items:
+                            type: object
+                            additionalProperties: {}
+                        negative_examples:
+                          type: array
+                          items:
+                            type: object
+                            additionalProperties: {}
+                        node_ids:
+                          type:
+                          - array
+                          - 'null'
+                          items:
+                            type: string
+                        agent_id:
+                          type:
+                          - string
+                          - 'null'
+                        org_id:
+                          type: string
+                        workflow_id:
+                          type:
+                          - string
+                          - 'null'
+                        version_id:
+                          type:
+                          - string
+                          - 'null'
+                        prompt_node_id:
+                          type:
+                          - string
+                          - 'null'
+                        prompt_component_id:
+                          type:
+                          - string
+                          - 'null'
+                        folder_id:
+                          type:
+                          - string
+                          - 'null'
+                        regenerated_from_northstar_id:
+                          type:
+                          - string
+                          - 'null'
+                        is_deleted:
+                          type: boolean
+                        created_at:
+                          type: string
+                        updated_at:
+                          type: string
+                        user_feedback:
+                          type:
+                          - object
+                          - 'null'
+                          properties:
+                            id:
+                              type: string
+                            northstar_id:
+                              type: string
+                            correctness:
+                              type: number
+                            feedback:
+                              type:
+                              - string
+                              - 'null'
+                            created_at:
+                              type: string
+                            created_by:
+                              type:
+                              - string
+                              - 'null'
+                            created_by_api_key:
+                              type:
+                              - string
+                              - 'null'
+                          required:
+                          - id
+                          - northstar_id
+                          - correctness
+                          - created_at
+                          additionalProperties: false
+                      required:
+                      - id
+                      - name
+                      - description
+                      - category
+                      - category_config
+                      - enabled
+                      - priority
+                      - positive_examples
+                      - negative_examples
+                      - node_ids
+                      - agent_id
+                      - org_id
+                      - workflow_id
+                      - version_id
+                      - prompt_node_id
+                      - prompt_component_id
+                      - folder_id
+                      - regenerated_from_northstar_id
+                      - is_deleted
+                      - created_at
+                      - updated_at
+                      additionalProperties: false
+                required:
+                - history
+                additionalProperties: false
+        '401':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '404':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '500':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+  /northstars/{northstar_id}/feedback:
+    post:
+      summary: Submit northstar feedback
+      tags:
+      - Northstars
+      description: Submit a correctness rating (-2 = strongly wrong, +2 = strongly correct). One entry per API key/user.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                correctness:
+                  type: integer
+                  minimum: -2
+                  maximum: 2
+                feedback:
+                  type: string
+                trigger_regeneration:
+                  type: boolean
+              required:
+              - correctness
+        required: true
+      parameters:
+      - schema:
+          type: string
+          format: uuid
+          pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+        in: path
+        name: northstar_id
+        required: true
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  feedback:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      correctness:
+                        type: number
+                      feedback:
+                        type:
+                        - string
+                        - 'null'
+                      created_at:
+                        type: string
+                    required:
+                    - id
+                    - correctness
+                    - created_at
+                    additionalProperties: false
+                required:
+                - feedback
+                additionalProperties: false
+        '401':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '404':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '500':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+    delete:
+      summary: Delete northstar feedback
+      tags:
+      - Northstars
+      description: Remove your feedback on a northstar.
+      parameters:
+      - schema:
+          type: string
+          format: uuid
+          pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+        in: path
+        name: northstar_id
+        required: true
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    enum:
+                    - true
+                required:
+                - ok
+                additionalProperties: false
+        '401':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '404':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '500':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: Opaque

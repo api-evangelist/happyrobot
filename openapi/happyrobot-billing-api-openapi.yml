@@ -1,0 +1,602 @@
+openapi: 3.2.0
+info:
+  title: Happyrobot Billing API
+  version: '1.0'
+  description: 'Operations tagged Billing across 2 of this provider''s published API definitions: happyrobot-platform-v1-openapi.json, happyrobot-public-api-openapi.json. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://platform.happyrobot.ai/api/v1
+- url: https://platform.happyrobot.ai/api/v2
+tags:
+- name: Billing
+paths:
+  /usage:
+    get:
+      summary: Get the usage for the given organization
+      tags:
+      - Billing
+      parameters:
+      - name: authorization
+        in: header
+        required: true
+        schema:
+          type: string
+          description: Your API key for authentication. Use Bearer format.
+          example: Bearer API_KEY
+      - name: x-organization-id
+        in: header
+        required: true
+        schema:
+          type: string
+          description: The organization ID to use for the request. Required if your user is associated to more than one organization.
+      - name: start
+        in: query
+        description: The start date to filter usages by. Defaults to all usages.
+        schema:
+          type: string
+          format: date-time
+          example: '2024-01-01T00:00:00.000Z'
+      - name: end
+        in: query
+        description: The end date to filter usages by. Defaults to all usages.
+        schema:
+          type: string
+          format: date-time
+          example: '2024-01-01T00:00:00.000Z'
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    org_id:
+                      type: string
+                      format: uuid
+                    use_case_id:
+                      type: string
+                      format: uuid
+                    start:
+                      type: string
+                      format: date-time
+                    end:
+                      type: string
+                      format: date-time
+                    calls:
+                      type: number
+                    minutes:
+                      type: number
+                  required:
+                  - org_id
+                  - use_case_id
+                  - start
+                  - end
+                  - calls
+                  - minutes
+                description: A list of usages
+        '401':
+          description: '401'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                required:
+                - message
+        '500':
+          description: '500'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                required:
+                - message
+    servers:
+    - url: https://platform.happyrobot.ai/api/v1
+  /billing/usage/totals:
+    get:
+      summary: Get total org usage between date range
+      tags:
+      - Billing
+      description: Returns aggregated total usage data for the authenticated organization between the provided start and end datetimes (inclusive).
+      parameters:
+      - schema:
+          type: string
+          format: date-time
+          pattern: ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z|([+-](?:[01]\d|2[0-3]):[0-5]\d)))$
+        in: query
+        name: start
+        required: true
+      - schema:
+          type: string
+          format: date-time
+          pattern: ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z|([+-](?:[01]\d|2[0-3]):[0-5]\d)))$
+        in: query
+        name: end
+        required: true
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  customerId:
+                    type: string
+                  startDate:
+                    type: string
+                  endDate:
+                    type: string
+                  usage:
+                    type: object
+                    properties:
+                      totalMinutes:
+                        type: number
+                      totalEmails:
+                        type: number
+                      totalText:
+                        type: number
+                    required:
+                    - totalMinutes
+                    - totalEmails
+                    - totalText
+                    additionalProperties: false
+                required:
+                - customerId
+                - startDate
+                - endDate
+                - usage
+                additionalProperties: false
+        '400':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '401':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '500':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+    servers:
+    - url: https://platform.happyrobot.ai/api/v2
+  /billing/usage/details:
+    get:
+      summary: Get org usage by use case between date range (keyed)
+      tags:
+      - Billing
+      description: Returns usage data grouped by requested use_case_id values for the authenticated organization between the provided start and end datetimes (inclusive). If no use_case_id is provided, returns results for all use cases in the org. The response is keyed by use_case_id. Accepts multiple use_case_id parameters or a comma-separated list.
+      parameters:
+      - schema:
+          type: string
+          format: date-time
+          pattern: ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z|([+-](?:[01]\d|2[0-3]):[0-5]\d)))$
+        in: query
+        name: start
+        required: true
+      - schema:
+          type: string
+          format: date-time
+          pattern: ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z|([+-](?:[01]\d|2[0-3]):[0-5]\d)))$
+        in: query
+        name: end
+        required: true
+      - schema:
+          anyOf:
+          - type: string
+            minLength: 1
+          - type: array
+            items:
+              type: string
+              minLength: 1
+        in: query
+        name: use_case_id
+        required: false
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  customerId:
+                    type: string
+                  startDate:
+                    type: string
+                  endDate:
+                    type: string
+                  useCases:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        totalMinutes:
+                          type: number
+                        totalEmails:
+                          type: number
+                        totalText:
+                          type: number
+                        useCaseName:
+                          type: string
+                        useCaseId:
+                          type: string
+                      required:
+                      - totalMinutes
+                      - totalEmails
+                      - totalText
+                      - useCaseName
+                      - useCaseId
+                      additionalProperties: false
+                required:
+                - customerId
+                - startDate
+                - endDate
+                - useCases
+                additionalProperties: false
+        '400':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '401':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+    servers:
+    - url: https://platform.happyrobot.ai/api/v2
+  /billing/usage/credits:
+    get:
+      summary: Get credit consumption by component per workflow
+      tags:
+      - Billing
+      description: 'Returns credit consumption per workflow, bucketed by the requested granularity (daily/weekly/monthly). Components is a nested classification breakdown: each category (L1, e.g. ''Voice'') contains subcomponents (L2, e.g. ''LLM''), and L2 subcomponents can contain their own subcomponents (L3, e.g. ''Reasoning Agent''). Each component carries credits/volume/volume_unit. Categories and subcomponents use the same labels shown in the platform Usage page (Settings -> Usage), so the breakdown matches what customers see in the app. Category and subcomponent credits sum to total_credits; usage not classified into an L1/L2 bucket is returned under the ''Other'' category. Scoped to the authenticated organization via API key. Queries the local billing ClickHouse instance. Filters accept names (e.g. filter_by_folder_1=APAC&filter_by_folder_2=Ocean Freight). Filtering is supported on the top 3 folder levels (filter_by_folder_1/2/3); a level filter includes all use cases nested below it and excludes any above it. folder_path in the response is the full chain at any depth, even beyond 3 levels. Workflows can be filtered by name (filter_by_workflow) or by id (filter_by_workflow_id, exact); each row also returns workflow_id. Filters across levels use AND logic; multiple values within a filter use OR.'
+      parameters:
+      - schema:
+          type: string
+          pattern: ^\d{4}-\d{2}-\d{2}$
+        in: query
+        name: start_date
+        required: true
+      - schema:
+          type: string
+          pattern: ^\d{4}-\d{2}-\d{2}$
+        in: query
+        name: end_date
+        required: true
+      - schema:
+          default: daily
+          type: string
+          enum:
+          - daily
+          - weekly
+          - monthly
+        in: query
+        name: granularity
+        required: false
+      - schema:
+          anyOf:
+          - type: string
+          - type: array
+            items:
+              type: string
+        in: query
+        name: filter_by_folder_1
+        required: false
+      - schema:
+          anyOf:
+          - type: string
+          - type: array
+            items:
+              type: string
+        in: query
+        name: filter_by_folder_2
+        required: false
+      - schema:
+          anyOf:
+          - type: string
+          - type: array
+            items:
+              type: string
+        in: query
+        name: filter_by_folder_3
+        required: false
+      - schema:
+          anyOf:
+          - type: string
+          - type: array
+            items:
+              type: string
+        in: query
+        name: filter_by_workflow
+        required: false
+      - schema:
+          anyOf:
+          - type: string
+          - type: array
+            items:
+              type: string
+        in: query
+        name: filter_by_workflow_id
+        required: false
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  workspace_name:
+                    type: string
+                  start_date:
+                    type: string
+                  end_date:
+                    type: string
+                  granularity:
+                    type: string
+                  unit:
+                    type: string
+                    enum:
+                    - credits
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        period:
+                          type: string
+                        folder_path:
+                          type: array
+                          items:
+                            type: string
+                        workflow_id:
+                          type: string
+                        workflow_name:
+                          type: string
+                        components:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              category:
+                                type: string
+                              credits:
+                                type: number
+                              subcomponents:
+                                type: array
+                                items:
+                                  type: object
+                                  properties:
+                                    name:
+                                      type: string
+                                    credits:
+                                      type: number
+                                    volume:
+                                      type: number
+                                    volume_unit:
+                                      type: string
+                                    subcomponents:
+                                      type: array
+                                      items:
+                                        type: object
+                                        properties:
+                                          name:
+                                            type: string
+                                          credits:
+                                            type: number
+                                          volume:
+                                            type: number
+                                          volume_unit:
+                                            type: string
+                                        required:
+                                        - name
+                                        - credits
+                                        - volume
+                                        - volume_unit
+                                        additionalProperties: false
+                                  required:
+                                  - name
+                                  - credits
+                                  - volume
+                                  - volume_unit
+                                  additionalProperties: false
+                            required:
+                            - category
+                            - credits
+                            - subcomponents
+                            additionalProperties: false
+                        total_credits:
+                          type: number
+                      required:
+                      - period
+                      - folder_path
+                      - workflow_id
+                      - workflow_name
+                      - components
+                      - total_credits
+                      additionalProperties: false
+                required:
+                - workspace_name
+                - start_date
+                - end_date
+                - granularity
+                - unit
+                - data
+                additionalProperties: false
+        '400':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '401':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '500':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '503':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+    servers:
+    - url: https://platform.happyrobot.ai/api/v2
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: Opaque
+x-refined-from:
+- happyrobot-platform-v1-openapi.json
+- happyrobot-public-api-openapi.json

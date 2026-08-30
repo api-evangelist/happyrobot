@@ -1,0 +1,676 @@
+openapi: 3.2.0
+info:
+  title: Happyrobot Public Workflow Variables API
+  description: Public API endpoints for Happyrobot
+  version: 0.1.1
+servers:
+- url: https://platform.happyrobot.ai/api/v2
+security:
+- bearerAuth: []
+tags:
+- name: Workflow Variables
+paths:
+  /workflows/{workflow_id}/variables:
+    get:
+      summary: List workflow variables
+      tags:
+      - Workflow Variables
+      description: Returns paginated variables scoped to a specific workflow. Accepts a workflow UUID or slug as the path parameter.
+      parameters:
+      - schema:
+          default: 1
+          type: integer
+          minimum: 1
+          maximum: 9007199254740991
+        in: query
+        name: page
+        required: false
+      - schema:
+          default: 50
+          type: integer
+          minimum: 1
+          maximum: 100
+        in: query
+        name: page_size
+        required: false
+      - schema:
+          default: asc
+          type: string
+          enum:
+          - asc
+          - desc
+        in: query
+        name: sort
+        required: false
+      - schema:
+          type: string
+          minLength: 1
+        in: path
+        name: workflow_id
+        required: true
+        description: Workflow UUID or slug
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          format: uuid
+                          pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                        workflow_id:
+                          type:
+                          - string
+                          - 'null'
+                          format: uuid
+                          pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                        org_id:
+                          type: string
+                          format: uuid
+                          pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                        key:
+                          type: string
+                        value_production:
+                          type: string
+                        value_staging:
+                          type: string
+                        value_development:
+                          type: string
+                        is_hidden_in_ui:
+                          type: boolean
+                        created_at:
+                          type: string
+                        updated_at:
+                          type: string
+                      required:
+                      - id
+                      - workflow_id
+                      - org_id
+                      - key
+                      - value_production
+                      - value_staging
+                      - value_development
+                      - is_hidden_in_ui
+                      - created_at
+                      - updated_at
+                      additionalProperties: false
+                  pagination:
+                    type: object
+                    properties:
+                      page:
+                        type: integer
+                        minimum: -9007199254740991
+                        maximum: 9007199254740991
+                      page_size:
+                        type: integer
+                        minimum: -9007199254740991
+                        maximum: 9007199254740991
+                      total_pages:
+                        type: integer
+                        minimum: -9007199254740991
+                        maximum: 9007199254740991
+                      total_records:
+                        type: integer
+                        minimum: -9007199254740991
+                        maximum: 9007199254740991
+                      has_next_page:
+                        type: boolean
+                      has_previous_page:
+                        type: boolean
+                    required:
+                    - page
+                    - page_size
+                    - total_pages
+                    - total_records
+                    - has_next_page
+                    - has_previous_page
+                    additionalProperties: false
+                required:
+                - data
+                - pagination
+                additionalProperties: false
+        '401':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '404':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '500':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+    post:
+      summary: Create a workflow variable
+      tags:
+      - Workflow Variables
+      description: Creates a new variable scoped to the specified workflow. Accepts a workflow UUID or slug as the path parameter.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                key:
+                  type: string
+                  minLength: 1
+                value_production:
+                  type: string
+                value_staging:
+                  type: string
+                value_development:
+                  type: string
+                is_hidden_in_ui:
+                  default: false
+                  type: boolean
+              required:
+              - key
+              - value_production
+              - value_staging
+              - value_development
+        required: true
+      parameters:
+      - schema:
+          type: string
+          minLength: 1
+        in: path
+        name: workflow_id
+        required: true
+        description: Workflow UUID or slug
+      security:
+      - bearerAuth: []
+      responses:
+        '201':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                    pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                  workflow_id:
+                    type:
+                    - string
+                    - 'null'
+                    format: uuid
+                    pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                  org_id:
+                    type: string
+                    format: uuid
+                    pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                  key:
+                    type: string
+                  value_production:
+                    type: string
+                  value_staging:
+                    type: string
+                  value_development:
+                    type: string
+                  is_hidden_in_ui:
+                    type: boolean
+                  created_at:
+                    type: string
+                  updated_at:
+                    type: string
+                required:
+                - id
+                - workflow_id
+                - org_id
+                - key
+                - value_production
+                - value_staging
+                - value_development
+                - is_hidden_in_ui
+                - created_at
+                - updated_at
+                additionalProperties: false
+        '400':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '401':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '403':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '404':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '500':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+  /workflows/{workflow_id}/variables/{variable_id}:
+    patch:
+      summary: Update a workflow variable
+      tags:
+      - Workflow Variables
+      description: Updates one or more fields on a variable. Only the fields provided in the request body are updated.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                key:
+                  type: string
+                  minLength: 1
+                value_production:
+                  type: string
+                value_staging:
+                  type: string
+                value_development:
+                  type: string
+                is_hidden_in_ui:
+                  type: boolean
+      parameters:
+      - schema:
+          type: string
+          minLength: 1
+        in: path
+        name: workflow_id
+        required: true
+        description: Workflow UUID or slug
+      - schema:
+          type: string
+          format: uuid
+          pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+        in: path
+        name: variable_id
+        required: true
+        description: Variable UUID
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                    pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                  workflow_id:
+                    type:
+                    - string
+                    - 'null'
+                    format: uuid
+                    pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                  org_id:
+                    type: string
+                    format: uuid
+                    pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                  key:
+                    type: string
+                  value_production:
+                    type: string
+                  value_staging:
+                    type: string
+                  value_development:
+                    type: string
+                  is_hidden_in_ui:
+                    type: boolean
+                  created_at:
+                    type: string
+                  updated_at:
+                    type: string
+                required:
+                - id
+                - workflow_id
+                - org_id
+                - key
+                - value_production
+                - value_staging
+                - value_development
+                - is_hidden_in_ui
+                - created_at
+                - updated_at
+                additionalProperties: false
+        '400':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '401':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '403':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '404':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '500':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+    delete:
+      summary: Delete a workflow variable
+      tags:
+      - Workflow Variables
+      description: Permanently deletes a variable from a workflow. This action cannot be undone.
+      parameters:
+      - schema:
+          type: string
+          minLength: 1
+        in: path
+        name: workflow_id
+        required: true
+        description: Workflow UUID or slug
+      - schema:
+          type: string
+          format: uuid
+          pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+        in: path
+        name: variable_id
+        required: true
+        description: Variable UUID
+      security:
+      - bearerAuth: []
+      responses:
+        '204':
+          description: Variable deleted
+          content:
+            application/json:
+              schema:
+                description: Variable deleted
+        '401':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '403':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '404':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '500':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: Opaque

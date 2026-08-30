@@ -1,0 +1,653 @@
+openapi: 3.2.0
+info:
+  title: Happyrobot Public Workflow Folders API
+  description: Public API endpoints for Happyrobot
+  version: 0.1.1
+servers:
+- url: https://platform.happyrobot.ai/api/v2
+security:
+- bearerAuth: []
+tags:
+- name: Workflow Folders
+paths:
+  /workflow-folders/:
+    get:
+      summary: List workflow folders
+      tags:
+      - Workflow Folders
+      description: Returns paginated workflow folders for the authenticated organization. Supports searching by name.
+      parameters:
+      - schema:
+          default: 1
+          type: integer
+          minimum: 1
+          maximum: 9007199254740991
+        in: query
+        name: page
+        required: false
+      - schema:
+          default: 50
+          type: integer
+          minimum: 1
+          maximum: 100
+        in: query
+        name: page_size
+        required: false
+      - schema:
+          type: string
+        in: query
+        name: search
+        required: false
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          format: uuid
+                          pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                        slug:
+                          type: string
+                        name:
+                          type: string
+                        parent_folder_id:
+                          type:
+                          - string
+                          - 'null'
+                          format: uuid
+                          pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                        org_id:
+                          type: string
+                          format: uuid
+                          pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                        folder_type:
+                          type: string
+                          enum:
+                          - normal
+                          - playground_root
+                          - playground_user
+                      required:
+                      - id
+                      - slug
+                      - name
+                      - parent_folder_id
+                      - org_id
+                      - folder_type
+                      additionalProperties: false
+                  pagination:
+                    type: object
+                    properties:
+                      page:
+                        type: integer
+                        minimum: -9007199254740991
+                        maximum: 9007199254740991
+                      page_size:
+                        type: integer
+                        minimum: -9007199254740991
+                        maximum: 9007199254740991
+                      total_pages:
+                        type: integer
+                        minimum: -9007199254740991
+                        maximum: 9007199254740991
+                      total_records:
+                        type: integer
+                        minimum: -9007199254740991
+                        maximum: 9007199254740991
+                      has_next_page:
+                        type: boolean
+                      has_previous_page:
+                        type: boolean
+                    required:
+                    - page
+                    - page_size
+                    - total_pages
+                    - total_records
+                    - has_next_page
+                    - has_previous_page
+                    additionalProperties: false
+                required:
+                - data
+                - pagination
+                additionalProperties: false
+        '401':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '500':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+    post:
+      summary: Create a workflow folder
+      tags:
+      - Workflow Folders
+      description: Creates a new workflow folder in the authenticated organization. Optionally nest it under a parent folder.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  minLength: 1
+                parent_folder_id:
+                  type:
+                  - string
+                  - 'null'
+                  format: uuid
+                  pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+              required:
+              - name
+        required: true
+      security:
+      - bearerAuth: []
+      responses:
+        '201':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                    pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                  slug:
+                    type: string
+                  name:
+                    type: string
+                  parent_folder_id:
+                    type:
+                    - string
+                    - 'null'
+                    format: uuid
+                    pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                  org_id:
+                    type: string
+                    format: uuid
+                    pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                  folder_type:
+                    type: string
+                    enum:
+                    - normal
+                    - playground_root
+                    - playground_user
+                required:
+                - id
+                - slug
+                - name
+                - parent_folder_id
+                - org_id
+                - folder_type
+                additionalProperties: false
+        '400':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '401':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '500':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+  /workflow-folders/{folder_id}:
+    get:
+      summary: Get a workflow folder
+      tags:
+      - Workflow Folders
+      description: Returns a single workflow folder by UUID or slug.
+      parameters:
+      - schema:
+          type: string
+          minLength: 1
+        in: path
+        name: folder_id
+        required: true
+        description: Folder UUID or slug
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                    pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                  slug:
+                    type: string
+                  name:
+                    type: string
+                  parent_folder_id:
+                    type:
+                    - string
+                    - 'null'
+                    format: uuid
+                    pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                  org_id:
+                    type: string
+                    format: uuid
+                    pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                  folder_type:
+                    type: string
+                    enum:
+                    - normal
+                    - playground_root
+                    - playground_user
+                required:
+                - id
+                - slug
+                - name
+                - parent_folder_id
+                - org_id
+                - folder_type
+                additionalProperties: false
+        '401':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '404':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '500':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+    put:
+      summary: Update a workflow folder
+      tags:
+      - Workflow Folders
+      description: Updates the name of a workflow folder identified by UUID or slug.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  minLength: 1
+              required:
+              - name
+        required: true
+      parameters:
+      - schema:
+          type: string
+          minLength: 1
+        in: path
+        name: folder_id
+        required: true
+        description: Folder UUID or slug
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                    pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                  slug:
+                    type: string
+                  name:
+                    type: string
+                  parent_folder_id:
+                    type:
+                    - string
+                    - 'null'
+                    format: uuid
+                    pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                  org_id:
+                    type: string
+                    format: uuid
+                    pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                  folder_type:
+                    type: string
+                    enum:
+                    - normal
+                    - playground_root
+                    - playground_user
+                required:
+                - id
+                - slug
+                - name
+                - parent_folder_id
+                - org_id
+                - folder_type
+                additionalProperties: false
+        '400':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '401':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '404':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '500':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+    delete:
+      summary: Delete a workflow folder
+      tags:
+      - Workflow Folders
+      description: Deletes a workflow folder by UUID or slug. Workflows inside the folder are moved to the folder specified by `move_to`, or to the parent folder if `move_to` is omitted. Sub-folders are also moved to the same destination.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                move_to:
+                  type: string
+                  format: uuid
+                  pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                  description: Folder ID to move the contained workflows to. If omitted, workflows are moved to the parent folder (one level up).
+      parameters:
+      - schema:
+          type: string
+          minLength: 1
+        in: path
+        name: folder_id
+        required: true
+        description: Folder UUID or slug
+      security:
+      - bearerAuth: []
+      responses:
+        '204':
+          description: Folder deleted
+          content:
+            application/json:
+              schema:
+                description: Folder deleted
+        '400':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '401':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '404':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '500':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: Opaque

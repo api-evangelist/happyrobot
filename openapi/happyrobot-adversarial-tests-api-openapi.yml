@@ -1,0 +1,1671 @@
+openapi: 3.2.0
+info:
+  title: Happyrobot Public Adversarial Tests API
+  description: Public API endpoints for Happyrobot
+  version: 0.1.1
+servers:
+- url: https://platform.happyrobot.ai/api/v2
+security:
+- bearerAuth: []
+tags:
+- name: Adversarial Tests
+paths:
+  /nodes/{node_id}/adversarial-tests:
+    get:
+      summary: List adversarial tests for a node
+      tags:
+      - Adversarial Tests
+      parameters:
+      - schema:
+          type: string
+          format: uuid
+          pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+        in: query
+        name: version_id
+        required: false
+      - schema:
+          type: string
+          format: uuid
+          pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+        in: path
+        name: node_id
+        required: true
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        org_id:
+                          type: string
+                        workflow_id:
+                          type: string
+                        agent_node_id:
+                          type: string
+                        agent_node_persistent_id:
+                          type: string
+                        suite_id:
+                          type:
+                          - string
+                          - 'null'
+                        folder_id:
+                          type:
+                          - string
+                          - 'null'
+                        name:
+                          type: string
+                        description:
+                          type:
+                          - string
+                          - 'null'
+                        is_deleted:
+                          type: boolean
+                        adversarial_prompt:
+                          type: string
+                        adversarial_model:
+                          type: string
+                        variables:
+                          type: object
+                          additionalProperties: {}
+                        template_variables:
+                          type:
+                          - array
+                          - 'null'
+                          items:
+                            type: object
+                            additionalProperties: {}
+                        graph_path:
+                          type:
+                          - array
+                          - 'null'
+                          items:
+                            type: string
+                        timeout_seconds:
+                          type: number
+                        scope_mode:
+                          type: string
+                          enum:
+                          - all
+                          - by_category
+                        scoped_categories:
+                          type:
+                          - array
+                          - 'null'
+                          items:
+                            type: string
+                            enum:
+                            - notes
+                            - style
+                            - contradiction
+                            - tool
+                            - sequential
+                        created_by:
+                          type:
+                          - string
+                          - 'null'
+                        created_at:
+                          type: string
+                        updated_at:
+                          type: string
+                      required:
+                      - id
+                      - org_id
+                      - workflow_id
+                      - agent_node_id
+                      - agent_node_persistent_id
+                      - name
+                      - description
+                      - is_deleted
+                      - adversarial_prompt
+                      - adversarial_model
+                      - variables
+                      - timeout_seconds
+                      - scope_mode
+                      - scoped_categories
+                      - created_by
+                      - created_at
+                      - updated_at
+                      additionalProperties: false
+                  folders:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        name:
+                          type: string
+                      required:
+                      - id
+                      - name
+                      additionalProperties: false
+                required:
+                - data
+                - folders
+                additionalProperties: false
+        '401':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '404':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '500':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+    post:
+      summary: Create an adversarial test for a node
+      tags:
+      - Adversarial Tests
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  minLength: 1
+                adversarial_prompt:
+                  type: string
+                  minLength: 1
+                description:
+                  type: string
+                adversarial_model:
+                  type: string
+                variables:
+                  type: object
+                  additionalProperties: {}
+                timeout_seconds:
+                  type: integer
+                  maximum: 9007199254740991
+                scope_mode:
+                  type: string
+                  enum:
+                  - all
+                  - by_category
+                scoped_categories:
+                  minItems: 1
+                  type: array
+                  items:
+                    type: string
+                    enum:
+                    - notes
+                    - style
+                    - tool
+                    - sequential
+              required:
+              - name
+              - adversarial_prompt
+        required: true
+      parameters:
+      - schema:
+          type: string
+          format: uuid
+          pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+        in: path
+        name: node_id
+        required: true
+      security:
+      - bearerAuth: []
+      responses:
+        '201':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  test:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      org_id:
+                        type: string
+                      workflow_id:
+                        type: string
+                      agent_node_id:
+                        type: string
+                      agent_node_persistent_id:
+                        type: string
+                      suite_id:
+                        type:
+                        - string
+                        - 'null'
+                      folder_id:
+                        type:
+                        - string
+                        - 'null'
+                      name:
+                        type: string
+                      description:
+                        type:
+                        - string
+                        - 'null'
+                      is_deleted:
+                        type: boolean
+                      adversarial_prompt:
+                        type: string
+                      adversarial_model:
+                        type: string
+                      variables:
+                        type: object
+                        additionalProperties: {}
+                      template_variables:
+                        type:
+                        - array
+                        - 'null'
+                        items:
+                          type: object
+                          additionalProperties: {}
+                      graph_path:
+                        type:
+                        - array
+                        - 'null'
+                        items:
+                          type: string
+                      timeout_seconds:
+                        type: number
+                      scope_mode:
+                        type: string
+                        enum:
+                        - all
+                        - by_category
+                      scoped_categories:
+                        type:
+                        - array
+                        - 'null'
+                        items:
+                          type: string
+                          enum:
+                          - notes
+                          - style
+                          - contradiction
+                          - tool
+                          - sequential
+                      created_by:
+                        type:
+                        - string
+                        - 'null'
+                      created_at:
+                        type: string
+                      updated_at:
+                        type: string
+                    required:
+                    - id
+                    - org_id
+                    - workflow_id
+                    - agent_node_id
+                    - agent_node_persistent_id
+                    - name
+                    - description
+                    - is_deleted
+                    - adversarial_prompt
+                    - adversarial_model
+                    - variables
+                    - timeout_seconds
+                    - scope_mode
+                    - scoped_categories
+                    - created_by
+                    - created_at
+                    - updated_at
+                    additionalProperties: false
+                required:
+                - test
+                additionalProperties: false
+        '401':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '404':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '500':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+  /nodes/{node_id}/adversarial-tests/folders:
+    post:
+      summary: Create an adversarial folder for an agent node
+      tags:
+      - Adversarial Tests
+      description: Create a folder for organizing this agent node's adversarial tests and suites. File them into it via folder_id on update.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  minLength: 1
+              required:
+              - name
+        required: true
+      parameters:
+      - schema:
+          type: string
+          format: uuid
+          pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+        in: path
+        name: node_id
+        required: true
+      security:
+      - bearerAuth: []
+      responses:
+        '201':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  folder:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      name:
+                        type: string
+                    required:
+                    - id
+                    - name
+                    additionalProperties: false
+                required:
+                - folder
+                additionalProperties: false
+        '401':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '404':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '500':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+  /adversarial-tests/{test_id}:
+    get:
+      summary: Get an adversarial test by ID
+      tags:
+      - Adversarial Tests
+      parameters:
+      - schema:
+          type: string
+          format: uuid
+          pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+        in: path
+        name: test_id
+        required: true
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  test:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      org_id:
+                        type: string
+                      workflow_id:
+                        type: string
+                      agent_node_id:
+                        type: string
+                      agent_node_persistent_id:
+                        type: string
+                      suite_id:
+                        type:
+                        - string
+                        - 'null'
+                      folder_id:
+                        type:
+                        - string
+                        - 'null'
+                      name:
+                        type: string
+                      description:
+                        type:
+                        - string
+                        - 'null'
+                      is_deleted:
+                        type: boolean
+                      adversarial_prompt:
+                        type: string
+                      adversarial_model:
+                        type: string
+                      variables:
+                        type: object
+                        additionalProperties: {}
+                      template_variables:
+                        type:
+                        - array
+                        - 'null'
+                        items:
+                          type: object
+                          additionalProperties: {}
+                      graph_path:
+                        type:
+                        - array
+                        - 'null'
+                        items:
+                          type: string
+                      timeout_seconds:
+                        type: number
+                      scope_mode:
+                        type: string
+                        enum:
+                        - all
+                        - by_category
+                      scoped_categories:
+                        type:
+                        - array
+                        - 'null'
+                        items:
+                          type: string
+                          enum:
+                          - notes
+                          - style
+                          - contradiction
+                          - tool
+                          - sequential
+                      created_by:
+                        type:
+                        - string
+                        - 'null'
+                      created_at:
+                        type: string
+                      updated_at:
+                        type: string
+                    required:
+                    - id
+                    - org_id
+                    - workflow_id
+                    - agent_node_id
+                    - agent_node_persistent_id
+                    - name
+                    - description
+                    - is_deleted
+                    - adversarial_prompt
+                    - adversarial_model
+                    - variables
+                    - timeout_seconds
+                    - scope_mode
+                    - scoped_categories
+                    - created_by
+                    - created_at
+                    - updated_at
+                    additionalProperties: false
+                required:
+                - test
+                additionalProperties: false
+        '401':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '404':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '500':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+    patch:
+      summary: Update an adversarial test
+      tags:
+      - Adversarial Tests
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  minLength: 1
+                description:
+                  type: string
+                adversarial_prompt:
+                  type: string
+                adversarial_model:
+                  type: string
+                variables:
+                  type: object
+                  additionalProperties: {}
+                timeout_seconds:
+                  type: integer
+                  maximum: 9007199254740991
+                scope_mode:
+                  type: string
+                  enum:
+                  - all
+                  - by_category
+                scoped_categories:
+                  minItems: 1
+                  type: array
+                  items:
+                    type: string
+                    enum:
+                    - notes
+                    - style
+                    - tool
+                    - sequential
+                folder_id:
+                  type:
+                  - string
+                  - 'null'
+                  format: uuid
+                  pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+      parameters:
+      - schema:
+          type: string
+          format: uuid
+          pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+        in: path
+        name: test_id
+        required: true
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  test:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      org_id:
+                        type: string
+                      workflow_id:
+                        type: string
+                      agent_node_id:
+                        type: string
+                      agent_node_persistent_id:
+                        type: string
+                      suite_id:
+                        type:
+                        - string
+                        - 'null'
+                      folder_id:
+                        type:
+                        - string
+                        - 'null'
+                      name:
+                        type: string
+                      description:
+                        type:
+                        - string
+                        - 'null'
+                      is_deleted:
+                        type: boolean
+                      adversarial_prompt:
+                        type: string
+                      adversarial_model:
+                        type: string
+                      variables:
+                        type: object
+                        additionalProperties: {}
+                      template_variables:
+                        type:
+                        - array
+                        - 'null'
+                        items:
+                          type: object
+                          additionalProperties: {}
+                      graph_path:
+                        type:
+                        - array
+                        - 'null'
+                        items:
+                          type: string
+                      timeout_seconds:
+                        type: number
+                      scope_mode:
+                        type: string
+                        enum:
+                        - all
+                        - by_category
+                      scoped_categories:
+                        type:
+                        - array
+                        - 'null'
+                        items:
+                          type: string
+                          enum:
+                          - notes
+                          - style
+                          - contradiction
+                          - tool
+                          - sequential
+                      created_by:
+                        type:
+                        - string
+                        - 'null'
+                      created_at:
+                        type: string
+                      updated_at:
+                        type: string
+                    required:
+                    - id
+                    - org_id
+                    - workflow_id
+                    - agent_node_id
+                    - agent_node_persistent_id
+                    - name
+                    - description
+                    - is_deleted
+                    - adversarial_prompt
+                    - adversarial_model
+                    - variables
+                    - timeout_seconds
+                    - scope_mode
+                    - scoped_categories
+                    - created_by
+                    - created_at
+                    - updated_at
+                    additionalProperties: false
+                required:
+                - test
+                additionalProperties: false
+        '401':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '404':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '500':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+    delete:
+      summary: Delete an adversarial test
+      tags:
+      - Adversarial Tests
+      parameters:
+      - schema:
+          type: string
+          format: uuid
+          pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+        in: path
+        name: test_id
+        required: true
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    enum:
+                    - true
+                required:
+                - ok
+                additionalProperties: false
+        '401':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '404':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '500':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+  /adversarial-tests/{test_id}/run:
+    post:
+      summary: Run an adversarial test
+      tags:
+      - Adversarial Tests
+      description: Execute the adversarial test asynchronously. Poll /adversarial-tests/:test_id/runs for results.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                version_id:
+                  type: string
+                  format: uuid
+                  pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                variables:
+                  type: object
+                  additionalProperties: {}
+              required:
+              - version_id
+        required: true
+      parameters:
+      - schema:
+          type: string
+          format: uuid
+          pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+        in: path
+        name: test_id
+        required: true
+      security:
+      - bearerAuth: []
+      responses:
+        '202':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  test_run_id:
+                    type: string
+                    format: uuid
+                    pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                required:
+                - test_run_id
+                additionalProperties: false
+        '401':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '404':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '500':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+  /adversarial-tests/{test_id}/runs:
+    get:
+      summary: List adversarial test runs
+      tags:
+      - Adversarial Tests
+      parameters:
+      - schema:
+          default: 20
+          type: integer
+          maximum: 100
+        in: query
+        name: limit
+        required: false
+      - schema:
+          type: string
+          format: uuid
+          pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+        in: path
+        name: test_id
+        required: true
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  runs:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        adversarial_test_id:
+                          type: string
+                        status:
+                          type: string
+                        audit_remarks:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              northstar_id:
+                                type: string
+                              grade:
+                                type: string
+                                enum:
+                                - passed
+                                - failed
+                                - not_applicable
+                              correction:
+                                type: string
+                              correction_reason:
+                                type: string
+                              model:
+                                type: string
+                            required:
+                            - northstar_id
+                            - grade
+                            - correction_reason
+                            - model
+                            additionalProperties: false
+                        started_at:
+                          type:
+                          - string
+                          - 'null'
+                        completed_at:
+                          type:
+                          - string
+                          - 'null'
+                        version_id:
+                          type:
+                          - string
+                          - 'null'
+                        version_name:
+                          type:
+                          - string
+                          - 'null'
+                        version_number:
+                          type:
+                          - number
+                          - 'null'
+                        created_at:
+                          type: string
+                      required:
+                      - id
+                      - adversarial_test_id
+                      - status
+                      - audit_remarks
+                      - started_at
+                      - completed_at
+                      - created_at
+                      additionalProperties: false
+                required:
+                - runs
+                additionalProperties: false
+        '401':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '404':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '500':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+  /adversarial-tests/runs/{run_id}:
+    get:
+      summary: Get adversarial test run by ID
+      tags:
+      - Adversarial Tests
+      description: Full status and audit remarks for a single test run.
+      parameters:
+      - schema:
+          type: string
+          format: uuid
+          pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+        in: path
+        name: run_id
+        required: true
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  run:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      adversarial_test_id:
+                        type: string
+                      status:
+                        type: string
+                      audit_remarks:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            northstar_id:
+                              type: string
+                            grade:
+                              type: string
+                              enum:
+                              - passed
+                              - failed
+                              - not_applicable
+                            correction:
+                              type: string
+                            correction_reason:
+                              type: string
+                            model:
+                              type: string
+                          required:
+                          - northstar_id
+                          - grade
+                          - correction_reason
+                          - model
+                          additionalProperties: false
+                      started_at:
+                        type:
+                        - string
+                        - 'null'
+                      completed_at:
+                        type:
+                        - string
+                        - 'null'
+                      version_id:
+                        type:
+                        - string
+                        - 'null'
+                      version_name:
+                        type:
+                        - string
+                        - 'null'
+                      version_number:
+                        type:
+                        - number
+                        - 'null'
+                      created_at:
+                        type: string
+                    required:
+                    - id
+                    - adversarial_test_id
+                    - status
+                    - audit_remarks
+                    - started_at
+                    - completed_at
+                    - created_at
+                    additionalProperties: false
+                required:
+                - run
+                additionalProperties: false
+        '401':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '404':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '500':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+  /adversarial-tests/runs/{run_id}/messages:
+    get:
+      summary: Get adversarial test run messages
+      tags:
+      - Adversarial Tests
+      description: The full conversation that took place during this adversarial test run.
+      parameters:
+      - schema:
+          type: string
+          format: uuid
+          pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+        in: path
+        name: run_id
+        required: true
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  messages:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        type:
+                          type: string
+                          enum:
+                          - new_message
+                        message:
+                          type: object
+                          properties:
+                            role:
+                              type: string
+                            content:
+                              type: string
+                          required:
+                          - role
+                          - content
+                          additionalProperties: false
+                      required:
+                      - type
+                      - message
+                      additionalProperties: false
+                required:
+                - messages
+                additionalProperties: false
+        '401':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '404':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '500':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+  /adversarial-tests/{test_id}/effective-scope:
+    get:
+      summary: Get the resolved audit scope for an adversarial test
+      tags:
+      - Adversarial Tests
+      description: 'Returns the northstar categories that BEA will grade against when this test runs. Generated tests inherit the suite''s scope; standalone tests carry their own. Use this to display ''currently grading against tags: [...]'' without re-implementing the resolution.'
+      parameters:
+      - schema:
+          type: string
+          format: uuid
+          pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+        in: path
+        name: test_id
+        required: true
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  mode:
+                    type: string
+                    enum:
+                    - all
+                    - by_category
+                  categories:
+                    type: array
+                    items:
+                      type: string
+                      enum:
+                      - notes
+                      - style
+                      - contradiction
+                      - tool
+                      - sequential
+                  source:
+                    type: string
+                    enum:
+                    - test
+                    - suite
+                    - default
+                required:
+                - mode
+                - categories
+                - source
+                additionalProperties: false
+        '401':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '403':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '404':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '500':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: Opaque

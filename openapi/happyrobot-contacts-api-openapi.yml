@@ -1,0 +1,687 @@
+openapi: 3.2.0
+info:
+  title: Happyrobot Public Contacts API
+  description: Public API endpoints for Happyrobot
+  version: 0.1.1
+servers:
+- url: https://platform.happyrobot.ai/api/v2
+security:
+- bearerAuth: []
+tags:
+- name: Contacts
+paths:
+  /contacts/resolve:
+    get:
+      summary: Lookup contact by identifier
+      tags:
+      - Contacts
+      description: Returns contact if found by type and value. Returns 404 if not found. Does not create new contacts.
+      parameters:
+      - schema:
+          type: string
+          enum:
+          - phone_number
+          - email
+        in: query
+        name: type
+        required: true
+      - schema:
+          type: string
+          minLength: 1
+        in: query
+        name: value
+        required: true
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                    pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                  type:
+                    type:
+                    - string
+                    - 'null'
+                  value:
+                    type: string
+                  contact_summary:
+                    type:
+                    - string
+                    - 'null'
+                  extracted_attributes:
+                    type: object
+                    additionalProperties:
+                      anyOf:
+                      - type: string
+                      - type: array
+                        items:
+                          type: string
+                  created_at:
+                    type: string
+                  updated_at:
+                    type: string
+                required:
+                - id
+                - type
+                - value
+                - contact_summary
+                - extracted_attributes
+                - created_at
+                - updated_at
+                additionalProperties: false
+        '400':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '401':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '404':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+  /contacts/:
+    get:
+      summary: List contacts
+      tags:
+      - Contacts
+      description: Returns paginated contacts for the organization. Uses cursor-based pagination.
+      parameters:
+      - schema:
+          default: 50
+          type: integer
+          minimum: 1
+          maximum: 100
+        in: query
+        name: limit
+        required: false
+      - schema:
+          type: string
+        in: query
+        name: cursor
+        required: false
+      - schema:
+          type: string
+        in: query
+        name: search
+        required: false
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          format: uuid
+                          pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                        type:
+                          type:
+                          - string
+                          - 'null'
+                        value:
+                          type: string
+                        contact_summary:
+                          type:
+                          - string
+                          - 'null'
+                        extracted_attributes:
+                          type: object
+                          additionalProperties:
+                            anyOf:
+                            - type: string
+                            - type: array
+                              items:
+                                type: string
+                        created_at:
+                          type: string
+                        updated_at:
+                          type: string
+                        interactions_count:
+                          type: object
+                          additionalProperties:
+                            type: number
+                        tags:
+                          type: array
+                          items:
+                            type: string
+                        last_interaction_date:
+                          type:
+                          - string
+                          - 'null'
+                        has_blocked_workflows:
+                          type: boolean
+                      required:
+                      - id
+                      - type
+                      - value
+                      - contact_summary
+                      - extracted_attributes
+                      - created_at
+                      - updated_at
+                      - interactions_count
+                      - tags
+                      - has_blocked_workflows
+                      additionalProperties: false
+                  next_cursor:
+                    type:
+                    - string
+                    - 'null'
+                  has_more:
+                    type: boolean
+                required:
+                - data
+                - next_cursor
+                - has_more
+                additionalProperties: false
+        '400':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '401':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+  /contacts/{contact_id}:
+    get:
+      summary: Get contact
+      tags:
+      - Contacts
+      description: Returns a single contact with interaction and memory counts
+      parameters:
+      - schema:
+          type: string
+          format: uuid
+          pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+        in: path
+        name: contact_id
+        required: true
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                    pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                  type:
+                    type:
+                    - string
+                    - 'null'
+                  value:
+                    type: string
+                  contact_summary:
+                    type:
+                    - string
+                    - 'null'
+                  extracted_attributes:
+                    type: object
+                    additionalProperties:
+                      anyOf:
+                      - type: string
+                      - type: array
+                        items:
+                          type: string
+                  created_at:
+                    type: string
+                  updated_at:
+                    type: string
+                  interaction_count:
+                    type: number
+                  memory_count:
+                    type: number
+                required:
+                - id
+                - type
+                - value
+                - contact_summary
+                - extracted_attributes
+                - created_at
+                - updated_at
+                - interaction_count
+                - memory_count
+                additionalProperties: false
+        '400':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '401':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '404':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+  /contacts/{contact_id}/interactions:
+    get:
+      summary: List contact interactions
+      tags:
+      - Contacts
+      description: Returns paginated communication events for a contact
+      parameters:
+      - schema:
+          default: 50
+          type: integer
+          minimum: 1
+          maximum: 100
+        in: query
+        name: limit
+        required: false
+      - schema:
+          type: string
+        in: query
+        name: cursor
+        required: false
+      - schema:
+          default: timestamp:desc
+          type: string
+          enum:
+          - timestamp:asc
+          - timestamp:desc
+        in: query
+        name: sort
+        required: false
+      - schema:
+          type: string
+          format: uuid
+          pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+        in: path
+        name: contact_id
+        required: true
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          format: uuid
+                          pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                        channel:
+                          type:
+                          - string
+                          - 'null'
+                        tags:
+                          type: array
+                          items:
+                            type: string
+                        interaction_summary:
+                          type:
+                          - string
+                          - 'null'
+                        extracted_attributes:
+                          type: object
+                          additionalProperties:
+                            anyOf:
+                            - type: string
+                            - type: array
+                              items:
+                                type: string
+                        timestamp:
+                          type: string
+                      required:
+                      - id
+                      - channel
+                      - tags
+                      - interaction_summary
+                      - extracted_attributes
+                      - timestamp
+                      additionalProperties: false
+                  next_cursor:
+                    type:
+                    - string
+                    - 'null'
+                  has_more:
+                    type: boolean
+                required:
+                - data
+                - next_cursor
+                - has_more
+                additionalProperties: false
+        '400':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '401':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '404':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+  /contacts/{contact_id}/memories:
+    get:
+      summary: List contact memories
+      tags:
+      - Contacts
+      description: Returns paginated memories for a contact
+      parameters:
+      - schema:
+          default: 50
+          type: integer
+          minimum: 1
+          maximum: 100
+        in: query
+        name: limit
+        required: false
+      - schema:
+          type: string
+        in: query
+        name: cursor
+        required: false
+      - schema:
+          type: string
+          format: uuid
+          pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+        in: path
+        name: contact_id
+        required: true
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          format: uuid
+                          pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                        content:
+                          type: string
+                        communication_event_id:
+                          type:
+                          - string
+                          - 'null'
+                          format: uuid
+                          pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                        created_at:
+                          type: string
+                      required:
+                      - id
+                      - content
+                      - communication_event_id
+                      - created_at
+                      additionalProperties: false
+                  next_cursor:
+                    type:
+                    - string
+                    - 'null'
+                  has_more:
+                    type: boolean
+                required:
+                - data
+                - next_cursor
+                - has_more
+                additionalProperties: false
+        '400':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '401':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '404':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: Opaque

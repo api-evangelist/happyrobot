@@ -1,0 +1,96 @@
+openapi: 3.2.0
+info:
+  title: Happyrobot Public Artifacts API
+  description: Public API endpoints for Happyrobot
+  version: 0.1.1
+servers:
+- url: https://platform.happyrobot.ai/api/v2
+security:
+- bearerAuth: []
+tags:
+- name: Artifacts
+paths:
+  /artifacts/resolve:
+    post:
+      summary: Resolve artifact download URLs
+      tags:
+      - Artifacts
+      description: Returns fresh presigned URLs for one or more artifact S3 keys.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                s3_keys:
+                  minItems: 1
+                  maxItems: 500
+                  type: array
+                  items:
+                    type: string
+                    minLength: 1
+                expires_in:
+                  type: integer
+                  minimum: 60
+                  maximum: 604800
+              required:
+              - s3_keys
+        required: true
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        s3_key:
+                          type: string
+                        presigned_url:
+                          type:
+                          - string
+                          - 'null'
+                        error:
+                          type:
+                          - string
+                          - 'null'
+                      required:
+                      - s3_key
+                      - presigned_url
+                      - error
+                      additionalProperties: false
+                required:
+                - data
+                additionalProperties: false
+        '401':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: Opaque

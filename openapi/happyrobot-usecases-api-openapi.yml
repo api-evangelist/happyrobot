@@ -1,0 +1,287 @@
+openapi: 3.2.0
+info:
+  title: Happyrobot Platform Use Cases API
+  version: 1.0.0
+servers:
+- url: https://platform.happyrobot.ai/api/v1
+tags:
+- name: UseCases
+paths:
+  /use-cases:
+    get:
+      description: Get use cases for the organization
+      summary: Get use cases
+      tags:
+      - UseCases
+      parameters:
+      - name: authorization
+        in: header
+        required: true
+        schema:
+          type: string
+          description: Your API key for authentication. Use Bearer format.
+          example: Bearer API_KEY
+      - name: x-organization-id
+        in: header
+        required: true
+        schema:
+          type: string
+          description: The organization ID to use for the request. Required if your user is associated to more than one organization.
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      format: uuid
+                    org_id:
+                      type: string
+                      format: uuid
+                    icon:
+                      type: string
+                      maxLength: 256
+                    name:
+                      type: string
+                      maxLength: 256
+                    source_use_case_version_id:
+                      type:
+                      - string
+                      - 'null'
+                      format: uuid
+                    slug:
+                      type: string
+                      maxLength: 256
+                    order:
+                      type:
+                      - number
+                      - 'null'
+                    run_columns:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          group_id:
+                            type: string
+                          variable_id:
+                            type: string
+                          name:
+                            type: string
+                        required:
+                        - group_id
+                        - variable_id
+                    timestamp:
+                      type: string
+                      format: date-time
+                    data_retention_days:
+                      type:
+                      - number
+                      - 'null'
+                    webhooks: {}
+                    versions:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                            format: uuid
+                          slug:
+                            type: string
+                            maxLength: 256
+                          org_id:
+                            type: string
+                            format: uuid
+                          use_case_id:
+                            type: string
+                            format: uuid
+                          version_number:
+                            type:
+                            - number
+                            - 'null'
+                          name:
+                            type: string
+                            maxLength: 256
+                          is_published:
+                            type: boolean
+                          is_live:
+                            type: boolean
+                          environment:
+                            type: string
+                            enum:
+                            - staging
+                            - production
+                          source_version_id:
+                            type:
+                            - string
+                            - 'null'
+                            format: uuid
+                          timestamp:
+                            type: string
+                            format: date-time
+                          published_at:
+                            type:
+                            - string
+                            - 'null'
+                            format: date-time
+                          is_deleted:
+                            type: boolean
+                          description:
+                            type:
+                            - string
+                            - 'null'
+                          created_by:
+                            type:
+                            - string
+                            - 'null'
+                            format: uuid
+                        required:
+                        - id
+                        - slug
+                        - org_id
+                        - use_case_id
+                        - version_number
+                        - name
+                        - is_published
+                        - is_live
+                        - environment
+                        - source_version_id
+                        - timestamp
+                        - published_at
+                        - is_deleted
+                        - description
+                        - created_by
+                  required:
+                  - id
+                  - org_id
+                  - icon
+                  - name
+                  - source_use_case_version_id
+                  - slug
+                  - order
+                  - run_columns
+                  - timestamp
+                  - data_retention_days
+                  - webhooks
+                description: A list of use cases.
+        '401':
+          description: '401'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: The user is not authenticated.
+                required:
+                - message
+  /use-cases/{use_case_id}:
+    get:
+      description: Query a use case and it's details by ID
+      summary: Get a use case by ID
+      tags:
+      - UseCases
+      parameters:
+      - name: use_case_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: authorization
+        in: header
+        required: true
+        schema:
+          type: string
+          description: Your API key for authentication. Use Bearer format.
+          example: Bearer API_KEY
+      - name: x-organization-id
+        in: header
+        required: true
+        schema:
+          type: string
+          description: The organization ID to use for the request. Required if your user is associated to more than one organization.
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                  org_id:
+                    type: string
+                    format: uuid
+                  icon:
+                    type: string
+                    maxLength: 256
+                  name:
+                    type: string
+                    maxLength: 256
+                  source_use_case_version_id:
+                    type:
+                    - string
+                    - 'null'
+                    format: uuid
+                  slug:
+                    type: string
+                    maxLength: 256
+                  order:
+                    type:
+                    - number
+                    - 'null'
+                  run_columns:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        group_id:
+                          type: string
+                        variable_id:
+                          type: string
+                        name:
+                          type: string
+                      required:
+                      - group_id
+                      - variable_id
+                  timestamp:
+                    type: string
+                    format: date-time
+                  data_retention_days:
+                    type:
+                    - number
+                    - 'null'
+                  webhooks: {}
+                required:
+                - id
+                - org_id
+                - icon
+                - name
+                - source_use_case_version_id
+                - slug
+                - order
+                - run_columns
+                - timestamp
+                - data_retention_days
+                - webhooks
+                description: A use case.
+        '401':
+          description: '401'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: The user is not authenticated.
+                required:
+                - message

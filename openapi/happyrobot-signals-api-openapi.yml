@@ -1,0 +1,789 @@
+openapi: 3.2.0
+info:
+  title: Happyrobot Public Signals API
+  description: Public API endpoints for Happyrobot
+  version: 0.1.1
+servers:
+- url: https://platform.happyrobot.ai/api/v2
+security:
+- bearerAuth: []
+tags:
+- name: Signals
+paths:
+  /signals/keys:
+    get:
+      summary: List signal keys for the org
+      tags:
+      - Signals
+      description: Returns all configured custom signal keys for nodes in the API key org.
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  keys:
+                    type: array
+                    items:
+                      type: string
+                required:
+                - keys
+                additionalProperties: false
+        '500':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '502':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+    post:
+      summary: Add a custom signal key to node
+      tags:
+      - Signals
+      description: Appends a custom signal key to the target node configuration in all environments.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                node_id:
+                  type: string
+                  format: uuid
+                  pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                key:
+                  type: string
+                  minLength: 1
+                  maxLength: 256
+                  pattern: ^[a-zA-Z0-9_\-.*#]+(?:\.[a-zA-Z0-9_\-.*#]+)*$
+              required:
+              - node_id
+              - key
+        required: true
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  node_id:
+                    type: string
+                    format: uuid
+                    pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                  keys:
+                    type: array
+                    items:
+                      type: string
+                required:
+                - node_id
+                - keys
+                additionalProperties: false
+        '400':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '404':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '500':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '502':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+    delete:
+      summary: Delete a custom signal key from node
+      tags:
+      - Signals
+      description: Removes a custom signal key from the target node configuration in all environments.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                node_id:
+                  type: string
+                  format: uuid
+                  pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                key:
+                  type: string
+                  minLength: 1
+                  maxLength: 256
+                  pattern: ^[a-zA-Z0-9_\-.*#]+(?:\.[a-zA-Z0-9_\-.*#]+)*$
+              required:
+              - node_id
+              - key
+        required: true
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  node_id:
+                    type: string
+                    format: uuid
+                    pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                  keys:
+                    type: array
+                    items:
+                      type: string
+                required:
+                - node_id
+                - keys
+                additionalProperties: false
+        '400':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '404':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '500':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '502':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+  /signals/:
+    post:
+      summary: Publish an immediate signal
+      tags:
+      - Signals
+      description: Publishes a signal to internal signal service. payload.org_id is always derived from API key org. Built-in keys (org., usecase., session.) are allowed for targeting active sessions.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                key:
+                  type: string
+                  minLength: 1
+                  maxLength: 256
+                  pattern: ^[a-zA-Z0-9_\-.*#]+(?:\.[a-zA-Z0-9_\-.*#]+)*$
+                keys:
+                  minItems: 1
+                  type: array
+                  items:
+                    type: string
+                    minLength: 1
+                    maxLength: 256
+                    pattern: ^[a-zA-Z0-9_\-.*#]+(?:\.[a-zA-Z0-9_\-.*#]+)*$
+                env:
+                  type: string
+                  enum:
+                  - production
+                  - staging
+                  - development
+                payload:
+                  type: object
+                  additionalProperties: {}
+                metadata:
+                  type: object
+                  additionalProperties: {}
+              required:
+              - payload
+        required: true
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  dispatch_id:
+                    type: string
+                  signal_id:
+                    type: string
+                  status:
+                    type: string
+                  published_at:
+                    type: string
+                  keys:
+                    type: array
+                    items:
+                      type: string
+                  signals:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        signal_id:
+                          type: string
+                        key:
+                          type: string
+                        status:
+                          type: string
+                      required:
+                      - signal_id
+                      - key
+                      - status
+                      additionalProperties: false
+                required:
+                - status
+                - published_at
+                additionalProperties: false
+        '400':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '500':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '502':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+  /signals/scheduled-signals:
+    post:
+      summary: Schedule a delayed signal
+      tags:
+      - Signals
+      description: Schedules a delayed signal in internal signal service. payload.org_id is always derived from API key org.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                key:
+                  type: string
+                  minLength: 1
+                  maxLength: 256
+                  pattern: ^[a-zA-Z0-9_\-.*#]+(?:\.[a-zA-Z0-9_\-.*#]+)*$
+                env:
+                  type: string
+                  enum:
+                  - production
+                  - staging
+                  - development
+                payload:
+                  type: object
+                  additionalProperties: {}
+                delay_seconds:
+                  type: integer
+                  maximum: 9007199254740991
+                metadata:
+                  type: object
+                  additionalProperties: {}
+              required:
+              - key
+              - payload
+              - delay_seconds
+        required: true
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  scheduled_signal_id:
+                    type: string
+                  status:
+                    type: string
+                  deliver_at:
+                    type: string
+                required:
+                - scheduled_signal_id
+                - status
+                - deliver_at
+                additionalProperties: false
+        '400':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '500':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '502':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+  /signals/scheduled-signals/{scheduled_signal_id}:
+    patch:
+      summary: Patch a scheduled signal
+      tags:
+      - Signals
+      description: Updates a scheduled signal. When payload is provided, payload.org_id is always derived from API key org.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                key:
+                  type: string
+                  minLength: 1
+                  maxLength: 256
+                  pattern: ^[a-zA-Z0-9_\-.*#]+(?:\.[a-zA-Z0-9_\-.*#]+)*$
+                env:
+                  type: string
+                  enum:
+                  - production
+                  - staging
+                  - development
+                payload:
+                  type: object
+                  additionalProperties: {}
+                delay_seconds:
+                  type: integer
+                  maximum: 9007199254740991
+                metadata:
+                  type: object
+                  additionalProperties: {}
+      parameters:
+      - schema:
+          type: string
+        in: path
+        name: scheduled_signal_id
+        required: true
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  scheduled_signal_id:
+                    type: string
+                  status:
+                    type: string
+                  deliver_at:
+                    type: string
+                required:
+                - scheduled_signal_id
+                - status
+                - deliver_at
+                additionalProperties: false
+        '400':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '404':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '500':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '502':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+    delete:
+      summary: Delete a scheduled signal
+      tags:
+      - Signals
+      description: Cancels a scheduled signal.
+      parameters:
+      - schema:
+          type: string
+        in: path
+        name: scheduled_signal_id
+        required: true
+      security:
+      - bearerAuth: []
+      responses:
+        '204':
+          description: Scheduled signal deleted
+          content:
+            application/json:
+              schema:
+                description: Scheduled signal deleted
+        '404':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '500':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '502':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: Opaque

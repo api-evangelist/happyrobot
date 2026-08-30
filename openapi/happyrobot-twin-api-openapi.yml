@@ -1,0 +1,1053 @@
+openapi: 3.2.0
+info:
+  title: Happyrobot Public Twin API
+  description: Public API endpoints for Happyrobot
+  version: 0.1.1
+servers:
+- url: https://platform.happyrobot.ai/api/v2
+security:
+- bearerAuth: []
+tags:
+- name: Twin
+paths:
+  /twin/schema:
+    get:
+      summary: Get Twin database schema
+      tags:
+      - Twin
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    kind:
+                      type: string
+                      enum:
+                      - table
+                      - view
+                    columns:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          name:
+                            type: string
+                          type:
+                            type: string
+                          isPrimary:
+                            type: boolean
+                        required:
+                        - name
+                        - type
+                        - isPrimary
+                        additionalProperties: false
+                  required:
+                  - name
+                  - kind
+                  - columns
+                  additionalProperties: false
+        '401':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '404':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+  /twin/tables:
+    post:
+      summary: Create a Twin table
+      tags:
+      - Twin
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                tableName:
+                  type: string
+                columns:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                      type:
+                        type: string
+                        enum:
+                        - int8
+                        - text
+                        - boolean
+                        - timestamp
+                        - uuid
+                        - jsonb
+                        - float8
+                      defaultValue:
+                        type:
+                        - string
+                        - 'null'
+                      isPrimary:
+                        type: boolean
+                      isNullable:
+                        type: boolean
+                      primaryKeyGeneration:
+                        type: string
+                        enum:
+                        - auto
+                        - manual
+                    required:
+                    - name
+                    - type
+                    - defaultValue
+                    - isPrimary
+              required:
+              - tableName
+              - columns
+        required: true
+      security:
+      - bearerAuth: []
+      responses:
+        '201':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                required:
+                - success
+                additionalProperties: false
+        '400':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '401':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '404':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+  /twin/tables/{tableName}:
+    get:
+      summary: Get Twin table data
+      tags:
+      - Twin
+      parameters:
+      - schema:
+          default: 50
+          type: integer
+          minimum: 1
+          maximum: 500
+        in: query
+        name: limit
+        required: false
+      - schema:
+          default: 0
+          type: integer
+          minimum: 0
+          maximum: 9007199254740991
+        in: query
+        name: offset
+        required: false
+      - schema:
+          type: string
+        in: path
+        name: tableName
+        required: true
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  tableName:
+                    type: string
+                  kind:
+                    type: string
+                    enum:
+                    - table
+                    - view
+                  rows:
+                    type: array
+                    items:
+                      type: object
+                      additionalProperties: {}
+                  total:
+                    type: number
+                required:
+                - tableName
+                - kind
+                - rows
+                - total
+                additionalProperties: false
+        '400':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '401':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '404':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+    delete:
+      summary: Drop a Twin table
+      tags:
+      - Twin
+      parameters:
+      - schema:
+          type: string
+        in: path
+        name: tableName
+        required: true
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                required:
+                - success
+                additionalProperties: false
+        '400':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '401':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '404':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+  /twin/tables/{tableName}/rows:
+    post:
+      summary: Insert a row into a Twin table
+      tags:
+      - Twin
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                values:
+                  type: object
+                  additionalProperties:
+                    type: string
+              required:
+              - values
+        required: true
+      parameters:
+      - schema:
+          type: string
+        in: path
+        name: tableName
+        required: true
+      security:
+      - bearerAuth: []
+      responses:
+        '201':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+        '400':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '401':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '404':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+    patch:
+      summary: Update a row in a Twin table
+      tags:
+      - Twin
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                primaryKey:
+                  type: object
+                  additionalProperties: {}
+                updates:
+                  type: object
+                  additionalProperties: {}
+              required:
+              - primaryKey
+              - updates
+        required: true
+      parameters:
+      - schema:
+          type: string
+        in: path
+        name: tableName
+        required: true
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+        '400':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '401':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '404':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '409':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+    delete:
+      summary: Delete rows from a Twin table
+      tags:
+      - Twin
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                rowKeys:
+                  type: array
+                  items:
+                    type: object
+                    additionalProperties: {}
+              required:
+              - rowKeys
+        required: true
+      parameters:
+      - schema:
+          type: string
+        in: path
+        name: tableName
+        required: true
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  deletedCount:
+                    type: number
+                required:
+                - deletedCount
+                additionalProperties: false
+        '400':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '401':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '404':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '409':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+  /twin/sql:
+    post:
+      summary: Execute SQL on Twin database
+      tags:
+      - Twin
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                sql:
+                  type: string
+              required:
+              - sql
+        required: true
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  command:
+                    type: string
+                  rowCount:
+                    type:
+                    - number
+                    - 'null'
+                  fields:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                        dataTypeId:
+                          type: number
+                      required:
+                      - name
+                      - dataTypeId
+                      additionalProperties: false
+                  rows:
+                    type: array
+                    items:
+                      type: object
+                      additionalProperties: {}
+                  truncated:
+                    type: boolean
+                  truncationReason:
+                    type:
+                    - string
+                    - 'null'
+                    enum:
+                    - row_cap
+                    - response_size_cap
+                  limits:
+                    type: object
+                    properties:
+                      maxRows:
+                        type: number
+                      maxResponseBytes:
+                        type: number
+                    required:
+                    - maxRows
+                    - maxResponseBytes
+                    additionalProperties: false
+                  returnedRows:
+                    type: number
+                  schemaCacheReloadAttempted:
+                    type: boolean
+                  schemaCacheReloaded:
+                    type: boolean
+                required:
+                - command
+                - rowCount
+                - fields
+                - rows
+                - truncated
+                - truncationReason
+                - limits
+                - returnedRows
+                - schemaCacheReloadAttempted
+                - schemaCacheReloaded
+                additionalProperties: false
+        '400':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '401':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '404':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+  /twin/dump:
+    post:
+      summary: Create a Twin workflow dump table
+      tags:
+      - Twin
+      description: Creates a Twin table plus a dump config that maps workflow run values into its columns. Unlike POST /twin/tables (a bare table), the server resolves the workflow's variable catalog and binds each column to a variable, so completed runs populate the table automatically. Captures every variable by default; use `include` for a subset and `pk` to choose the primary key.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                workflowId:
+                  type: string
+                  minLength: 1
+                  description: Workflow (use case) UUID or slug to dump runs from
+                tableName:
+                  type: string
+                  minLength: 1
+                include:
+                  description: Subset of variables to capture (by name or group_id.variable_id). Omit to capture every variable the workflow produces.
+                  type: array
+                  items:
+                    type: string
+                    minLength: 1
+                pk:
+                  description: Variable to use as the primary key (by name or group_id.variable_id). Omit to add a synthetic run_id primary key.
+                  type: string
+                  minLength: 1
+              required:
+              - workflowId
+              - tableName
+        required: true
+      security:
+      - bearerAuth: []
+      responses:
+        '201':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    enum:
+                    - true
+                  config:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      org_id:
+                        type: string
+                      twin_instance_id:
+                        type: string
+                      use_case_id:
+                        type: string
+                      table_name:
+                        type: string
+                      column_mappings:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            name:
+                              type: string
+                            type:
+                              type: string
+                              enum:
+                              - int8
+                              - text
+                              - boolean
+                              - timestamp
+                              - uuid
+                              - jsonb
+                              - float8
+                            variableRef:
+                              type: array
+                              items:
+                                description: '!IMPORTANT: This schema describes one Paragraph object. When the containing field is an array of this schema, send a flat Paragraph[] array. Do not send a bare Paragraph object. Only send Paragraph[][] when the containing field is explicitly an array of arrays. Paragraph object schema: {type: ''paragraph'', children: Array<{text: string} | {type: ''variable'', children: [{text: ''''}], group_id: string, variable_id: string}>}'
+                            isPrimary:
+                              type: boolean
+                          required:
+                          - name
+                          - type
+                          - variableRef
+                          - isPrimary
+                          additionalProperties: false
+                      status:
+                        type: string
+                      created_at:
+                        type: string
+                        format: date-time
+                      updated_at:
+                        type: string
+                        format: date-time
+                    required:
+                    - id
+                    - org_id
+                    - twin_instance_id
+                    - use_case_id
+                    - table_name
+                    - column_mappings
+                    - status
+                    - created_at
+                    - updated_at
+                    additionalProperties: false
+                required:
+                - success
+                - config
+                additionalProperties: false
+        '400':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '401':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '404':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: Opaque

@@ -1,0 +1,1565 @@
+openapi: 3.2.0
+info:
+  title: Happyrobot Public Audits API
+  description: Public API endpoints for Happyrobot
+  version: 0.1.1
+servers:
+- url: https://platform.happyrobot.ai/api/v2
+security:
+- bearerAuth: []
+tags:
+- name: Audits
+paths:
+  /workflows/{workflow_id}/audits/northstars:
+    get:
+      summary: List northstar audits for a workflow
+      tags:
+      - Audits
+      description: Returns paginated northstar audit results for a workflow, showing pass/fail rates per behavioral criterion.
+      parameters:
+      - schema:
+          type: string
+        in: query
+        name: from_date
+        required: false
+      - schema:
+          type: string
+        in: query
+        name: to_date
+        required: false
+      - schema:
+          type: string
+          format: uuid
+          pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+        in: query
+        name: version_id
+        required: false
+      - schema:
+          type: string
+        in: query
+        name: enabled
+        required: false
+      - schema:
+          type: string
+        in: query
+        name: search
+        required: false
+      - schema:
+          default: 1
+          type: integer
+          minimum: 1
+          maximum: 9007199254740991
+        in: query
+        name: page
+        required: false
+      - schema:
+          default: 50
+          type: integer
+          minimum: 1
+          maximum: 200
+        in: query
+        name: page_size
+        required: false
+      - schema:
+          type: string
+          minLength: 1
+        in: path
+        name: workflow_id
+        required: true
+        description: Workflow UUID or slug
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        northstar_id:
+                          type: string
+                          format: uuid
+                          pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                        northstar_name:
+                          type: string
+                        description:
+                          type: array
+                          items:
+                            type: object
+                            additionalProperties: {}
+                        category:
+                          type:
+                          - string
+                          - 'null'
+                        use_case_name:
+                          type: string
+                        use_case_id:
+                          type: string
+                          format: uuid
+                          pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                        workflow_id:
+                          type: string
+                          format: uuid
+                          pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                        pass_count:
+                          type: number
+                        fail_count:
+                          type: number
+                        na_count:
+                          type: number
+                        total_count:
+                          type: number
+                        pass_rate:
+                          type:
+                          - number
+                          - 'null'
+                        latest_failure:
+                          type:
+                          - string
+                          - 'null'
+                        latest_occurrence:
+                          type: string
+                        enabled:
+                          type: boolean
+                        version_id:
+                          type: string
+                        version_number:
+                          type:
+                          - number
+                          - 'null'
+                        version_name:
+                          type:
+                          - string
+                          - 'null'
+                      required:
+                      - northstar_id
+                      - northstar_name
+                      - description
+                      - category
+                      - use_case_name
+                      - use_case_id
+                      - workflow_id
+                      - pass_count
+                      - fail_count
+                      - na_count
+                      - total_count
+                      - pass_rate
+                      - latest_failure
+                      - latest_occurrence
+                      - enabled
+                      - version_id
+                      - version_number
+                      - version_name
+                      additionalProperties: false
+                  pagination:
+                    type: object
+                    properties:
+                      page:
+                        type: number
+                      page_size:
+                        type: number
+                      total_pages:
+                        type: number
+                      total_records:
+                        type: number
+                      has_next_page:
+                        type: boolean
+                      has_previous_page:
+                        type: boolean
+                    required:
+                    - page
+                    - page_size
+                    - total_pages
+                    - total_records
+                    - has_next_page
+                    - has_previous_page
+                    additionalProperties: false
+                required:
+                - data
+                - pagination
+                additionalProperties: false
+        '401':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '404':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '500':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+  /workflows/{workflow_id}/audits/northstars/{northstar_id}/remarks:
+    get:
+      summary: List audit remarks for a northstar
+      tags:
+      - Audits
+      description: Returns cursor-paginated audit remarks for a specific northstar criterion, optionally filtered by grade.
+      parameters:
+      - schema:
+          type: string
+          enum:
+          - passed
+          - failed
+          - not_applicable
+        in: query
+        name: grade
+        required: false
+      - schema:
+          type: string
+        in: query
+        name: cursor
+        required: false
+      - schema:
+          default: 25
+          type: integer
+          minimum: 1
+          maximum: 100
+        in: query
+        name: limit
+        required: false
+      - schema:
+          type: string
+          minLength: 1
+        in: path
+        name: workflow_id
+        required: true
+        description: Workflow UUID or slug
+      - schema:
+          type: string
+          format: uuid
+          pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+        in: path
+        name: northstar_id
+        required: true
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          format: uuid
+                          pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                        run_id:
+                          type: string
+                          format: uuid
+                          pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                        timestamp:
+                          type: string
+                        run_url:
+                          type: string
+                        grade:
+                          type: string
+                          enum:
+                          - passed
+                          - failed
+                          - not_applicable
+                        passed:
+                          type:
+                          - boolean
+                          - 'null'
+                        message_ids:
+                          type: array
+                          items:
+                            type: string
+                        correction:
+                          type:
+                          - string
+                          - 'null'
+                        correction_reason:
+                          type:
+                          - string
+                          - 'null'
+                        org_id:
+                          type: string
+                          format: uuid
+                          pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                        user_feedback:
+                          type:
+                          - object
+                          - 'null'
+                          properties:
+                            polarity:
+                              type: boolean
+                            issue_attribution:
+                              type:
+                              - string
+                              - 'null'
+                          required:
+                          - polarity
+                          - issue_attribution
+                          additionalProperties: false
+                      required:
+                      - id
+                      - run_id
+                      - timestamp
+                      - run_url
+                      - grade
+                      - message_ids
+                      - correction
+                      - correction_reason
+                      - org_id
+                      additionalProperties: false
+                  next_cursor:
+                    type:
+                    - string
+                    - 'null'
+                  total:
+                    type: number
+                required:
+                - data
+                - next_cursor
+                - total
+                additionalProperties: false
+        '401':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '404':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '500':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+  /workflows/{workflow_id}/audits/remarks:
+    get:
+      summary: List audit remarks for a workflow
+      tags:
+      - Audits
+      description: Returns cursor-paginated behavioral audit remarks across all northstar criteria for a workflow. Optionally filter by northstar, grade, or status.
+      parameters:
+      - schema:
+          type: string
+          format: uuid
+          pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+        in: query
+        name: northstar_id
+        required: false
+      - schema:
+          type: string
+          enum:
+          - passed
+          - failed
+          - not_applicable
+        in: query
+        name: grade
+        required: false
+      - schema:
+          type: string
+          enum:
+          - open
+          - resolved
+          - dismissed
+        in: query
+        name: status
+        required: false
+      - schema:
+          type: string
+        in: query
+        name: cursor
+        required: false
+      - schema:
+          default: 25
+          type: integer
+          minimum: 1
+          maximum: 100
+        in: query
+        name: limit
+        required: false
+      - schema:
+          type: string
+          minLength: 1
+        in: path
+        name: workflow_id
+        required: true
+        description: Workflow UUID or slug
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          format: uuid
+                          pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                        run_id:
+                          type: string
+                          format: uuid
+                          pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                        run_url:
+                          type: string
+                        timestamp:
+                          type: string
+                        grade:
+                          type: string
+                          enum:
+                          - passed
+                          - failed
+                          - not_applicable
+                        passed:
+                          type:
+                          - boolean
+                          - 'null'
+                        status:
+                          type: string
+                          enum:
+                          - open
+                          - resolved
+                          - dismissed
+                        northstar_id:
+                          type: string
+                          format: uuid
+                          pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                        northstar_name:
+                          type: string
+                        message_ids:
+                          type: array
+                          items:
+                            type: string
+                        messages:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              role:
+                                type: string
+                              content:
+                                type: string
+                            required:
+                            - role
+                            - content
+                            additionalProperties: false
+                        correction:
+                          type:
+                          - string
+                          - 'null'
+                        correction_reason:
+                          type:
+                          - string
+                          - 'null'
+                        org_id:
+                          type: string
+                          format: uuid
+                          pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                        user_feedback:
+                          type:
+                          - object
+                          - 'null'
+                          properties:
+                            polarity:
+                              type: boolean
+                            issue_attribution:
+                              type:
+                              - string
+                              - 'null'
+                          required:
+                          - polarity
+                          - issue_attribution
+                          additionalProperties: false
+                      required:
+                      - id
+                      - run_id
+                      - run_url
+                      - timestamp
+                      - grade
+                      - status
+                      - northstar_id
+                      - northstar_name
+                      - message_ids
+                      - messages
+                      - correction
+                      - correction_reason
+                      - org_id
+                      additionalProperties: false
+                  next_cursor:
+                    type:
+                    - string
+                    - 'null'
+                  total:
+                    type: number
+                required:
+                - data
+                - next_cursor
+                - total
+                additionalProperties: false
+        '401':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '403':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '404':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '500':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+  /workflows/{workflow_id}/audits/node-errors:
+    get:
+      summary: List node errors for a workflow
+      tags:
+      - Audits
+      description: Returns paginated node execution errors for a workflow, grouped by node and error type.
+      parameters:
+      - schema:
+          type: string
+        in: query
+        name: from_date
+        required: false
+      - schema:
+          type: string
+        in: query
+        name: to_date
+        required: false
+      - schema:
+          type: string
+        in: query
+        name: search
+        required: false
+      - schema:
+          default: 1
+          type: integer
+          minimum: 1
+          maximum: 9007199254740991
+        in: query
+        name: page
+        required: false
+      - schema:
+          default: 50
+          type: integer
+          minimum: 1
+          maximum: 200
+        in: query
+        name: page_size
+        required: false
+      - schema:
+          type: string
+          minLength: 1
+        in: path
+        name: workflow_id
+        required: true
+        description: Workflow UUID or slug
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        node_id:
+                          type: string
+                        persistent_node_id:
+                          type: string
+                        error:
+                          type: string
+                        node_name:
+                          type: string
+                        use_case_name:
+                          type: string
+                        count:
+                          type: number
+                        latest_timestamp:
+                          type: string
+                        earliest_timestamp:
+                          type: string
+                      required:
+                      - node_id
+                      - persistent_node_id
+                      - error
+                      - node_name
+                      - use_case_name
+                      - count
+                      - latest_timestamp
+                      - earliest_timestamp
+                      additionalProperties: false
+                  pagination:
+                    type: object
+                    properties:
+                      page:
+                        type: number
+                      page_size:
+                        type: number
+                      total_pages:
+                        type: number
+                      total_records:
+                        type: number
+                      has_next_page:
+                        type: boolean
+                      has_previous_page:
+                        type: boolean
+                    required:
+                    - page
+                    - page_size
+                    - total_pages
+                    - total_records
+                    - has_next_page
+                    - has_previous_page
+                    additionalProperties: false
+                required:
+                - data
+                - pagination
+                additionalProperties: false
+        '401':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '404':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '500':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+  /workflows/{workflow_id}/audits/stats:
+    get:
+      summary: Get audit stats for the live workflow version
+      tags:
+      - Audits
+      description: Returns aggregate audit statistics for the live (or most recently audited) version of a workflow.
+      parameters:
+      - schema:
+          type: string
+          minLength: 1
+        in: path
+        name: workflow_id
+        required: true
+        description: Workflow UUID or slug
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  pass_rate_24h:
+                    type:
+                    - number
+                    - 'null'
+                  pass_count_24h:
+                    type: number
+                  total_count_24h:
+                    type: number
+                  average_run_score:
+                    type:
+                    - number
+                    - 'null'
+                  audited_run_count:
+                    type: number
+                  version_id:
+                    type:
+                    - string
+                    - 'null'
+                  version_number:
+                    type:
+                    - number
+                    - 'null'
+                  version_name:
+                    type:
+                    - string
+                    - 'null'
+                  is_live:
+                    type: boolean
+                required:
+                - pass_rate_24h
+                - pass_count_24h
+                - total_count_24h
+                - average_run_score
+                - audited_run_count
+                - version_id
+                - version_number
+                - version_name
+                - is_live
+                additionalProperties: false
+        '401':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '404':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '500':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+  /workflows/{workflow_id}/audits/versions:
+    get:
+      summary: List audited versions for a workflow
+      tags:
+      - Audits
+      description: Returns all versions of a workflow that have audit data, indicating which is the live version.
+      parameters:
+      - schema:
+          type: string
+          minLength: 1
+        in: path
+        name: workflow_id
+        required: true
+        description: Workflow UUID or slug
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          format: uuid
+                          pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                        version_number:
+                          type:
+                          - number
+                          - 'null'
+                        name:
+                          type:
+                          - string
+                          - 'null'
+                        is_live:
+                          type: boolean
+                      required:
+                      - id
+                      - version_number
+                      - name
+                      - is_live
+                      additionalProperties: false
+                required:
+                - data
+                additionalProperties: false
+        '401':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '404':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '500':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+  /audit-remarks/{audit_remark_id}:
+    get:
+      summary: Get an audit remark by ID
+      tags:
+      - Audits
+      description: Returns a single behavioral audit remark, including its northstar criterion, grade, correction, evaluated messages, and status.
+      parameters:
+      - schema:
+          type: string
+          format: uuid
+          pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+        in: path
+        name: audit_remark_id
+        required: true
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                    pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                  run_id:
+                    type: string
+                    format: uuid
+                    pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                  run_url:
+                    type: string
+                  timestamp:
+                    type: string
+                  updated_at:
+                    type: string
+                  grade:
+                    type: string
+                    enum:
+                    - passed
+                    - failed
+                    - not_applicable
+                  passed:
+                    type:
+                    - boolean
+                    - 'null'
+                  status:
+                    type: string
+                    enum:
+                    - open
+                    - resolved
+                    - dismissed
+                  category:
+                    type: string
+                  northstar_id:
+                    type: string
+                    format: uuid
+                    pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                  northstar_name:
+                    type: string
+                  use_case_id:
+                    type: string
+                    format: uuid
+                    pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                  node_id:
+                    type:
+                    - string
+                    - 'null'
+                    format: uuid
+                    pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                  message_ids:
+                    type: array
+                    items:
+                      type: string
+                  messages:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        role:
+                          type: string
+                        content:
+                          type: string
+                      required:
+                      - role
+                      - content
+                      additionalProperties: false
+                  correction:
+                    type:
+                    - string
+                    - 'null'
+                  correction_reason:
+                    type:
+                    - string
+                    - 'null'
+                  org_id:
+                    type: string
+                    format: uuid
+                    pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                  user_feedback:
+                    type:
+                    - object
+                    - 'null'
+                    properties:
+                      polarity:
+                        type: boolean
+                      issue_attribution:
+                        type:
+                        - string
+                        - 'null'
+                    required:
+                    - polarity
+                    - issue_attribution
+                    additionalProperties: false
+                required:
+                - id
+                - run_id
+                - run_url
+                - timestamp
+                - updated_at
+                - grade
+                - status
+                - category
+                - northstar_id
+                - northstar_name
+                - use_case_id
+                - node_id
+                - message_ids
+                - messages
+                - correction
+                - correction_reason
+                - org_id
+                additionalProperties: false
+        '401':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '404':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '500':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+  /audit-remarks/{audit_remark_id}/feedback:
+    post:
+      summary: Submit feedback for an audit remark
+      tags:
+      - Audits
+      description: Submit a thumbs up/down for an audit remark. Requires a user-level API key. A thumbs-up automatically adds the remark as a northstar example.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                polarity:
+                  type: boolean
+                issue_attribution:
+                  description: Attribution when polarity is false
+                  type: string
+                  enum:
+                  - auditor
+                  - northstar
+                comment:
+                  type: string
+              required:
+              - polarity
+        required: true
+      parameters:
+      - schema:
+          type: string
+          format: uuid
+          pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+        in: path
+        name: audit_remark_id
+        required: true
+      security:
+      - bearerAuth: []
+      responses:
+        '201':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                    pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                  polarity:
+                    type: boolean
+                  issue_attribution:
+                    type:
+                    - string
+                    - 'null'
+                  comment:
+                    type:
+                    - string
+                    - 'null'
+                  audit_remark_id:
+                    type: string
+                    format: uuid
+                    pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                  northstar_id:
+                    type: string
+                    format: uuid
+                    pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                  created_by:
+                    type: string
+                    format: uuid
+                    pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                  created_at:
+                    type: string
+                required:
+                - id
+                - polarity
+                - issue_attribution
+                - comment
+                - audit_remark_id
+                - northstar_id
+                - created_by
+                - created_at
+                additionalProperties: false
+        '401':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '500':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+    get:
+      summary: Get feedback for an audit remark
+      tags:
+      - Audits
+      description: Returns the current user's feedback for an audit remark, or null if none exists. Requires a user-level API key.
+      parameters:
+      - schema:
+          type: string
+          format: uuid
+          pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+        in: path
+        name: audit_remark_id
+        required: true
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type:
+                - object
+                - 'null'
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                    pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                  polarity:
+                    type: boolean
+                  issue_attribution:
+                    type:
+                    - string
+                    - 'null'
+                  comment:
+                    type:
+                    - string
+                    - 'null'
+                  audit_remark_id:
+                    type: string
+                    format: uuid
+                    pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                  northstar_id:
+                    type: string
+                    format: uuid
+                    pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                  created_by:
+                    type: string
+                    format: uuid
+                    pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                  created_at:
+                    type: string
+                required:
+                - id
+                - polarity
+                - issue_attribution
+                - comment
+                - audit_remark_id
+                - northstar_id
+                - created_by
+                - created_at
+                additionalProperties: false
+        '401':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '500':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+    delete:
+      summary: Delete feedback for an audit remark
+      tags:
+      - Audits
+      description: Removes the current user's feedback for an audit remark. Requires a user-level API key.
+      parameters:
+      - schema:
+          type: string
+          format: uuid
+          pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+        in: path
+        name: audit_remark_id
+        required: true
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    enum:
+                    - true
+                required:
+                - success
+                additionalProperties: false
+        '401':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '500':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: Opaque

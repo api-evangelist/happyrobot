@@ -1,0 +1,518 @@
+openapi: 3.2.0
+info:
+  title: Happyrobot Issues API
+  version: '1.0'
+  description: 'Operations tagged Issues across 2 of this provider''s published API definitions: happyrobot-platform-v1-openapi.json, happyrobot-public-api-openapi.json. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://platform.happyrobot.ai/api/v1
+- url: https://platform.happyrobot.ai/api/v2
+tags:
+- name: Issues
+paths:
+  /issues:
+    get:
+      summary: Get all issues
+      tags:
+      - Issues
+      parameters:
+      - name: authorization
+        in: header
+        required: true
+        schema:
+          type: string
+          description: Your API key for authentication. Use Bearer format.
+          example: Bearer API_KEY
+      - name: x-organization-id
+        in: header
+        required: true
+        schema:
+          type: string
+          description: The organization ID to use for the request. Required if your user is associated to more than one organization.
+      - name: use_case_id
+        in: query
+        description: The ID of the use case.
+        schema:
+          type: string
+      - name: run_id
+        in: query
+        description: The ID of the run.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      format: uuid
+                    use_case_id:
+                      type: string
+                      format: uuid
+                    org_id:
+                      type: string
+                      format: uuid
+                    run_id:
+                      type: string
+                      format: uuid
+                    run_version_id:
+                      type: string
+                      format: uuid
+                    status:
+                      type: string
+                      enum:
+                      - open
+                      - approved
+                      - rejected
+                      - closed
+                    priority:
+                      type: string
+                      enum:
+                      - low
+                      - medium
+                      - high
+                    created_at:
+                      type: string
+                      format: date-time
+                    type:
+                      type: string
+                      enum:
+                      - transcriber
+                      - message
+                      - tool_call
+                      - end_of_sentence
+                      - run
+                      - interruption
+                    updated_at:
+                      type: string
+                      format: date-time
+                    assignee:
+                      type:
+                      - string
+                      - 'null'
+                      format: uuid
+                    created_by:
+                      type: string
+                      format: uuid
+                    updated_by:
+                      type: string
+                      format: uuid
+                    message_id:
+                      type:
+                      - string
+                      - 'null'
+                      format: uuid
+                    correction:
+                      type:
+                      - string
+                      - 'null'
+                    correction_reason:
+                      type:
+                      - string
+                      - 'null'
+                    northstar_id:
+                      type:
+                      - string
+                      - 'null'
+                      format: uuid
+                  required:
+                  - id
+                  - use_case_id
+                  - org_id
+                  - run_id
+                  - run_version_id
+                  - status
+                  - priority
+                  - created_at
+                  - type
+                  - updated_at
+                  - assignee
+                  - created_by
+                  - updated_by
+                  - message_id
+                  - correction
+                  - correction_reason
+                  - northstar_id
+                description: A list of issues
+        '401':
+          description: '401'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                required:
+                - message
+        '500':
+          description: '500'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                required:
+                - message
+    servers:
+    - url: https://platform.happyrobot.ai/api/v1
+  /workflows/{workflow_id}/issues:
+    get:
+      summary: List issues for a workflow
+      tags:
+      - Issues
+      description: Returns paginated quality issues (flags) for a workflow, optionally filtered by status or source.
+      parameters:
+      - schema:
+          default: 1
+          type: integer
+          minimum: 1
+          maximum: 9007199254740991
+        in: query
+        name: page
+        required: false
+      - schema:
+          default: 50
+          type: integer
+          minimum: 1
+          maximum: 200
+        in: query
+        name: page_size
+        required: false
+      - schema:
+          type: string
+          enum:
+          - open
+          - approved
+          - rejected
+          - closed
+        in: query
+        name: status
+        required: false
+      - schema:
+          type: string
+          enum:
+          - manual
+          - auto
+        in: query
+        name: source
+        required: false
+      - schema:
+          type: string
+          minLength: 1
+        in: path
+        name: workflow_id
+        required: true
+        description: Workflow UUID or slug
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          format: uuid
+                          pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                        run_id:
+                          type:
+                          - string
+                          - 'null'
+                          format: uuid
+                          pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                        session_id:
+                          type:
+                          - string
+                          - 'null'
+                          format: uuid
+                          pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                        message_id:
+                          type:
+                          - string
+                          - 'null'
+                          format: uuid
+                          pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                        type:
+                          type: string
+                        priority:
+                          type: string
+                        status:
+                          type: string
+                        source:
+                          type: string
+                        description:
+                          type:
+                          - string
+                          - 'null'
+                        correction:
+                          type:
+                          - string
+                          - 'null'
+                        correction_reason:
+                          type:
+                          - string
+                          - 'null'
+                        metric_key:
+                          type:
+                          - string
+                          - 'null'
+                        metric_value:
+                          type:
+                          - number
+                          - 'null'
+                        threshold_value:
+                          type:
+                          - number
+                          - 'null'
+                        version_id:
+                          type:
+                          - string
+                          - 'null'
+                          format: uuid
+                          pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                        created_at:
+                          type: string
+                        updated_at:
+                          type: string
+                      required:
+                      - id
+                      - run_id
+                      - session_id
+                      - message_id
+                      - type
+                      - priority
+                      - status
+                      - source
+                      - description
+                      - correction
+                      - correction_reason
+                      - metric_key
+                      - metric_value
+                      - threshold_value
+                      - version_id
+                      - created_at
+                      - updated_at
+                      additionalProperties: false
+                  pagination:
+                    type: object
+                    properties:
+                      page:
+                        type: number
+                      page_size:
+                        type: number
+                      total_pages:
+                        type: number
+                      total_records:
+                        type: number
+                      has_next_page:
+                        type: boolean
+                      has_previous_page:
+                        type: boolean
+                    required:
+                    - page
+                    - page_size
+                    - total_pages
+                    - total_records
+                    - has_next_page
+                    - has_previous_page
+                    additionalProperties: false
+                required:
+                - data
+                - pagination
+                additionalProperties: false
+        '401':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '404':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '500':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+    servers:
+    - url: https://platform.happyrobot.ai/api/v2
+  /issues/{issue_id}:
+    patch:
+      summary: Update issue status
+      tags:
+      - Issues
+      description: Updates the status of a quality issue (flag).
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: string
+                  enum:
+                  - open
+                  - approved
+                  - rejected
+                  - closed
+              required:
+              - status
+        required: true
+      parameters:
+      - schema:
+          type: string
+          format: uuid
+          pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+        in: path
+        name: issue_id
+        required: true
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                    pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                  status:
+                    type: string
+                  updated_at:
+                    type: string
+                required:
+                - id
+                - status
+                - updated_at
+                additionalProperties: false
+        '401':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '404':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '500':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+    servers:
+    - url: https://platform.happyrobot.ai/api/v2
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: Opaque
+x-refined-from:
+- happyrobot-platform-v1-openapi.json
+- happyrobot-public-api-openapi.json

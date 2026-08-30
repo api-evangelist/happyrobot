@@ -1,0 +1,1738 @@
+openapi: 3.2.0
+info:
+  title: Happyrobot Public Phone Numbers API
+  description: Public API endpoints for Happyrobot
+  version: 0.1.1
+servers:
+- url: https://platform.happyrobot.ai/api/v2
+security:
+- bearerAuth: []
+tags:
+- name: Phone Numbers
+paths:
+  /phone-numbers/:
+    get:
+      summary: List phone numbers
+      tags:
+      - Phone Numbers
+      description: Returns all phone numbers for the authenticated organization, including Twilio, Telnyx, and SIP trunk numbers with caller ID information.
+      parameters:
+      - schema:
+          type: string
+        in: query
+        name: restrict
+        required: false
+        description: 'Comma-separated filter values: INBOUND, OUTBOUND_WITH_CALLBACK, OUTBOUND_WITH_CALLBACK_STAGING, OUTBOUND_WITH_CALLBACK_DEVELOPMENT, ALL'
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  oneOf:
+                  - type: object
+                    properties:
+                      id:
+                        type: string
+                      name:
+                        type:
+                        - string
+                        - 'null'
+                      number:
+                        type: string
+                      caller_id:
+                        type: string
+                        enum:
+                        - us
+                        - them
+                      toll_free_verification:
+                        type: object
+                        properties:
+                          status:
+                            type: string
+                        additionalProperties: false
+                      type:
+                        type: string
+                        enum:
+                        - twilio
+                      has_sip_trunk_in_preferred_region:
+                        type: boolean
+                      sip_trunk_status:
+                        type: string
+                        enum:
+                        - valid
+                        - invalid
+                        - none
+                    required:
+                    - id
+                    - name
+                    - number
+                    - caller_id
+                    - type
+                    - has_sip_trunk_in_preferred_region
+                    - sip_trunk_status
+                    additionalProperties: false
+                  - type: object
+                    properties:
+                      id:
+                        type: string
+                      name:
+                        type:
+                        - string
+                        - 'null'
+                      number:
+                        type: string
+                      caller_id:
+                        type: string
+                        enum:
+                        - us
+                        - them
+                      toll_free_verification:
+                        type: object
+                        properties:
+                          status:
+                            type: string
+                        additionalProperties: false
+                      type:
+                        type: string
+                        enum:
+                        - telnyx
+                    required:
+                    - id
+                    - name
+                    - number
+                    - caller_id
+                    - type
+                    additionalProperties: false
+                  - type: object
+                    properties:
+                      id:
+                        type: string
+                      name:
+                        type:
+                        - string
+                        - 'null'
+                      number:
+                        type: string
+                      caller_id:
+                        type: string
+                        enum:
+                        - us
+                        - them
+                      toll_free_verification:
+                        type: object
+                        properties:
+                          status:
+                            type: string
+                        additionalProperties: false
+                      type:
+                        type: string
+                        enum:
+                        - sip
+                      inbound_trunk_id:
+                        type:
+                        - string
+                        - 'null'
+                      outbound_trunk_id:
+                        type:
+                        - string
+                        - 'null'
+                      org_id:
+                        type: string
+                      created_at:
+                        type: string
+                      updated_at:
+                        type: string
+                    required:
+                    - id
+                    - name
+                    - number
+                    - caller_id
+                    - type
+                    - inbound_trunk_id
+                    - outbound_trunk_id
+                    - org_id
+                    - created_at
+                    - updated_at
+                    additionalProperties: false
+        '401':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '500':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+    post:
+      summary: Purchase a phone number
+      tags:
+      - Phone Numbers
+      description: Purchases a new phone number from Twilio or Telnyx. For toll-free numbers (US/CA only), also submits toll-free verification. Rate limited to one purchase every 10 minutes per organization. Send force=true in the body to bypass this limit (use with caution — each number has a recurring monthly cost).
+      requestBody:
+        content:
+          application/json:
+            schema:
+              oneOf:
+              - type: object
+                properties:
+                  name:
+                    type: string
+                    minLength: 1
+                  area_code:
+                    type: string
+                  number_type:
+                    type: string
+                    enum:
+                    - regular
+                    - toll_free
+                  provider:
+                    type: string
+                    enum:
+                    - twilio
+                  country_code:
+                    default: US
+                    type: string
+                    minLength: 2
+                    maxLength: 2
+                  phone_number_type:
+                    type: string
+                    enum:
+                    - local
+                    - toll_free
+                    - national
+                    - mobile
+                  bundle_id:
+                    type:
+                    - string
+                    - 'null'
+                  address_sid:
+                    type:
+                    - string
+                    - 'null'
+                  business_profile_application_id:
+                    description: Approved Twilio Compliance Business Profile application ID. Only used when provider is twilio; US Twilio numbers without one cannot call US destinations until a Business Profile is assigned.
+                    type:
+                    - string
+                    - 'null'
+                    format: uuid
+                    pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                  force:
+                    description: 'Set to true to bypass the 10-minute rate limit between phone number purchases. Use with caution: each phone number incurs a recurring monthly cost.'
+                    type: boolean
+                  sms_url:
+                    type: string
+                  sms_method:
+                    default: POST
+                    type: string
+                    enum:
+                    - POST
+                    - GET
+                  sms_fallback_url:
+                    type: string
+                  sms_fallback_method:
+                    default: POST
+                    type: string
+                    enum:
+                    - POST
+                    - GET
+                  business_name:
+                    type: string
+                  business_website:
+                    type: string
+                  business_address_line_1:
+                    type: string
+                  business_address_line_2:
+                    type: string
+                  business_city:
+                    type: string
+                  business_state:
+                    type: string
+                  business_postal_code:
+                    type: string
+                  business_country:
+                    default: US
+                    type: string
+                  business_type:
+                    type: string
+                    enum:
+                    - PRIVATE_PROFIT
+                    - PUBLIC_PROFIT
+                    - SOLE_PROPRIETOR
+                    - NON_PROFIT
+                    - GOVERNMENT
+                  business_registration_number:
+                    type: string
+                  business_registration_authority:
+                    type: string
+                    enum:
+                    - EIN
+                    - CBN
+                    - CRN
+                    - PROVINCIAL_NUMBER
+                    - VAT
+                    - ACN
+                    - ABN
+                    - BRN
+                    - SIREN
+                    - SIRET
+                    - NZBN
+                    - USt-IdNr
+                    - CIF
+                    - NIF
+                    - CNPJ
+                    - UID
+                    - NEQ
+                    - OTHER
+                  business_registration_country:
+                    type: string
+                    minLength: 2
+                    maxLength: 2
+                  contact_first_name:
+                    type: string
+                  contact_last_name:
+                    type: string
+                  contact_email:
+                    type: string
+                  contact_phone:
+                    type: string
+                  notification_email:
+                    type: string
+                  message_volume:
+                    type: string
+                  use_categories:
+                    type: array
+                    items:
+                      type: string
+                  workflow_summary:
+                    type: string
+                  production_message_sample:
+                    type: string
+                  opt_in_type:
+                    type: string
+                    enum:
+                    - VERBAL
+                    - WEB_FORM
+                    - PAPER_FORM
+                    - VIA_TEXT
+                    - MOBILE_QR_CODE
+                    - IMPORT
+                    - IMPORT_PLEASE_REPLACE
+                  opt_in_image_url:
+                    type: string
+                  additional_information:
+                    type: string
+                required:
+                - name
+                - number_type
+                - provider
+                - phone_number_type
+              - type: object
+                properties:
+                  name:
+                    type: string
+                    minLength: 1
+                  area_code:
+                    type: string
+                  number_type:
+                    type: string
+                    enum:
+                    - regular
+                    - toll_free
+                  provider:
+                    type: string
+                    enum:
+                    - telnyx
+                  country_code:
+                    default: US
+                    type: string
+                    minLength: 2
+                    maxLength: 2
+                  phone_number_type:
+                    type: string
+                    enum:
+                    - local
+                    - toll_free
+                    - national
+                    - mobile
+                  bundle_id:
+                    type:
+                    - string
+                    - 'null'
+                  address_sid:
+                    type:
+                    - string
+                    - 'null'
+                  business_profile_application_id:
+                    description: Approved Twilio Compliance Business Profile application ID. Only used when provider is twilio; US Twilio numbers without one cannot call US destinations until a Business Profile is assigned.
+                    type:
+                    - string
+                    - 'null'
+                    format: uuid
+                    pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                  force:
+                    description: 'Set to true to bypass the 10-minute rate limit between phone number purchases. Use with caution: each phone number incurs a recurring monthly cost.'
+                    type: boolean
+                required:
+                - name
+                - number_type
+                - provider
+                - phone_number_type
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  verification_failed:
+                    type: boolean
+                  setup_price:
+                    type: number
+                  recurring_price:
+                    type: number
+                required:
+                - message
+                additionalProperties: false
+        '400':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '401':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '429':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '500':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+  /phone-numbers/validate-toll-free-numbers:
+    post:
+      summary: Validate toll-free numbers for TextAgent
+      tags:
+      - Phone Numbers
+      description: Validates toll-free phone numbers for use with TextAgent SMS. Outbound numbers are always valid. Inbound numbers are blocked if a live inbound TextAgent already uses them.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                phone_numbers:
+                  minItems: 1
+                  type: array
+                  items:
+                    type: string
+                message_direction:
+                  type: string
+                  enum:
+                  - inbound
+                  - outbound
+              required:
+              - phone_numbers
+              - message_direction
+        required: true
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    phone_number:
+                      type: string
+                    is_valid:
+                      type: boolean
+                    reason:
+                      type: string
+                    conflict_info:
+                      type: object
+                      properties:
+                        workflow:
+                          type: object
+                          properties:
+                            name:
+                              type: string
+                            slug:
+                              type: string
+                          required:
+                          - name
+                          - slug
+                          additionalProperties: false
+                        version:
+                          type: object
+                          properties:
+                            name:
+                              type: string
+                            version_number:
+                              type:
+                              - number
+                              - 'null'
+                            environment:
+                              type: string
+                            slug:
+                              type: string
+                          required:
+                          - name
+                          - version_number
+                          - environment
+                          - slug
+                          additionalProperties: false
+                        event:
+                          type: object
+                          properties:
+                            name:
+                              type: string
+                            id:
+                              type: string
+                          required:
+                          - name
+                          - id
+                          additionalProperties: false
+                        status:
+                          type: string
+                          enum:
+                          - draft
+                          - locked
+                          - live
+                        phone_number:
+                          type: string
+                        channel:
+                          type: string
+                          enum:
+                          - sms
+                        message_direction:
+                          type: string
+                          enum:
+                          - inbound
+                          - outbound
+                        provider:
+                          type: string
+                          enum:
+                          - use_existing_toll_free
+                      required:
+                      - workflow
+                      - version
+                      - event
+                      - status
+                      - phone_number
+                      - channel
+                      - message_direction
+                      - provider
+                      additionalProperties: false
+                  required:
+                  - phone_number
+                  - is_valid
+                  additionalProperties: false
+        '401':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '500':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+  /phone-numbers/tollfree-verification/{verification_sid}:
+    delete:
+      summary: Delete a toll-free verification
+      tags:
+      - Phone Numbers
+      description: Deletes a toll-free verification request by its SID.
+      parameters:
+      - schema:
+          type: string
+          minLength: 1
+        in: path
+        name: verification_sid
+        required: true
+        description: Toll-free verification SID
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                required:
+                - message
+                additionalProperties: false
+        '401':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '500':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+  /phone-numbers/free-up-number:
+    post:
+      summary: Free up a phone number
+      tags:
+      - Phone Numbers
+      description: Removes a phone number from all workflows it is assigned to. The phone number must not be used in any live version.
+      parameters:
+      - schema:
+          type: string
+          minLength: 1
+        in: path
+        name: phone_number_id
+        required: true
+        description: Phone number ID (Twilio SID or Telnyx ID)
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                required:
+                - message
+                additionalProperties: false
+        '400':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '401':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '500':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+  /phone-numbers/delete-number:
+    post:
+      summary: Delete a phone number
+      tags:
+      - Phone Numbers
+      description: Permanently deletes a phone number. The phone number must not be in use by any workflow.
+      parameters:
+      - schema:
+          type: string
+          minLength: 1
+        in: path
+        name: phone_number_id
+        required: true
+        description: Phone number ID (Twilio SID or Telnyx ID)
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                required:
+                - message
+                additionalProperties: false
+        '400':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '401':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '500':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+  /phone-numbers/usage:
+    get:
+      summary: Get phone number usage
+      tags:
+      - Phone Numbers
+      description: Returns usage information for a phone number across all workflows and versions.
+      parameters:
+      - schema:
+          type: string
+          minLength: 1
+        in: path
+        name: phone_number_id
+        required: true
+        description: Phone number ID (Twilio SID or Telnyx ID)
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    workflow:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                        slug:
+                          type: string
+                      required:
+                      - name
+                      - slug
+                      additionalProperties: false
+                    version:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                        version_number:
+                          type:
+                          - number
+                          - 'null'
+                        environment:
+                          type: string
+                        slug:
+                          type: string
+                      required:
+                      - name
+                      - version_number
+                      - environment
+                      - slug
+                      additionalProperties: false
+                    event:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                      required:
+                      - name
+                      additionalProperties: false
+                    status:
+                      type: string
+                      enum:
+                      - draft
+                      - locked
+                      - live
+                  required:
+                  - workflow
+                  - version
+                  - event
+                  - status
+                  additionalProperties: false
+        '401':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '500':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+  /phone-numbers/remove-from-workflow:
+    post:
+      summary: Remove phone number from a workflow
+      tags:
+      - Phone Numbers
+      description: Removes a phone number from a specific workflow and version. The version must not be live.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                workflow_slug:
+                  type: string
+                  minLength: 1
+                version_slug:
+                  type: string
+                  minLength: 1
+              required:
+              - workflow_slug
+              - version_slug
+        required: true
+      parameters:
+      - schema:
+          type: string
+          minLength: 1
+        in: path
+        name: phone_number_id
+        required: true
+        description: Phone number ID (Twilio SID or Telnyx ID)
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                required:
+                - message
+                additionalProperties: false
+        '400':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '401':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '500':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+  /phone-numbers/tollfree-verification:
+    get:
+      summary: Get toll-free verification status
+      tags:
+      - Phone Numbers
+      description: Returns toll-free verification status and submitted data for a phone number. Returns 204 when no verification exists.
+      parameters:
+      - schema:
+          type: string
+          minLength: 1
+        in: path
+        name: phone_number_id
+        required: true
+        description: Phone number ID (Twilio SID or Telnyx ID)
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  sid:
+                    type: string
+                  business_name:
+                    type: string
+                  business_website:
+                    type: string
+                  notification_email:
+                    type: string
+                  tollfree_phone_number_sid:
+                    type: string
+                  business_street_address:
+                    type: string
+                  business_street_address_2:
+                    type: string
+                  business_city:
+                    type: string
+                  business_state_province:
+                    type: string
+                  business_postal_code:
+                    type: string
+                  business_country:
+                    type: string
+                  workflow_categories:
+                    type: array
+                    items:
+                      type: string
+                  workflow_summary:
+                    type: string
+                  message_volume:
+                    type: string
+                  business_contact_email:
+                    type: string
+                  business_contact_first_name:
+                    type: string
+                  business_contact_last_name:
+                    type: string
+                  business_contact_phone:
+                    type: string
+                  production_message_sample:
+                    type: string
+                  opt_in_type:
+                    type: string
+                  opt_in_image_urls:
+                    type: array
+                    items:
+                      type: string
+                  additional_information:
+                    type: string
+                  date_created:
+                    type: string
+                  date_updated:
+                    type: string
+                additionalProperties: false
+        '204':
+          description: No verification exists
+          content:
+            application/json:
+              schema:
+                description: No verification exists
+        '401':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '500':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+    post:
+      summary: Submit toll-free verification
+      tags:
+      - Phone Numbers
+      description: Submits a toll-free verification request for a phone number. Requires business_name, notification_email, and sms_url.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                business_name:
+                  type: string
+                  minLength: 1
+                notification_email:
+                  type: string
+                  minLength: 1
+                  format: email
+                  pattern: ^(?!\.)(?!.*\.\.)([A-Za-z0-9_'+\-\.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9\-]*\.)+[A-Za-z]{2,}$
+                sms_url:
+                  type: string
+                  minLength: 1
+                  format: uri
+                country_code:
+                  default: US
+                  type: string
+                  minLength: 2
+                  maxLength: 2
+                phone_number_type:
+                  type: string
+                  enum:
+                  - local
+                  - toll_free
+                  - national
+                  - mobile
+                compliance_action:
+                  type: string
+                  enum:
+                  - ordering
+                  - porting
+                bundle_id:
+                  type:
+                  - string
+                  - 'null'
+                address_sid:
+                  type:
+                  - string
+                  - 'null'
+                sms_method:
+                  default: POST
+                  type: string
+                  enum:
+                  - POST
+                  - GET
+                sms_fallback_url:
+                  type: string
+                sms_fallback_method:
+                  default: POST
+                  type: string
+                  enum:
+                  - POST
+                  - GET
+                business_website:
+                  type: string
+                business_type:
+                  type: string
+                  enum:
+                  - PRIVATE_PROFIT
+                  - PUBLIC_PROFIT
+                  - SOLE_PROPRIETOR
+                  - NON_PROFIT
+                  - GOVERNMENT
+                business_registration_number:
+                  type: string
+                business_registration_authority:
+                  type: string
+                  enum:
+                  - EIN
+                  - CBN
+                  - CRN
+                  - PROVINCIAL_NUMBER
+                  - VAT
+                  - ACN
+                  - ABN
+                  - BRN
+                  - SIREN
+                  - SIRET
+                  - NZBN
+                  - USt-IdNr
+                  - CIF
+                  - NIF
+                  - CNPJ
+                  - UID
+                  - NEQ
+                  - OTHER
+                business_registration_country:
+                  type: string
+                  minLength: 2
+                  maxLength: 2
+                business_address_line_1:
+                  type: string
+                business_address_line_2:
+                  type: string
+                business_city:
+                  type: string
+                business_state:
+                  type: string
+                business_postal_code:
+                  type: string
+                business_country:
+                  default: US
+                  type: string
+                contact_first_name:
+                  type: string
+                contact_last_name:
+                  type: string
+                contact_email:
+                  type: string
+                contact_phone:
+                  type: string
+                message_volume:
+                  type: string
+                use_categories:
+                  type: array
+                  items:
+                    type: string
+                workflow_summary:
+                  type: string
+                production_message_sample:
+                  type: string
+                opt_in_type:
+                  type: string
+                  enum:
+                  - VERBAL
+                  - WEB_FORM
+                  - PAPER_FORM
+                  - VIA_TEXT
+                  - MOBILE_QR_CODE
+                  - IMPORT
+                  - IMPORT_PLEASE_REPLACE
+                opt_in_image_url:
+                  type: string
+                additional_information:
+                  type: string
+              required:
+              - business_name
+              - notification_email
+              - sms_url
+              - phone_number_type
+        required: true
+      parameters:
+      - schema:
+          type: string
+          minLength: 1
+        in: path
+        name: phone_number_id
+        required: true
+        description: Phone number ID (Twilio SID or Telnyx ID)
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                required:
+                - message
+                additionalProperties: false
+        '400':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '401':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '404':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '500':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+  /phone-numbers/sip-trunk:
+    post:
+      summary: Create and attach SIP trunk
+      tags:
+      - Phone Numbers
+      description: Creates a SIP trunk and attaches it to a Twilio phone number. Sets up both inbound and outbound trunks in LiveKit.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties: {}
+      parameters:
+      - schema:
+          type: string
+          minLength: 1
+        in: path
+        name: phone_number_id
+        required: true
+        description: Phone number ID (Twilio SID or Telnyx ID)
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                required:
+                - message
+                additionalProperties: false
+        '400':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '401':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '404':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '500':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+  /phone-numbers/{id}:
+    put:
+      summary: Update a phone number
+      tags:
+      - Phone Numbers
+      description: Updates the display name and caller ID setting for a phone number.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  minLength: 1
+                caller_id:
+                  type: string
+                  enum:
+                  - us
+                  - them
+              required:
+              - name
+              - caller_id
+        required: true
+      parameters:
+      - schema:
+          type: string
+          minLength: 1
+        in: path
+        name: id
+        required: true
+        description: Phone number ID
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                required:
+                - message
+                additionalProperties: false
+        '400':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '401':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '404':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+        '500':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+                  statusCode:
+                    type: integer
+                    minimum: -9007199254740991
+                    maximum: 9007199254740991
+                  details: {}
+                required:
+                - error
+                additionalProperties: false
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: Opaque

@@ -32,19 +32,19 @@ created: '2026-08-01'
 modified: '2026-08-01'
 tags:
 - AI Agents
-- Agent Orchestration
-- Voice AI
-- Conversational AI
+- agent-orchestration
+- voice-ai
+- conversational-ai
 - Logistics
-- Freight
+- freight
 - Supply Chain
-- Workflow-Automation
-- Contact Center
-- Telephony
+- workflow-automation
+- contact-center
+- telephony
 - MCP
 - agent-native
-- Agent Governance
-- Enterprise Automation
+- agent-governance
+- enterprise-automation
 tags_raw:
 - ai-agents
 - agent-orchestration
@@ -76,7 +76,7 @@ apis:
   - MCP
   - agent-native
   - AI Agents
-  - Workflow-Automation
+  - workflow-automation
   tags_raw:
   - mcp
   - agent-native
@@ -203,6 +203,8 @@ apis:
   humanURL: https://docs.happyrobot.ai/api-reference
   baseURL: https://platform.happyrobot.ai/api/v2
   tags:
+  - APIKeys
+  tags_raw:
   - API Keys
   properties:
   - type: OpenAPI
@@ -231,6 +233,8 @@ apis:
   humanURL: https://docs.happyrobot.ai/api-reference
   baseURL: https://platform.happyrobot.ai/api/v2
   tags:
+  - Application
+  tags_raw:
   - Apps
   properties:
   - type: OpenAPI
@@ -427,6 +431,8 @@ apis:
   humanURL: https://docs.happyrobot.ai/api-reference
   baseURL: https://platform.happyrobot.ai/api/v2
   tags:
+  - Event
+  tags_raw:
   - Events
   properties:
   - type: OpenAPI
@@ -484,6 +490,8 @@ apis:
   humanURL: https://docs.happyrobot.ai/api-reference
   baseURL: https://platform.happyrobot.ai/api/v2
   tags:
+  - Integration
+  tags_raw:
   - Integrations
   properties:
   - type: OpenAPI
@@ -596,6 +604,8 @@ apis:
   humanURL: https://docs.happyrobot.ai/api-reference
   baseURL: https://platform.happyrobot.ai/api/v2
   tags:
+  - Message
+  tags_raw:
   - Messages
   properties:
   - type: OpenAPI
@@ -708,6 +718,8 @@ apis:
   humanURL: https://docs.happyrobot.ai/api-reference
   baseURL: https://platform.happyrobot.ai/api/v2
   tags:
+  - Real-Time
+  tags_raw:
   - Realtime
   properties:
   - type: OpenAPI
@@ -904,6 +916,8 @@ apis:
   humanURL: https://docs.happyrobot.ai/api-reference
   baseURL: https://platform.happyrobot.ai/api/v2
   tags:
+  - Use Cases
+  tags_raw:
   - UseCases
   properties:
   - type: OpenAPI

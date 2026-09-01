@@ -32,19 +32,19 @@ created: '2026-08-01'
 modified: '2026-08-01'
 tags:
 - AI Agents
-- agent-orchestration
-- voice-ai
-- conversational-ai
+- Agent Orchestration
+- Voice AI
+- Conversational AI
 - Logistics
-- freight
+- Freight
 - Supply Chain
-- workflow-automation
-- contact-center
-- telephony
+- Workflow-Automation
+- Contact Center
+- Telephony
 - MCP
 - agent-native
-- agent-governance
-- enterprise-automation
+- Agent Governance
+- Enterprise Automation
 tags_raw:
 - ai-agents
 - agent-orchestration
@@ -76,7 +76,7 @@ apis:
   - MCP
   - agent-native
   - AI Agents
-  - workflow-automation
+  - Workflow-Automation
   tags_raw:
   - mcp
   - agent-native

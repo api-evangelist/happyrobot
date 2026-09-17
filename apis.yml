@@ -925,36 +925,6 @@ apis:
     url: agentic-access/happyrobot-agentic-access.yml
   - type: Lifecycle
     url: lifecycle/happyrobot-lifecycle.yml
-- aid: happyrobot:happyrobot-usecases-api
-  name: Happyrobot Use Cases API
-  description: The UseCases API from Happyrobot — 2 operation(s) for usecases.
-  humanURL: https://docs.happyrobot.ai/api-reference
-  baseURL: https://platform.happyrobot.ai/api/v2
-  tags:
-  - Use Cases
-  tags_raw:
-  - UseCases
-  properties:
-  - type: OpenAPI
-    url: openapi/happyrobot-usecases-api-openapi.yml
-  - type: Documentation
-    url: https://docs.happyrobot.ai/api-reference
-  - type: APIReference
-    url: https://docs.happyrobot.ai/api-reference
-  - type: Authentication
-    url: authentication/happyrobot-authentication.yml
-  - type: Conventions
-    url: conventions/happyrobot-conventions.yml
-  - type: ErrorCatalog
-    url: errors/happyrobot-problem-types.yml
-  - type: DataModel
-    url: data-model/happyrobot-data-model.yml
-  - type: Webhooks
-    url: asyncapi/happyrobot-events.yml
-  - type: AgenticAccess
-    url: agentic-access/happyrobot-agentic-access.yml
-  - type: Lifecycle
-    url: lifecycle/happyrobot-lifecycle.yml
 - aid: happyrobot:happyrobot-versions-api
   name: Happyrobot Versions API
   description: The Versions API from Happyrobot — 16 operation(s) for versions.

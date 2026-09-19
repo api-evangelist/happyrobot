@@ -306,6 +306,8 @@ apis:
   humanURL: https://docs.happyrobot.ai/api-reference
   baseURL: https://platform.happyrobot.ai/api/v2
   tags:
+  - Audit
+  tags_raw:
   - Audits
   properties:
   - type: OpenAPI
@@ -591,6 +593,8 @@ apis:
   humanURL: https://docs.happyrobot.ai/api-reference
   baseURL: https://platform.happyrobot.ai/api/v2
   tags:
+  - MCP Server
+  tags_raw:
   - MCP Servers
   properties:
   - type: OpenAPI

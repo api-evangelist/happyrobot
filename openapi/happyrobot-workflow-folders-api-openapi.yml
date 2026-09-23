@@ -158,6 +158,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: getWorkflowFolders
+      x-operation-id-source: derived
     post:
       summary: Create a workflow folder
       tags:
@@ -280,6 +282,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: postWorkflowFolders
+      x-operation-id-source: derived
   /workflow-folders/{folder_id}:
     get:
       summary: Get a workflow folder
@@ -393,6 +397,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: getWorkflowFoldersByFolderId
+      x-operation-id-source: derived
     put:
       summary: Update a workflow folder
       tags:
@@ -536,6 +542,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: putWorkflowFoldersByFolderId
+      x-operation-id-source: derived
     delete:
       summary: Delete a workflow folder
       tags:
@@ -645,6 +653,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: deleteWorkflowFoldersByFolderId
+      x-operation-id-source: derived
 components:
   securitySchemes:
     bearerAuth:

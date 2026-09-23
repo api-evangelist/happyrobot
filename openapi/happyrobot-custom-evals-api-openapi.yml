@@ -202,6 +202,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: getNodesByNodeIdCustomEvals
+      x-operation-id-source: derived
     post:
       summary: Create a custom eval for a prompt node
       tags:
@@ -489,6 +491,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: postNodesByNodeIdCustomEvals
+      x-operation-id-source: derived
   /nodes/{node_id}/custom-evals/tools:
     get:
       summary: Get available tools for custom evals
@@ -590,6 +594,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: getNodesByNodeIdCustomEvalsTools
+      x-operation-id-source: derived
   /nodes/{node_id}/custom-evals/default-variables:
     get:
       summary: Get default variables for custom evals
@@ -684,6 +690,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: getNodesByNodeIdCustomEvalsDefaultVariables
+      x-operation-id-source: derived
   /nodes/{node_id}/custom-evals/extract-from-run:
     post:
       summary: Extract custom eval from a run
@@ -813,6 +821,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: postNodesByNodeIdCustomEvalsExtractFromRun
+      x-operation-id-source: derived
   /nodes/{node_id}/custom-evals/folders:
     post:
       summary: Create a custom eval folder for a prompt node
@@ -920,6 +930,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: postNodesByNodeIdCustomEvalsFolders
+      x-operation-id-source: derived
   /custom-evals/{eval_id}:
     get:
       summary: Get a custom eval by ID
@@ -1096,6 +1108,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: getCustomEvalsByEvalId
+      x-operation-id-source: derived
     patch:
       summary: Update a custom eval
       tags:
@@ -1382,6 +1396,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: patchCustomEvalsByEvalId
+      x-operation-id-source: derived
     delete:
       summary: Delete a custom eval
       tags:
@@ -1468,6 +1484,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: deleteCustomEvalsByEvalId
+      x-operation-id-source: derived
   /custom-evals/{eval_id}/run:
     post:
       summary: Run a custom eval
@@ -1569,6 +1587,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: postCustomEvalsByEvalIdRun
+      x-operation-id-source: derived
   /custom-evals/{eval_id}/runs:
     get:
       summary: List custom eval runs
@@ -1721,6 +1741,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: getCustomEvalsByEvalIdRuns
+      x-operation-id-source: derived
 components:
   securitySchemes:
     bearerAuth:

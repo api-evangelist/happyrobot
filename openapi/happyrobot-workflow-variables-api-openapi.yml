@@ -196,6 +196,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: getWorkflowsByWorkflowIdVariables
+      x-operation-id-source: derived
     post:
       summary: Create a workflow variable
       tags:
@@ -378,6 +380,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: postWorkflowsByWorkflowIdVariables
+      x-operation-id-source: derived
   /workflows/{workflow_id}/variables/{variable_id}:
     patch:
       summary: Update a workflow variable
@@ -562,6 +566,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: patchWorkflowsByWorkflowIdVariablesByVariableId
+      x-operation-id-source: derived
     delete:
       summary: Delete a workflow variable
       tags:
@@ -668,6 +674,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: deleteWorkflowsByWorkflowIdVariablesByVariableId
+      x-operation-id-source: derived
 components:
   securitySchemes:
     bearerAuth:

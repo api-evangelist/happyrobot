@@ -201,6 +201,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: getMcp
+      x-operation-id-source: derived
     post:
       summary: Create MCP server
       tags:
@@ -403,6 +405,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: postMcp
+      x-operation-id-source: derived
   /mcp/{mcpId}/refresh:
     post:
       summary: Refresh MCP server tools
@@ -569,6 +573,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: postMcpByMcpIdRefresh
+      x-operation-id-source: derived
   /mcp/authorized-orgs:
     get:
       summary: List authorized organizations
@@ -650,6 +656,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: getMcpAuthorizedOrgs
+      x-operation-id-source: derived
 components:
   securitySchemes:
     bearerAuth:

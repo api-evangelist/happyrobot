@@ -88,6 +88,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: postArtifactsResolve
+      x-operation-id-source: derived
 components:
   securitySchemes:
     bearerAuth:

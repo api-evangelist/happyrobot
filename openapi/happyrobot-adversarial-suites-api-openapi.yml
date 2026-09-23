@@ -195,6 +195,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: getNodesByNodeIdAdversarialSuites
+      x-operation-id-source: derived
     post:
       summary: Create an adversarial suite for a node
       tags:
@@ -396,6 +398,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: postNodesByNodeIdAdversarialSuites
+      x-operation-id-source: derived
   /adversarial-suites/{suite_id}:
     get:
       summary: Get an adversarial suite by ID
@@ -563,6 +567,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: getAdversarialSuitesBySuiteId
+      x-operation-id-source: derived
     patch:
       summary: Update an adversarial suite
       tags:
@@ -764,6 +770,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: patchAdversarialSuitesBySuiteId
+      x-operation-id-source: derived
     delete:
       summary: Delete an adversarial suite
       tags:
@@ -850,6 +858,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: deleteAdversarialSuitesBySuiteId
+      x-operation-id-source: derived
   /adversarial-suites/{suite_id}/generate:
     post:
       summary: Generate adversarial suite tests
@@ -951,6 +961,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: postAdversarialSuitesBySuiteIdGenerate
+      x-operation-id-source: derived
   /adversarial-suites/{suite_id}/generate-graph:
     post:
       summary: Generate adversarial suite workflow graph
@@ -1054,6 +1066,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: postAdversarialSuitesBySuiteIdGenerateGraph
+      x-operation-id-source: derived
   /adversarial-suites/{suite_id}/run:
     post:
       summary: Run an adversarial suite
@@ -1155,6 +1169,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: postAdversarialSuitesBySuiteIdRun
+      x-operation-id-source: derived
   /adversarial-suites/{suite_id}/runs:
     get:
       summary: List adversarial suite runs
@@ -1302,6 +1318,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: getAdversarialSuitesBySuiteIdRuns
+      x-operation-id-source: derived
   /adversarial-suites/runs/{suite_run_id}:
     get:
       summary: Get adversarial suite run by ID
@@ -1441,6 +1459,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: getAdversarialSuitesRunsBySuiteRunId
+      x-operation-id-source: derived
   /adversarial-suites/runs/{suite_run_id}/test-runs:
     get:
       summary: List test runs in a suite run
@@ -1580,6 +1600,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: getAdversarialSuitesRunsBySuiteRunIdTestRuns
+      x-operation-id-source: derived
 components:
   securitySchemes:
     bearerAuth:

@@ -100,6 +100,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: getSipTrunks
+      x-operation-id-source: derived
     post:
       summary: Create a SIP trunk
       tags:
@@ -289,6 +291,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: postSipTrunks
+      x-operation-id-source: derived
   /sip-trunks/options:
     get:
       summary: Get SIP trunk options
@@ -356,6 +360,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: getSipTrunksOptions
+      x-operation-id-source: derived
   /sip-trunks/bulk:
     post:
       summary: Create multiple SIP trunks
@@ -539,6 +545,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: postSipTrunksBulk
+      x-operation-id-source: derived
   /sip-trunks/{id}:
     get:
       summary: Get a SIP trunk
@@ -655,6 +663,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: getSipTrunksById
+      x-operation-id-source: derived
     put:
       summary: Update a SIP trunk
       tags:
@@ -830,6 +840,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: putSipTrunksById
+      x-operation-id-source: derived
     delete:
       summary: Delete a SIP trunk
       tags:
@@ -929,6 +941,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: deleteSipTrunksById
+      x-operation-id-source: derived
 components:
   securitySchemes:
     bearerAuth:

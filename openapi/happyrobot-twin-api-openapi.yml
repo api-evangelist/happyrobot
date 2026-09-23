@@ -93,6 +93,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: getTwinSchema
+      x-operation-id-source: derived
   /twin/tables:
     post:
       summary: Create a Twin table
@@ -217,6 +219,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: postTwinTables
+      x-operation-id-source: derived
   /twin/tables/{tableName}:
     get:
       summary: Get Twin table data
@@ -331,6 +335,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: getTwinTablesByTableName
+      x-operation-id-source: derived
     delete:
       summary: Drop a Twin table
       tags:
@@ -413,6 +419,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: deleteTwinTablesByTableName
+      x-operation-id-source: derived
   /twin/tables/{tableName}/rows:
     post:
       summary: Insert a row into a Twin table
@@ -504,6 +512,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: postTwinTablesByTableNameRows
+      x-operation-id-source: derived
     patch:
       summary: Update a row in a Twin table
       tags:
@@ -616,6 +626,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: patchTwinTablesByTableNameRows
+      x-operation-id-source: derived
     delete:
       summary: Delete rows from a Twin table
       tags:
@@ -731,6 +743,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: deleteTwinTablesByTableNameRows
+      x-operation-id-source: derived
   /twin/sql:
     post:
       summary: Execute SQL on Twin database
@@ -876,6 +890,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: postTwinSql
+      x-operation-id-source: derived
   /twin/dump:
     post:
       summary: Create a Twin workflow dump table
@@ -1045,6 +1061,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: postTwinDump
+      x-operation-id-source: derived
 components:
   securitySchemes:
     bearerAuth:

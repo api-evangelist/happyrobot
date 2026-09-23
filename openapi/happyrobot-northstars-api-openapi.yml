@@ -253,6 +253,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: getNodesByNodeIdNorthstars
+      x-operation-id-source: derived
     post:
       summary: Create a northstar for a prompt node
       tags:
@@ -526,6 +528,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: postNodesByNodeIdNorthstars
+      x-operation-id-source: derived
   /nodes/{node_id}/northstars/generate:
     post:
       summary: Generate northstars for a prompt node
@@ -627,6 +631,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: postNodesByNodeIdNorthstarsGenerate
+      x-operation-id-source: derived
   /nodes/{node_id}/northstars/batch-toggle:
     patch:
       summary: Batch toggle northstars
@@ -726,6 +732,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: patchNodesByNodeIdNorthstarsBatchToggle
+      x-operation-id-source: derived
   /nodes/{node_id}/northstars/iterate:
     post:
       summary: Iterate northstars for a prompt node
@@ -827,6 +835,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: postNodesByNodeIdNorthstarsIterate
+      x-operation-id-source: derived
   /nodes/{node_id}/northstars/assess-coverage:
     post:
       summary: Assess northstar coverage for a prompt node
@@ -928,6 +938,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: postNodesByNodeIdNorthstarsAssessCoverage
+      x-operation-id-source: derived
   /nodes/{node_id}/northstars/folders:
     post:
       summary: Create a northstar folder for a prompt node
@@ -1035,6 +1047,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: postNodesByNodeIdNorthstarsFolders
+      x-operation-id-source: derived
   /northstars/{northstar_id}:
     get:
       summary: Get a northstar by ID
@@ -1243,6 +1257,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: getNorthstarsByNorthstarId
+      x-operation-id-source: derived
     patch:
       summary: Update a northstar
       tags:
@@ -1511,6 +1527,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: patchNorthstarsByNorthstarId
+      x-operation-id-source: derived
     delete:
       summary: Delete a northstar
       tags:
@@ -1597,6 +1615,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: deleteNorthstarsByNorthstarId
+      x-operation-id-source: derived
   /northstars/{northstar_id}/history:
     get:
       summary: Get northstar history
@@ -1808,6 +1828,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: getNorthstarsByNorthstarIdHistory
+      x-operation-id-source: derived
   /northstars/{northstar_id}/feedback:
     post:
       summary: Submit northstar feedback
@@ -1927,6 +1949,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: postNorthstarsByNorthstarIdFeedback
+      x-operation-id-source: derived
     delete:
       summary: Delete northstar feedback
       tags:
@@ -2014,6 +2038,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: deleteNorthstarsByNorthstarIdFeedback
+      x-operation-id-source: derived
 components:
   securitySchemes:
     bearerAuth:

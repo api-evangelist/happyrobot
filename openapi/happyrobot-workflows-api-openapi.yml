@@ -216,6 +216,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: getWorkflows
+      x-operation-id-source: derived
     post:
       summary: Create a workflow
       tags:
@@ -1427,6 +1429,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: postWorkflows
+      x-operation-id-source: derived
   /workflows/{workflow_id}:
     get:
       summary: Get a workflow
@@ -1621,6 +1625,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: getWorkflowsByWorkflowId
+      x-operation-id-source: derived
     patch:
       summary: Update a workflow
       tags:
@@ -1967,6 +1973,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: patchWorkflowsByWorkflowId
+      x-operation-id-source: derived
     delete:
       summary: Delete a workflow
       tags:
@@ -2065,6 +2073,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: deleteWorkflowsByWorkflowId
+      x-operation-id-source: derived
   /workflows/{workflow_id}/versions:
     get:
       summary: List workflow versions
@@ -2249,6 +2259,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: getWorkflowsByWorkflowIdVersions
+      x-operation-id-source: derived
   /workflows/templates:
     get:
       summary: List workflow templates
@@ -2380,6 +2392,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: getWorkflowsTemplates
+      x-operation-id-source: derived
   /workflows/{workflow_id}/duplicate:
     post:
       summary: Duplicate a workflow
@@ -2632,6 +2646,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: postWorkflowsByWorkflowIdDuplicate
+      x-operation-id-source: derived
   /workflows/{workflow_id}/publish:
     post:
       summary: Publish a workflow
@@ -2894,6 +2910,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: postWorkflowsByWorkflowIdPublish
+      x-operation-id-source: derived
   /workflows/{workflow_id}/unpublish:
     post:
       summary: Unpublish a workflow
@@ -3024,6 +3042,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: postWorkflowsByWorkflowIdUnpublish
+      x-operation-id-source: derived
   /workflows/{workflow_id}/runs:
     get:
       summary: List workflow runs
@@ -3295,6 +3315,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: getWorkflowsByWorkflowIdRuns
+      x-operation-id-source: derived
     post:
       summary: Trigger a workflow run
       tags:
@@ -3407,6 +3429,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: postWorkflowsByWorkflowIdRuns
+      x-operation-id-source: derived
   /workflows/{workflow_id}/sessions:
     get:
       summary: List workflow sessions
@@ -3572,6 +3596,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: getWorkflowsByWorkflowIdSessions
+      x-operation-id-source: derived
   /workflows/{workflow_id}/cancel-runs:
     post:
       summary: Cancel active workflow runs
@@ -3723,6 +3749,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: postWorkflowsByWorkflowIdCancelRuns
+      x-operation-id-source: derived
 components:
   securitySchemes:
     bearerAuth:

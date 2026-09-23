@@ -169,6 +169,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: getMessagesByMessageIdFlags
+      x-operation-id-source: derived
     post:
       summary: Create message flag
       tags:
@@ -311,6 +313,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: postMessagesByMessageIdFlags
+      x-operation-id-source: derived
 components:
   securitySchemes:
     bearerAuth:

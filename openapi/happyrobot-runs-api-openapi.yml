@@ -192,6 +192,8 @@ paths:
                     type: string
                 required:
                 - message
+      operationId: getUseCasesByUseCaseIdRuns
+      x-operation-id-source: derived
     servers:
     - url: https://platform.happyrobot.ai/api/v1
   /runs:
@@ -371,6 +373,8 @@ paths:
                     description: The user is not authenticated.
                 required:
                 - message
+      operationId: getRuns
+      x-operation-id-source: derived
     servers:
     - url: https://platform.happyrobot.ai/api/v1
   /runs/{run_id}:
@@ -878,6 +882,8 @@ paths:
                     description: The run was not found.
                 required:
                 - message
+      operationId: getRunsByRunId
+      x-operation-id-source: derived
     servers:
     - url: https://platform.happyrobot.ai/api/v1
   /runs/{run_id}/recordings:
@@ -967,6 +973,8 @@ paths:
                     description: The run was not found.
                 required:
                 - message
+      operationId: getRunsByRunIdRecordings
+      x-operation-id-source: derived
     servers:
     - url: https://platform.happyrobot.ai/api/v1
   /runs/:
@@ -1219,6 +1227,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: getRuns
+      x-operation-id-source: derived
     servers:
     - url: https://platform.happyrobot.ai/api/v2
   /runs/{run_id}/cancel:
@@ -1364,6 +1374,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: postRunsByRunIdCancel
+      x-operation-id-source: derived
     servers:
     - url: https://platform.happyrobot.ai/api/v2
   /runs/{run_id}/sessions:
@@ -1586,6 +1598,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: getRunsByRunIdSessions
+      x-operation-id-source: derived
     servers:
     - url: https://platform.happyrobot.ai/api/v2
   /runs/{run_id}/nodes:
@@ -1781,6 +1795,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: getRunsByRunIdNodes
+      x-operation-id-source: derived
     servers:
     - url: https://platform.happyrobot.ai/api/v2
   /runs/{run_id}/outputs/{output_id}:
@@ -1999,6 +2015,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: getRunsByRunIdOutputsByOutputId
+      x-operation-id-source: derived
     servers:
     - url: https://platform.happyrobot.ai/api/v2
   /runs/{run_id}/mark:
@@ -2117,6 +2135,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: postRunsByRunIdMark
+      x-operation-id-source: derived
     servers:
     - url: https://platform.happyrobot.ai/api/v2
   /runs/{run_id}/flags:
@@ -2278,6 +2298,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: getRunsByRunIdFlags
+      x-operation-id-source: derived
     servers:
     - url: https://platform.happyrobot.ai/api/v2
   /runs/{run_id}/audits:
@@ -2408,6 +2430,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: getRunsByRunIdAudits
+      x-operation-id-source: derived
     servers:
     - url: https://platform.happyrobot.ai/api/v2
 components:

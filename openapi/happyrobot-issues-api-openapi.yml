@@ -161,6 +161,8 @@ paths:
                     type: string
                 required:
                 - message
+      operationId: getIssues
+      x-operation-id-source: derived
     servers:
     - url: https://platform.happyrobot.ai/api/v1
   /workflows/{workflow_id}/issues:
@@ -393,6 +395,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: getWorkflowsByWorkflowIdIssues
+      x-operation-id-source: derived
     servers:
     - url: https://platform.happyrobot.ai/api/v2
   /issues/{issue_id}:
@@ -505,6 +509,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: patchIssuesByIssueId
+      x-operation-id-source: derived
     servers:
     - url: https://platform.happyrobot.ai/api/v2
 components:

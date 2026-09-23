@@ -270,6 +270,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: getSessions
+      x-operation-id-source: derived
   /sessions/{session_id}/stream:
     get:
       summary: Stream session messages (SSE)
@@ -307,6 +309,8 @@ paths:
                 required:
                 - message
                 additionalProperties: false
+      operationId: getSessionsBySessionIdStream
+      x-operation-id-source: derived
   /sessions/{session_id}:
     get:
       summary: Get session
@@ -462,6 +466,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: getSessionsBySessionId
+      x-operation-id-source: derived
   /sessions/{session_id}/messages:
     get:
       summary: List session messages
@@ -634,6 +640,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: getSessionsBySessionIdMessages
+      x-operation-id-source: derived
 components:
   securitySchemes:
     bearerAuth:

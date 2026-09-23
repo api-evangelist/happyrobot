@@ -221,6 +221,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: getEventsByEventIdConfigSchema
+      x-operation-id-source: derived
 components:
   securitySchemes:
     bearerAuth:

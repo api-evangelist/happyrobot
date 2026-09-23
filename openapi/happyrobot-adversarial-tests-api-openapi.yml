@@ -211,6 +211,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: getNodesByNodeIdAdversarialTests
+      x-operation-id-source: derived
     post:
       summary: Create an adversarial test for a node
       tags:
@@ -429,6 +431,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: postNodesByNodeIdAdversarialTests
+      x-operation-id-source: derived
   /nodes/{node_id}/adversarial-tests/folders:
     post:
       summary: Create an adversarial folder for an agent node
@@ -536,6 +540,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: postNodesByNodeIdAdversarialTestsFolders
+      x-operation-id-source: derived
   /adversarial-tests/{test_id}:
     get:
       summary: Get an adversarial test by ID
@@ -714,6 +720,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: getAdversarialTestsByTestId
+      x-operation-id-source: derived
     patch:
       summary: Update an adversarial test
       tags:
@@ -933,6 +941,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: patchAdversarialTestsByTestId
+      x-operation-id-source: derived
     delete:
       summary: Delete an adversarial test
       tags:
@@ -1019,6 +1029,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: deleteAdversarialTestsByTestId
+      x-operation-id-source: derived
   /adversarial-tests/{test_id}/run:
     post:
       summary: Run an adversarial test
@@ -1123,6 +1135,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: postAdversarialTestsByTestIdRun
+      x-operation-id-source: derived
   /adversarial-tests/{test_id}/runs:
     get:
       summary: List adversarial test runs
@@ -1280,6 +1294,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: getAdversarialTestsByTestIdRuns
+      x-operation-id-source: derived
   /adversarial-tests/runs/{run_id}:
     get:
       summary: Get adversarial test run by ID
@@ -1429,6 +1445,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: getAdversarialTestsRunsByRunId
+      x-operation-id-source: derived
   /adversarial-tests/runs/{run_id}/messages:
     get:
       summary: Get adversarial test run messages
@@ -1537,6 +1555,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: getAdversarialTestsRunsByRunIdMessages
+      x-operation-id-source: derived
   /adversarial-tests/{test_id}/effective-scope:
     get:
       summary: Get the resolved audit scope for an adversarial test
@@ -1663,6 +1683,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: getAdversarialTestsByTestIdEffectiveScope
+      x-operation-id-source: derived
 components:
   securitySchemes:
     bearerAuth:

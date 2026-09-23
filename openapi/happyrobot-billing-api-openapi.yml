@@ -98,6 +98,8 @@ paths:
                     type: string
                 required:
                 - message
+      operationId: getUsage
+      x-operation-id-source: derived
     servers:
     - url: https://platform.happyrobot.ai/api/v1
   /billing/usage/totals:
@@ -214,6 +216,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: getBillingUsageTotals
+      x-operation-id-source: derived
     servers:
     - url: https://platform.happyrobot.ai/api/v2
   /billing/usage/details:
@@ -330,6 +334,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: getBillingUsageDetails
+      x-operation-id-source: derived
     servers:
     - url: https://platform.happyrobot.ai/api/v2
   /billing/usage/credits:
@@ -589,6 +595,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: getBillingUsageCredits
+      x-operation-id-source: derived
     servers:
     - url: https://platform.happyrobot.ai/api/v2
 components:

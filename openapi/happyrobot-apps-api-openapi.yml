@@ -204,6 +204,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: postAppsByAppSlugDuplicate
+      x-operation-id-source: derived
 components:
   securitySchemes:
     bearerAuth:

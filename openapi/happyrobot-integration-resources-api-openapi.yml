@@ -113,6 +113,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: getIntegrationsWhatsappMessageTemplates
+      x-operation-id-source: derived
   /integrations/whatsapp/businesses:
     get:
       summary: List WhatsApp businesses
@@ -191,6 +193,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: getIntegrationsWhatsappBusinesses
+      x-operation-id-source: derived
   /integrations/whatsapp/business-accounts:
     get:
       summary: List WhatsApp business accounts
@@ -274,6 +278,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: getIntegrationsWhatsappBusinessAccounts
+      x-operation-id-source: derived
   /integrations/whatsapp/phone-numbers:
     get:
       summary: List WhatsApp phone numbers
@@ -357,6 +363,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: getIntegrationsWhatsappPhoneNumbers
+      x-operation-id-source: derived
   /integrations/slack/channels:
     get:
       summary: List Slack channels
@@ -437,6 +445,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: getIntegrationsSlackChannels
+      x-operation-id-source: derived
   /integrations/slack/users:
     get:
       summary: List Slack users
@@ -517,6 +527,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: getIntegrationsSlackUsers
+      x-operation-id-source: derived
   /integrations/google-sheets/spreadsheets:
     get:
       summary: List Google Sheets spreadsheets
@@ -607,6 +619,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: getIntegrationsGoogleSheetsSpreadsheets
+      x-operation-id-source: derived
   /integrations/google-sheets/worksheets:
     get:
       summary: List Google Sheets worksheets
@@ -690,6 +704,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: getIntegrationsGoogleSheetsWorksheets
+      x-operation-id-source: derived
   /integrations/google-sheets/columns:
     get:
       summary: List Google Sheets columns
@@ -778,6 +794,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: getIntegrationsGoogleSheetsColumns
+      x-operation-id-source: derived
   /integrations/google-sheets/rows:
     get:
       summary: List Google Sheets rows
@@ -866,6 +884,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: getIntegrationsGoogleSheetsRows
+      x-operation-id-source: derived
   /integrations/teams/teams:
     get:
       summary: List Microsoft Teams teams
@@ -944,6 +964,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: getIntegrationsTeamsTeams
+      x-operation-id-source: derived
   /integrations/teams/channels:
     get:
       summary: List Microsoft Teams channels
@@ -1027,6 +1049,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: getIntegrationsTeamsChannels
+      x-operation-id-source: derived
   /integrations/teams/users:
     get:
       summary: List Microsoft Teams users
@@ -1105,6 +1129,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: getIntegrationsTeamsUsers
+      x-operation-id-source: derived
   /integrations/twilio-sms/phone-numbers:
     get:
       summary: List Twilio SMS phone numbers
@@ -1185,6 +1211,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: getIntegrationsTwilioSmsPhoneNumbers
+      x-operation-id-source: derived
   /integrations/telnyx-sms/phone-numbers:
     get:
       summary: List Telnyx SMS phone numbers
@@ -1265,6 +1293,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: getIntegrationsTelnyxSmsPhoneNumbers
+      x-operation-id-source: derived
 components:
   securitySchemes:
     bearerAuth:

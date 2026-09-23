@@ -133,6 +133,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: getContactsResolve
+      x-operation-id-source: derived
   /contacts/:
     get:
       summary: List contacts
@@ -274,6 +276,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: getContacts
+      x-operation-id-source: derived
   /contacts/{contact_id}:
     get:
       summary: Get contact
@@ -396,6 +400,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: getContactsByContactId
+      x-operation-id-source: derived
   /contacts/{contact_id}/interactions:
     get:
       summary: List contact interactions
@@ -549,6 +555,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: getContactsByContactIdInteractions
+      x-operation-id-source: derived
   /contacts/{contact_id}/memories:
     get:
       summary: List contact memories
@@ -679,6 +687,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: getContactsByContactIdMemories
+      x-operation-id-source: derived
 components:
   securitySchemes:
     bearerAuth:

@@ -18,6 +18,10 @@ paths:
       responses:
         '200':
           description: Default Response
+      summary: Get knowledge bases
+      x-summary-source: derived
+      operationId: getKnowledgeBases
+      x-operation-id-source: derived
     post:
       tags:
       - Knowledge Bases
@@ -138,6 +142,10 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      summary: Create knowledge bases
+      x-summary-source: derived
+      operationId: postKnowledgeBases
+      x-operation-id-source: derived
   /knowledge-bases/{kbId}/files:
     get:
       tags:
@@ -354,6 +362,10 @@ paths:
                 required:
                 - message
                 additionalProperties: false
+      summary: Get knowledge bases by kb id files
+      x-summary-source: derived
+      operationId: getKnowledgeBasesByKbIdFiles
+      x-operation-id-source: derived
   /knowledge-bases/{kbId}/upload-urls:
     post:
       tags:
@@ -496,6 +508,10 @@ paths:
                 required:
                 - message
                 additionalProperties: false
+      summary: Create knowledge bases by kb id upload urls
+      x-summary-source: derived
+      operationId: postKnowledgeBasesByKbIdUploadUrls
+      x-operation-id-source: derived
   /knowledge-bases/{kbId}/trigger-chunking:
     post:
       tags:
@@ -617,6 +633,10 @@ paths:
                 required:
                 - message
                 additionalProperties: false
+      summary: Create knowledge bases by kb id trigger chunking
+      x-summary-source: derived
+      operationId: postKnowledgeBasesByKbIdTriggerChunking
+      x-operation-id-source: derived
   /knowledge-bases/{kbId}:
     delete:
       tags:
@@ -720,6 +740,10 @@ paths:
                 required:
                 - message
                 additionalProperties: false
+      summary: Delete knowledge bases by kb id
+      x-summary-source: derived
+      operationId: deleteKnowledgeBasesByKbId
+      x-operation-id-source: derived
   /knowledge-bases/{kbId}/files/{fileId}:
     delete:
       tags:
@@ -830,6 +854,10 @@ paths:
                 required:
                 - message
                 additionalProperties: false
+      summary: Delete knowledge bases by kb id files by file id
+      x-summary-source: derived
+      operationId: deleteKnowledgeBasesByKbIdFilesByFileId
+      x-operation-id-source: derived
 components:
   securitySchemes:
     bearerAuth:

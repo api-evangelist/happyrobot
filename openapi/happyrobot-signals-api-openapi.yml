@@ -71,6 +71,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: getSignalsKeys
+      x-operation-id-source: derived
     post:
       summary: Add a custom signal key to node
       tags:
@@ -193,6 +195,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: postSignalsKeys
+      x-operation-id-source: derived
     delete:
       summary: Delete a custom signal key from node
       tags:
@@ -315,6 +319,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: deleteSignalsKeys
+      x-operation-id-source: derived
   /signals/:
     post:
       summary: Publish an immediate signal
@@ -454,6 +460,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: postSignals
+      x-operation-id-source: derived
   /signals/scheduled-signals:
     post:
       summary: Schedule a delayed signal
@@ -569,6 +577,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: postSignalsScheduledSignals
+      x-operation-id-source: derived
   /signals/scheduled-signals/{scheduled_signal_id}:
     patch:
       summary: Patch a scheduled signal
@@ -704,6 +714,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: patchSignalsScheduledSignalsByScheduledSignalId
+      x-operation-id-source: derived
     delete:
       summary: Delete a scheduled signal
       tags:
@@ -781,6 +793,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: deleteSignalsScheduledSignalsByScheduledSignalId
+      x-operation-id-source: derived
 components:
   securitySchemes:
     bearerAuth:

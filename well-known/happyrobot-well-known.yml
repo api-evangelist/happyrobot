@@ -1,13 +1,11 @@
-generated: '2026-08-01'
+generated: '2026-09-19'
 method: searched
 source: live probes of every apis.yml host and every OpenAPI servers[] host
-notes: >-
-  Probed /.well-known/security.txt, /openid-configuration, /oauth-authorization-server,
-  /oauth-protected-resource, /api-catalog and /ai-plugin.json across happyrobot.ai, www.happyrobot.ai,
-  platform.happyrobot.ai, app.happyrobot.ai, builder.happyrobot.ai, auth.happyrobot.ai and
-  docs.happyrobot.ai. Four documents returned real content. Note that docs.happyrobot.ai answers HTTP 200
-  with an HTML application shell for most unknown paths (it is a Mintlify SPA behind an access gate), so
-  only its JSON responses are recorded as hits here.
+notes: Probed /.well-known/security.txt, /openid-configuration, /oauth-authorization-server, /oauth-protected-resource,
+  /api-catalog and /ai-plugin.json across happyrobot.ai, www.happyrobot.ai, platform.happyrobot.ai, app.happyrobot.ai,
+  builder.happyrobot.ai, auth.happyrobot.ai and docs.happyrobot.ai. Four documents returned real content.
+  Note that docs.happyrobot.ai answers HTTP 200 with an HTML application shell for most unknown paths
+  (it is a Mintlify SPA behind an access gate), so only its JSON responses are recorded as hits here.
 hosts:
 - host: https://happyrobot.ai
   documents:
@@ -110,6 +108,13 @@ hosts:
     content_type: text/html
     hit: false
     note: SPA catch-all returning the docs application shell, NOT an agent card — rejected
+- host: https://mcp.platform.happyrobot.ai
+  documents:
+  - path: /.well-known/oauth-protected-resource
+    status: 200
+    file: happyrobot-mcp-oauth-protected-resource.json
+    bytes: 214
+  path_echo_control: passed
 summary:
   security_txt: true
   openid_configuration: true
@@ -118,3 +123,16 @@ summary:
   api_catalog: false
   ai_plugin: false
   agent_card: false
+x-mcp-probe:
+  probed: '2026-09-19'
+  issue: roadmap#321, roadmap#337
+  documents:
+  - host: https://mcp.platform.happyrobot.ai
+    path: /.well-known/oauth-protected-resource
+    file: happyrobot-mcp-oauth-protected-resource.json
+  validated_on: resource (RFC 9728) / issuer (RFC 8414, OIDC)
+  negative_control: one per host; a 2xx JSON object at an impossible path discards the host
+note: 'MCP-host OAuth discovery added 2026-09-19 (roadmap#321/#337): the harvest visits a provider''s
+  primary hosts, and RFC 9728 protected-resource metadata lives on the MCP host, so these documents existed
+  and were invisible to the scorer. Fetched live and validated on `resource`/`issuer`; one negative control
+  per host.'

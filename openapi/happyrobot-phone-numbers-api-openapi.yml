@@ -197,6 +197,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: getPhoneNumbers
+      x-operation-id-source: derived
     post:
       summary: Purchase a phone number
       tags:
@@ -508,6 +510,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: postPhoneNumbers
+      x-operation-id-source: derived
   /phone-numbers/validate-toll-free-numbers:
     post:
       summary: Validate toll-free numbers for TextAgent
@@ -669,6 +673,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: postPhoneNumbersValidateTollFreeNumbers
+      x-operation-id-source: derived
   /phone-numbers/tollfree-verification/{verification_sid}:
     delete:
       summary: Delete a toll-free verification
@@ -736,6 +742,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: deletePhoneNumbersTollfreeVerificationByVerificationSid
+      x-operation-id-source: derived
   /phone-numbers/free-up-number:
     post:
       summary: Free up a phone number
@@ -822,6 +830,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: postPhoneNumbersFreeUpNumber
+      x-operation-id-source: derived
   /phone-numbers/delete-number:
     post:
       summary: Delete a phone number
@@ -908,6 +918,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: postPhoneNumbersDeleteNumber
+      x-operation-id-source: derived
   /phone-numbers/usage:
     get:
       summary: Get phone number usage
@@ -1022,6 +1034,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: getPhoneNumbersUsage
+      x-operation-id-source: derived
   /phone-numbers/remove-from-workflow:
     post:
       summary: Remove phone number from a workflow
@@ -1124,6 +1138,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: postPhoneNumbersRemoveFromWorkflow
+      x-operation-id-source: derived
   /phone-numbers/tollfree-verification:
     get:
       summary: Get toll-free verification status
@@ -1247,6 +1263,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: getPhoneNumbersTollfreeVerification
+      x-operation-id-source: derived
     post:
       summary: Submit toll-free verification
       tags:
@@ -1496,6 +1514,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: postPhoneNumbersTollfreeVerification
+      x-operation-id-source: derived
   /phone-numbers/sip-trunk:
     post:
       summary: Create and attach SIP trunk
@@ -1607,6 +1627,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: postPhoneNumbersSipTrunk
+      x-operation-id-source: derived
   /phone-numbers/{id}:
     put:
       summary: Update a phone number
@@ -1730,6 +1752,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: putPhoneNumbersById
+      x-operation-id-source: derived
 components:
   securitySchemes:
     bearerAuth:

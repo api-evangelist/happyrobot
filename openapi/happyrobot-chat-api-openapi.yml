@@ -108,6 +108,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: postChatTokens
+      x-operation-id-source: derived
   /chat/sessions/:
     post:
       summary: Create a chat session
@@ -176,6 +178,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: postChatSessions
+      x-operation-id-source: derived
   /chat/sessions/{id}/messages:
     post:
       summary: Send a chat message
@@ -317,6 +321,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: postChatSessionsByIdMessages
+      x-operation-id-source: derived
   /chat/sessions/{id}/close:
     post:
       summary: Close a chat session
@@ -393,6 +399,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: postChatSessionsByIdClose
+      x-operation-id-source: derived
   /chat/sessions/{id}/history:
     get:
       summary: Get chat session history
@@ -533,6 +541,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: getChatSessionsByIdHistory
+      x-operation-id-source: derived
   /chat/upload/presigned:
     get:
       summary: Get presigned upload URL
@@ -630,6 +640,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: getChatUploadPresigned
+      x-operation-id-source: derived
   /chat/upload/complete:
     post:
       summary: Complete file upload
@@ -748,6 +760,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: postChatUploadComplete
+      x-operation-id-source: derived
 components:
   securitySchemes:
     bearerAuth:

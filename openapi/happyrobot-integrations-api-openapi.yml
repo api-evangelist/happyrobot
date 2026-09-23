@@ -327,6 +327,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: getIntegrations
+      x-operation-id-source: derived
   /integrations/categories:
     get:
       summary: List integration categories with providers
@@ -407,6 +409,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: getIntegrationsCategories
+      x-operation-id-source: derived
   /integrations/{integrationId}:
     get:
       summary: Get an integration
@@ -656,6 +660,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: getIntegrationsByIntegrationId
+      x-operation-id-source: derived
   /integrations/{integrationId}/create-credential:
     post:
       summary: Create a credential for an integration
@@ -810,6 +816,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: postIntegrationsByIntegrationIdCreateCredential
+      x-operation-id-source: derived
 components:
   securitySchemes:
     bearerAuth:

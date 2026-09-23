@@ -158,6 +158,8 @@ paths:
                 required:
                 - error
                 additionalProperties: false
+      operationId: postRealtimeTokens
+      x-operation-id-source: derived
 components:
   securitySchemes:
     bearerAuth:

@@ -53,11 +53,11 @@ tags:
 - Logistics
 - Freight
 - Supply Chain
-- Workflow-Automation
+- Workflow Automation
 - Contact Center
 - Telephony
 - MCP
-- agent-native
+- Agent-Native
 - Agent Governance
 - Enterprise Automation
 tags_raw:
@@ -75,6 +75,7 @@ tags_raw:
 - agent-native
 - agent-governance
 - enterprise-automation
+- Workflow-Automation
 apis:
 - name: Happyrobot Workflows MCP Server
   description: >-
@@ -89,14 +90,15 @@ apis:
   baseURL: https://mcp.platform.happyrobot.ai/workflows/mcp
   tags:
   - MCP
-  - agent-native
+  - Agent-Native
   - AI Agents
-  - Workflow-Automation
+  - Workflow Automation
   tags_raw:
   - mcp
   - agent-native
   - ai-agents
   - workflow-automation
+  - Workflow-Automation
   properties:
   - type: MCPServer
     url: mcp/happyrobot-mcp.yml
@@ -119,7 +121,7 @@ apis:
   baseURL: https://mcp.platform.happyrobot.ai/twin/mcp
   tags:
   - MCP
-  - agent-native
+  - Agent-Native
   - Database
   tags_raw:
   - mcp
@@ -145,7 +147,7 @@ apis:
   baseURL: https://docs.happyrobot.ai/mcp
   tags:
   - MCP
-  - agent-native
+  - Agent-Native
   - Documentation
   tags_raw:
   - mcp

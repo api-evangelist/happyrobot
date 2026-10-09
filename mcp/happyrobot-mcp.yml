@@ -295,3 +295,17 @@ deployment:
   probe: gated
   checked: '2026-08-12'
   source: catalog MCP census
+rfc9728:
+  endpoint: https://mcp.platform.happyrobot.ai/workflows/mcp
+  metadata_url: https://mcp.platform.happyrobot.ai/.well-known/oauth-protected-resource/workflows/mcp
+  discovered_via: WWW-Authenticate resource_metadata on an anonymous POST initialize
+  fetched: '2026-09-25'
+  http_status: 200
+  content_type: application/json
+  document:
+    resource: https://mcp.platform.happyrobot.ai/workflows/mcp
+    authorization_servers:
+    - https://platform.happyrobot.ai
+    scopes_supported:
+    - mcp:full
+    resource_name: HappyRobot MCP (happyrobot-mcp-workflows)

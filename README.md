@@ -64,52 +64,174 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-HappyRobot is an AI orchestration platform — "the AI operating system for the real economy" — that lets
-enterprises build, govern and deploy AI agents into operational workflows across logistics, freight
-brokerage, 3PL, utilities, airlines, finance, insurance, manufacturing, retail and telecom. Agents place
-and answer calls, send and receive email, SMS, WhatsApp and chat, read and write to TMS/ERP systems, and
-run multi-step workflows built as node graphs.
+HappyRobot is an AI orchestration platform — "the AI operating system for the real economy" — that lets enterprises build, govern and deploy AI agents ("AI workers") into operational workflows across logistics, freight brokerage, 3PL, utilities, airlines, finance, insurance, manufacturing, retail and telecom. Agents place and answer phone calls, send and receive email, SMS, WhatsApp and chat, read and write to TMS/ERP systems, and execute multi-step workflows built as node graphs in a visual builder. The Happyrobot Public API (v2) exposes 205 operations across 32 resource families — workflows, versions and nodes, runs, sessions and messages, contacts and memories, knowledge bases, phone numbers and SIP trunks, integrations, chat and voice tokens, signals, billing, plus a full agent-governance surface (audits, northstars, custom evals, adversarial tests and suites). Authentication is a bearer API key scoped to an organization and an environment; the platform additionally runs an Auth0 OIDC tenant for human sign-in and an OAuth 2.0 authorization server for its MCP surface.
 
-- Website: https://www.happyrobot.ai/
-- Docs: https://docs.happyrobot.ai (access-gated)
-- Status: https://status.happyrobot.ai/
-- Trust center: https://trust.happyrobot.ai/
-- GitHub: https://github.com/happyrobot-ai
+**Areas:** AI Agents · Agent Orchestration · Voice AI · Conversational AI · Logistics · Freight · Supply Chain · Workflow Automation · Contact Center · Telephony · MCP · Agent-Native
 
-## APIs
+## Happyrobot on APIs.io
 
-| API | Base URL | Spec |
-|---|---|---|
-| Happyrobot Public API (v2) | `https://platform.happyrobot.ai/api/v2` | OpenAPI 3.0.3 — 162 paths, 205 operations |
-| Happyrobot Public API (EU) | `https://platform.eu.happyrobot.ai/api/v2` | same document, EU data-residency cluster |
-| Happyrobot Platform API (v1, legacy) | `https://platform.happyrobot.ai/api/v1` | OpenAPI 3.0.2 — 10 read-only operations |
-| Workflows MCP Server | `https://mcp.platform.happyrobot.ai/workflows/mcp` | 26 tools + 5 prompts, OAuth `mcp:full` |
-| Twin MCP Server | `https://mcp.platform.happyrobot.ai/twin/mcp` | 9 tools, OAuth `mcp:full` |
-| Docs MCP Server | `https://docs.happyrobot.ai/mcp` | documentation search, OAuth `mcp:search` |
+Everything profiled for Happyrobot is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/happyrobot/](https://apis.io/providers/happyrobot/)** — or go straight to one of the APIs or properties below.
 
-The v2 OpenAPI is served publicly and anonymously from the API host at `/api/v2/docs/json` — not from the
-docs host, which returns an application shell for every path.
+### APIs (35)
 
-## Artifacts
+- [Happyrobot Workflows MCP Server](https://apis.io/apis/happyrobot/happyrobot-workflows-mcp-server/) — Happyrobot's first-party remote MCP server for building and governing workflows — 26 published tools plus 5 MCP prompts, served over Streamable HTTP and…
+- [Happyrobot Twin MCP Server](https://apis.io/apis/happyrobot/happyrobot-twin-mcp-server/) — First-party remote MCP server over the customer's Twin database — 9 published tools covering schema introspection, paginated reads, table creation, row…
+- [Happyrobot Docs MCP Server](https://apis.io/apis/happyrobot/happyrobot-docs-mcp-server/) — A hosted documentation-search MCP server on the docs host, discovered via RFC 9728 protected-resource metadata at…
+- [Happyrobot Adversarial Suites API](https://apis.io/apis/happyrobot/happyrobot-adversarial-suites-api/) — The Adversarial Suites API from Happyrobot — 8 operation(s) for adversarial suites.
+- [Happyrobot Adversarial Tests API](https://apis.io/apis/happyrobot/happyrobot-adversarial-tests-api/) — The Adversarial Tests API from Happyrobot — 8 operation(s) for adversarial tests.
+- [Happyrobot API Keys API](https://apis.io/apis/happyrobot/happyrobot-api-keys-api/) — The API Keys API from Happyrobot — 1 operation(s) for api keys.
+- [Happyrobot Apps API](https://apis.io/apis/happyrobot/happyrobot-apps-api/) — The Apps API from Happyrobot — 1 operation(s) for apps.
+- [Happyrobot Artifacts API](https://apis.io/apis/happyrobot/happyrobot-artifacts-api/) — The Artifacts API from Happyrobot — 1 operation(s) for artifacts.
+- [Happyrobot Audits API](https://apis.io/apis/happyrobot/happyrobot-audits-api/) — The Audits API from Happyrobot — 8 operation(s) for audits.
+- [Happyrobot Billing API](https://apis.io/apis/happyrobot/happyrobot-billing-api/) — The Billing API from Happyrobot — 4 operation(s) for billing.
+- [Happyrobot Chat API](https://apis.io/apis/happyrobot/happyrobot-chat-api/) — The Chat API from Happyrobot — 7 operation(s) for chat.
+- [Happyrobot Contacts API](https://apis.io/apis/happyrobot/happyrobot-contacts-api/) — The Contacts API from Happyrobot — 5 operation(s) for contacts.
+- [Happyrobot Custom Evals API](https://apis.io/apis/happyrobot/happyrobot-custom-evals-api/) — The Custom Evals API from Happyrobot — 8 operation(s) for custom evals.
+- [Happyrobot Events API](https://apis.io/apis/happyrobot/happyrobot-events-api/) — The Events API from Happyrobot — 1 operation(s) for events.
+- [Happyrobot Integration Resources API](https://apis.io/apis/happyrobot/happyrobot-integration-resources-api/) — The Integration Resources API from Happyrobot — 15 operation(s) for integration resources.
+- [Happyrobot Integrations API](https://apis.io/apis/happyrobot/happyrobot-integrations-api/) — The Integrations API from Happyrobot — 4 operation(s) for integrations.
+- [Happyrobot Issues API](https://apis.io/apis/happyrobot/happyrobot-issues-api/) — The Issues API from Happyrobot — 3 operation(s) for issues.
+- [Happyrobot Knowledge Bases API](https://apis.io/apis/happyrobot/happyrobot-knowledge-bases-api/) — The Knowledge Bases API from Happyrobot — 6 operation(s) for knowledge bases.
+- [Happyrobot MCP Servers API](https://apis.io/apis/happyrobot/happyrobot-mcp-servers-api/) — The MCP Servers API from Happyrobot — 3 operation(s) for mcp servers.
+- [Happyrobot Messages API](https://apis.io/apis/happyrobot/happyrobot-messages-api/) — The Messages API from Happyrobot — 1 operation(s) for messages.
+- [Happyrobot Northstars API](https://apis.io/apis/happyrobot/happyrobot-northstars-api/) — The Northstars API from Happyrobot — 9 operation(s) for northstars.
+- [Happyrobot Organization API](https://apis.io/apis/happyrobot/happyrobot-organization-api/) — The Organization API from Happyrobot — 2 operation(s) for organization.
+- [Happyrobot Phone Numbers API](https://apis.io/apis/happyrobot/happyrobot-phone-numbers-api/) — The Phone Numbers API from Happyrobot — 10 operation(s) for phone numbers.
+- [Happyrobot Realtime API](https://apis.io/apis/happyrobot/happyrobot-realtime-api/) — The Realtime API from Happyrobot — 1 operation(s) for realtime.
+- [Happyrobot Runs API](https://apis.io/apis/happyrobot/happyrobot-runs-api/) — The Runs API from Happyrobot — 12 operation(s) for runs.
+- [Happyrobot Sessions API](https://apis.io/apis/happyrobot/happyrobot-sessions-api/) — The Sessions API from Happyrobot — 4 operation(s) for sessions.
+- [Happyrobot Signals API](https://apis.io/apis/happyrobot/happyrobot-signals-api/) — The Signals API from Happyrobot — 4 operation(s) for signals.
+- [Happyrobot SIP Trunks API](https://apis.io/apis/happyrobot/happyrobot-sip-trunks-api/) — The SIP Trunks API from Happyrobot — 4 operation(s) for sip trunks.
+- [Happyrobot Twin API](https://apis.io/apis/happyrobot/happyrobot-twin-api/) — The Twin API from Happyrobot — 6 operation(s) for twin.
+- [Happyrobot Use Cases API](https://apis.io/apis/happyrobot/happyrobot-use-cases-api/) — The Use Cases API from Happyrobot — 1 operation(s) for use cases.
+- [Happyrobot Versions API](https://apis.io/apis/happyrobot/happyrobot-versions-api/) — The Versions API from Happyrobot — 16 operation(s) for versions.
+- [Happyrobot Voice API](https://apis.io/apis/happyrobot/happyrobot-voice-api/) — The Voice API from Happyrobot — 1 operation(s) for voice.
+- [Happyrobot Workflow Folders API](https://apis.io/apis/happyrobot/happyrobot-workflow-folders-api/) — The Workflow Folders API from Happyrobot — 2 operation(s) for workflow folders.
+- [Happyrobot Workflow Variables API](https://apis.io/apis/happyrobot/happyrobot-workflow-variables-api/) — The Workflow Variables API from Happyrobot — 2 operation(s) for workflow variables.
+- [Happyrobot Workflows API](https://apis.io/apis/happyrobot/happyrobot-workflows-api/) — The Workflows API from Happyrobot — 10 operation(s) for workflows.
 
-`openapi/` · `authentication/` · `scopes/` · `conventions/` · `errors/` · `asyncapi/` · `data-model/` ·
-`mcp/` · `lifecycle/` · `conformance/` · `sandbox/` · `components/` · `packages/` · `security/` ·
-`well-known/` · `overlays/` · `agentic-access/` · `skills/` · `llms/`
+### Published properties
 
-## Notable findings
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-- **Four first-party MCP servers**, two of them full remote Streamable HTTP endpoints with RFC 9728
-  protected-resource metadata and RFC 7591 dynamic client registration. The MCP surface is
-  *builder*-shaped: all 26 Workflows tools author, version, test and govern workflows, and bind to 150 of
-  the 205 REST operations. The runtime data plane — contacts, memories, sessions, messages, knowledge
-  bases, billing — is REST-only (55 operations with no tool).
-- **A deep agent-governance surface in the API itself**: northstars (declarative success criteria),
-  custom evals extractable from real production runs, adversarial red-team tests and batched suites, and
-  post-hoc audits. Rare among agent platforms.
-- **No idempotency contract anywhere** — the string "idempot" does not appear in either spec, including on
-  operations that purchase phone numbers or start voice calls.
-- **Errors are not RFC 9457**, and use three different envelope shapes.
-- **No A2A agent card** on any host.
-- **The documentation is access-gated** while the OpenAPI is wide open — an unusual inversion.
+#### AsyncAPI (1)
 
-Profiled by the API Evangelist enrichment pipeline, 2026-08-01.
+Event-driven and webhook contracts.
+
+- [Happyrobot Events](https://apis.io/asyncapis/happyrobot/happyrobot-events/)
+
+#### MCP servers (2)
+
+Model Context Protocol servers that expose the API to agents.
+
+- [happyrobot-mcp.yml](https://apis.io/servers/happyrobot/happyrobot-mcp-yml/)
+- [mcp](https://apis.io/servers/happyrobot/mcp/)
+
+#### Agentic access (1)
+
+Which operations an agent can call, which act, and which need a human in the loop.
+
+- [Happyrobot Agentic Access](https://apis.io/agentic-access/happyrobot/happyrobot-agentic-access/)
+
+#### Collections (2)
+
+Postman and Open Collection request collections.
+
+- [Happyrobot Platform API](https://apis.io/collections/happyrobot/open-happyrobot-platform-v1/)
+- [Happyrobot Public API](https://apis.io/collections/happyrobot/open-happyrobot-public-api/)
+
+#### Overlays (1)
+
+OpenAPI overlays, including conversational phrasing for each operation.
+
+- [Happyrobot Public Api Overlay](https://apis.io/overlays/happyrobot/happyrobot-public-api-overlay/)
+
+#### Security (4)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Happyrobot Authentication](https://apis.io/security/happyrobot/happyrobot-authentication/)
+- [Happyrobot Domain Security](https://apis.io/security/happyrobot/happyrobot-domain-security/)
+- [Happyrobot Trust Center](https://apis.io/security/happyrobot/happyrobot-trust-center/)
+- [Happyrobot Vulnerability Disclosure](https://apis.io/security/happyrobot/happyrobot-vulnerability-disclosure/)
+
+#### OAuth scopes (1)
+
+The permissions the API asks for.
+
+- [Happyrobot Scopes](https://apis.io/scopes/happyrobot/happyrobot-scopes/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
+- [Website](https://www.happyrobot.ai/)
+- [Documentation](https://docs.happyrobot.ai)
+- [Getting started](https://docs.happyrobot.ai/getting_started)
+- [API reference](https://docs.happyrobot.ai/api-reference)
+- [Pricing](https://docs.happyrobot.ai/general/pricing)
+- [Sign up](https://app.happyrobot.ai/signup)
+- [Support](https://www.happyrobot.ai/contact)
+- [Blog](https://www.happyrobot.ai/blog)
+- [Security](https://happyrobot.ai/.well-known/security.txt)
+- [Compliance](https://www.happyrobot.ai/product/security-and-reliability)
+- [Trust centre](https://trust.happyrobot.ai/)
+- [Terms of service](https://www.happyrobot.ai/legal/terms-and-conditions)
+- [Privacy policy](https://www.happyrobot.ai/legal/privacy-policy)
+- [GitHub](https://github.com/happyrobot-ai)
+- [Status](https://status.happyrobot.ai/)
+
+## API Evangelist rating
+
+**Kin Score 46.2** — developing · rubric 0.25.0 · scored 2026-10-23
+
+| Facet | Score |
+|---|---|
+| Discoverability | 75.0 |
+| Contract quality | 55.4 |
+| Contract governance | 18.2 |
+| Operational transparency | 31.6 |
+| Developer ergonomics | 35.1 |
+| Access clarity | 35.5 |
+
+**Agent readiness 48.4** — agent-ready (gated down from agent-native)
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | derived (partial credit) |
+| Reversibility Documented | documented (partial credit) |
+| MCP Server | verified |
+| Auth Clarity | served (partial credit) |
+| Idempotency | — |
+| Error Semantics | derived (partial credit) |
+| OpenAPI Examples | partial |
+| Rate Limit Signal | — |
+| Event Surface Described | derived (partial credit) |
+| Agent Skills | derived (partial credit) |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | served (partial credit) |
+| Protected Resource Metadata | verified |
+| Dynamic Client Registration | yes |
+| Agentic Commerce | — |
+| Pagination Ratio | — |
+| Operation Distinctiveness | distinct |
+
+**Regulatory alignment 45.1** — AI & Biometrics
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/happyrobot/](https://apis.io/providers/happyrobot/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Happyrobot: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/happyrobot/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
